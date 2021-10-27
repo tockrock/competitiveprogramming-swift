@@ -20,13 +20,11 @@ func sortCondition(_ first: String, _ second: String) -> Bool {
         return firstCore < secondCore
     }
     
-    // the strings of the core are the same, so we look at the number of leading zeros
+    // the strings of the cores are the same, so we look at the number of leading zeros
     return first.count > second.count
 }
 
-
 var inputArray: [String] = []
-
 
 while true {
     guard let input: String = readLine() else {
