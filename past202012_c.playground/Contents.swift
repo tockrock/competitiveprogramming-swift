@@ -34,8 +34,15 @@ func digit36(_ digit: Int) -> String {
         return String(digit)
     }
     
-    return alphabet[digit - 10]
+    let aus = "A".unicodeScalars
+    print(aus)
+    let char = Unicode.Scalar(32 + digit - 10)
+    print(char)
+    
+    return "foo"
 }
+
+digit36(12)
 
 func main() {
     let input = readLine()!
