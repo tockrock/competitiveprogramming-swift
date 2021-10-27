@@ -36,6 +36,4 @@ while true {
 }
 
 let outputArray = inputArray[1...].sorted(by: {sortCondition($0, $1)})
-for output in outputArray {
-    print(output)
-}
+print(outputArray.joined(separator: "\n"))
