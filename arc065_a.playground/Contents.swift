@@ -42,27 +42,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let input = readLine()!
     
     var working = input
-    
-    func remove_term(_ checkingString: String) -> String {
-        for term in ["eraser", "erase", "dreamer", "dream"] {
-            if checkingString.hasSuffix(term) {
-                return String(checkingString.dropLast(term.count))
-            }
-        }
-        return checkingString
+    let terms = ["eraser", "erase", "dreamer", "dream"]
+    while let term = terms.first(where: {working.hasSuffix($0)}) {
+        working.removeLast(term.count)
     }
     
-    while working.count > 0 {
-        let temp = working
-        working = remove_term(working)
-        if working.count < 1 {
-            print("YES")
-        }
-        if temp == working {
-            working = ""
-            print("NO")
-        }
-    }
+    working.isEmpty ? print("YES") : print("NO")
 }
 
 func main(label: String, example: Example) {
