@@ -37,26 +37,21 @@ let examples: [(String, Example)] = [
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
-    func readInts() -> [Double] { readLine()!.split(separator: " ").map{Double($0)!} }
-    func readInt() -> Double { Double(readLine()!)! }
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map{Int($0)!} }
     
-    let _ = readInt()
+    let _ = readLine()
     let originalArray = readInts()
-
-    var success = 0
-    var multiplier = 2.0
     
-
-    while !originalArray
-            .map({$0.truncatingRemainder(dividingBy: multiplier)})
-            .map({$0 == 0.0})
-            .contains(false) {
-        success += 1
-        multiplier *= 2
+    func countTrailingZero(of binary: String) -> Int {
+        let range = binary.lastIndex(of: "1")!...
+        return binary[range].dropFirst().count
     }
-    
-    print(success)
 
+    let numberOfTrailingZeros = originalArray.map({String($0, radix: 2)})
+        .map({countTrailingZero(of: $0)})
+    
+    print(numberOfTrailingZeros.min()!)
+    
 }
 
 func main(label: String, example: Example) {
