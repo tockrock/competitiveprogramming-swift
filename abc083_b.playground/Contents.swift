@@ -11,22 +11,32 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            20 2 5
             """,
         expected: """
+            84
             """)),
     ("2", Example(
         input: """
+            10 1 2
             """,
         expected: """
+            13
             """)),
-]
+    ("2", Example(
+        input: """
+            100 4 16
+            """,
+        expected: """
+            4554
+            """)),]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     func readInts() -> [Int] { readLine()!.split(separator: " ").map{Int($0)!} }
     func readInt() -> Int { Int(readLine()!)! }
     
-    
+    print("foo")
 }
 
 func main(label: String, example: Example) {
