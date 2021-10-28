@@ -25,6 +25,7 @@ let examples: [(String, Example)] = [
             3
             15
             15
+            15
             """,
         expected: """
             1
@@ -52,7 +53,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
     func readInt() -> Int { Int(readLine()!)! }
     
-    print("foo")
+    let N = readInt()
+    var set = Set<Int>()
+    for _ in 0..<N {
+        set.insert(readInt())
+    }
+    
+    print(set.count)
+
 }
 
 func main(label: String, example: Example) {
@@ -67,7 +75,7 @@ func main(label: String, example: Example) {
         print(isSuccessful ? "successful." : "failed.")
         if !isSuccessful {
             print("expected | actual")
-            while !outputLines .isEmpty && !expectedLines.isEmpty {
+            while !outputLines.isEmpty && !expectedLines.isEmpty {
                 let o = outputLines.removeFirst()
                 let e = expectedLines.removeFirst()
                 print("\(o == e ? " " : "!") \(e) | \(o)")
