@@ -42,14 +42,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let input = readLine()!
     
     var working = input
-    for term in ["eraser", "erase", "dreamer", "dream"] {
-        working = working.replacingOccurrences(of: term, with: "")
+    
+    func remove_term(_ checkingString: String) -> String {
+        for term in ["eraser", "erase", "dreamer", "dream"] {
+            if checkingString.hasSuffix(term) {
+                return String(checkingString.dropLast(term.count))
+            }
+        }
+        return checkingString
     }
     
-    if working.count > 0 {
-        print("NO")
-    } else {
-        print("YES")
+    while working.count > 0 {
+        let temp = working
+        working = remove_term(working)
+        if working.count < 1 {
+            print("YES")
+        }
+        if temp == working {
+            working = ""
+            print("NO")
+        }
     }
 }
 
