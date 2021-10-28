@@ -36,7 +36,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readLine()!.split(separator: " ").map{Int($0)!} }
     func readInt() -> Int { Int(readLine()!)! }
     
-    print("foo")
+    let inputs = readInts()
+    
+    var count = 0
+    for i in 0...inputs[0] {
+        let sum = String(i).map({Int(String($0))!}).reduce(0, +)
+        if inputs[1] <= sum && sum <= inputs[2] {
+            count += i
+        }
+    }
+    print(count)
 }
 
 func main(label: String, example: Example) {
