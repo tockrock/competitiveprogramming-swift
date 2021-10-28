@@ -11,18 +11,27 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            2
+            3 1
             """,
         expected: """
+            2
             """)),
     ("2", Example(
         input: """
+            3
+            2 7 4
             """,
         expected: """
+            5
             """)),
     ("3", Example(
         input: """
+            4
+            20 18 2 18
             """,
         expected: """
+            18
             """)),
 ]
 
@@ -33,7 +42,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
     func readInt() -> Int { Int(readLine()!)! }
     
-    print("foo")
+    let _ = readInt()
+    let a = readInts()
+    
+    let sorted = a.sorted(by: {$0 > $1}).enumerated()
+    
+    let alice = sorted.filter({ (i, _) in i.isMultiple(of: 2)}).reduce(0, {$0 + $1.1})
+    let bob = sorted.filter({(i, _) in !i.isMultiple(of: 2)}).reduce(0, {$0 + $1.1})
+    
+    print(alice - bob)
+    
+
 }
 
 func main(label: String, example: Example) {
