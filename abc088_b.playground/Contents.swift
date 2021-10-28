@@ -1,5 +1,5 @@
 // https://atcoder.jp/contests/abs/tasks/abc088_b
-// 2021-10-28
+// 2021-10-28 13:32:34
 
 import Foundation
 
@@ -19,14 +19,21 @@ let examples: [(String, Example)] = [
             """,
         expected: """
             """)),
+    ("3", Example(
+        input: """
+            """,
+        expected: """
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
-    func readInts() -> [Int] { readLine()!.split(separator: " ").map{Int($0)!} }
+    func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
+    func readStrings () -> [String] { readSubsequence().map({String($0)}) }
+    func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
     func readInt() -> Int { Int(readLine()!)! }
     
-    
+    print("foo")
 }
 
 func main(label: String, example: Example) {
