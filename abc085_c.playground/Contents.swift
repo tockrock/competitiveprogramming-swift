@@ -47,27 +47,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInt() -> Int { Int(readLine()!)! }
     
     let input = readInts()
-    func otoshidama(_ N: Int, _ Y: Int) -> (Int, Int, Int) {
-        for oneMultiplier in (0...(Y/5)) {
-            let oneCounter = (Y % 5 + oneMultiplier * 5)
-            let afterOne = Y - oneCounter
-            let minFive = afterOne % 10 / 5
-            for fiveMultiplier in (0...(afterOne/10)) {
-                let fiveCounter = minFive + fiveMultiplier * 2
-                let afterFive = afterOne - ( afterOne % 10 + fiveMultiplier * 10 )
-                let tenCounter = afterFive / 10
-                
-                if N == oneCounter + fiveCounter + tenCounter {
-                    return (tenCounter, fiveCounter, oneCounter)
+    func otoshidama(_ N: Int, _ Y: Int) {
+        for i in 0...N {
+            for j in 0...(N-i) {
+                let k = N - i - j
+                if Y == i * 10 + j * 5 + k {
+                    print(i, j, k)
+                    return
                 }
+                
             }
         }
-        return (-1, -1, -1)
+        print(-1, -1, -1)
     }
     
-    let (ten, five, one) = otoshidama(input[0], input[1]/1000)
+    otoshidama(input[0], input[1]/1000)
 
-    print(ten, five, one)
 }
 
 func main(label: String, example: Example) {
