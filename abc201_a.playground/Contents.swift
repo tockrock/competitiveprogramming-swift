@@ -47,7 +47,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    var ints = readInts()
+    
+    ints.sort()
+    if ints[2] - ints[1] == ints[1] - ints[0] {
+        print("Yes")
+    } else {
+        print("No")
+    }
 }
 
 func main(label: String, example: Example) {
