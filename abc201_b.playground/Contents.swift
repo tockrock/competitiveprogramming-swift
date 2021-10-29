@@ -11,18 +11,35 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            3
+            Everest 8849
+            K2 8611
+            Kangchenjunga 8586
             """,
         expected: """
+            K2
             """)),
     ("2", Example(
         input: """
+            4
+            Kita 3193
+            Aino 3189
+            Fuji 3776
+            Okuhotaka 3190
             """,
         expected: """
+            Kita
             """)),
     ("3", Example(
         input: """
+            4
+            QCFium 2846
+            chokudai 2992
+            kyoprofriends 2432
+            penguinman 2390
             """,
         expected: """
+            QCFium
             """)),
 ]
 
