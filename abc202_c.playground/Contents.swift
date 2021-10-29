@@ -11,18 +11,33 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            3
+            1 2 2
+            3 1 2
+            2 3 2
             """,
         expected: """
+            4
             """)),
     ("2", Example(
         input: """
+            4
+            1 1 1 1
+            1 1 1 1
+            1 2 3 4
             """,
         expected: """
+            16
             """)),
     ("3", Example(
         input: """
+            3
+            2 3 3
+            1 3 3
+            1 1 1
             """,
         expected: """
+            0
             """)),
 ]
 
@@ -41,7 +56,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    
 }
 
 func main(label: String, example: Example) {
