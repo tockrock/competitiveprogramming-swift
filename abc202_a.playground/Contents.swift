@@ -40,7 +40,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let dices = readInts()
+    print("\(21 - dices.reduce(0, +))")
 }
 
 func main(label: String, example: Example) {
