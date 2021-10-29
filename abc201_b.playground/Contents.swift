@@ -58,7 +58,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    struct Mountain {
+        let name: String
+        let hight: Int
+    }
+    
+    let N = readInt()
+    var mountains = [Mountain]()
+    
+    for _ in 0..<N {
+        let entry = readStrings()
+        let hight = Int(entry[1])!
+        mountains.append(Mountain(name: entry[0], hight: hight))
+    }
+    
+    mountains.sort(by: {$0.hight > $1.hight})
+    
+    print(mountains[1].name)
 }
 
 func main(label: String, example: Example) {
