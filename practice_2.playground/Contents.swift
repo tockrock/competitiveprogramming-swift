@@ -46,6 +46,23 @@ func merge(_ sortedL: [String], _ sortedR: [String]) -> [String] {
     return container
 }
 
+func binarySort(add element: String, to sortWith: [String], from: Int = -1, until: Int? = nil) -> [String] {
+    var l = from
+    var r = until != nil ? until! : sortWith.count
+    while r - l > 1 {
+        let mid = (r + l) / 2
+        if lt(element, sortWith[mid]) {
+            r = mid
+        } else {
+            l = mid
+        }
+    }
+    var sorted = sortWith
+    sorted.insert(element, at: r)
+    return sorted
+    
+}
+
 func n5() -> [String] {
     var (x1, x2) = ("A", "B")
     if lt(x2, x1) {
@@ -63,30 +80,8 @@ func n5() -> [String] {
     
     var sorted = [x1, y1, y2]
     
-    let e = "E"
-    var l = -1
-    var r = sorted.count
-    while r - l > 1 {
-        let mid = (r + l) / 2
-        if lt(e, sorted[mid]) {
-            r = mid
-        } else {
-            l = mid
-        }
-    }
-    sorted.insert(e, at: r)
-    
-    l = sorted.firstIndex(of: x1)!
-    r = sorted.count
-    while r - l > 1 {
-        let mid = (r + l) / 2
-        if lt(x2, sorted[mid]) {
-            r = mid
-        } else {
-            l = mid
-        }
-    }
-    sorted.insert(x2, at: r)
+    sorted = binarySort(add: "E", to: sorted)
+    sorted = binarySort(add: x2, to: sorted, from: sorted.firstIndex(of: x1)!)
     
     return sorted
 }
