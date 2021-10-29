@@ -47,7 +47,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    
+    let input = readLine()!.reversed()
+    var output = ""
+    for i in input {
+        switch(i) {
+        case "6":
+            output += "9"
+        case "9":
+            output += "6"
+        default:
+            output += String(i)
+        }
+    }
+    
+    print(output)
+    
 }
 
 func main(label: String, example: Example) {
