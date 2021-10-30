@@ -62,11 +62,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let Cs = readInts()
     
     var count = 0
-    
-    for (_, a) in As.enumerated() {
-        for (k, b) in Bs.enumerated() {
+     
+    for a in Set(As) {
+        for (k, b) in Bs.enumerated().filter({a == $0.1}) {
             if a == b {
-                count += Cs.filter({$0 == k + 1}).count
+                count += Cs.filter({$0 == k + 1}).count * As.filter({$0 == a}).count
             }
             
         }
