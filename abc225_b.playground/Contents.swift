@@ -71,11 +71,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         total[a - 1] += 1
         total[b - 1] += 1
     }
-    if total[..<(N - 1)].max()! >= N - 1 {
+    
+    if Set(total) == Set([1,N-1]) {
         print("Yes")
     } else {
         print("No")
     }
+    
 }
 
 func main(label: String, example: Example) {
