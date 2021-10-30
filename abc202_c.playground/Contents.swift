@@ -56,6 +56,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
+    let _ = readInt()
+    let As = readInts()
+    let Bs = readInts()
+    let Cs = readInts()
+    
+    var count = 0
+    
+    for (_, a) in As.enumerated() {
+        for (k, b) in Bs.enumerated() {
+            if a == b {
+                count += Cs.filter({$0 == k + 1}).count
+            }
+            
+        }
+    }
+    
+    print(count)
     
 }
 
