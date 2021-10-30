@@ -21,12 +21,7 @@ let examples: [(String, Example)] = [
             30 30 118264581564861424
             """,
         expected: """
-            """)),
-    ("3", Example(
-        input: """
             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            """,
-        expected: """
             """)),
 ]
 
@@ -44,8 +39,52 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (a: ints[0], b: ints[1], c: ints[2])
     }
+    func createIntTable(x: Int, y: Int) -> [[Int]] {
+        [[Int]](repeating: [Int](repeating: 0, count: x), count: y)
+    }
+    var (A, B, K) = readThreeInts()
     
-    print("foo")
+    var dp = createIntTable(x: A+1, y: B+1)
+    for j in 1...B {
+        dp[0][j] = 1
+    }
+    for i in 1...A {
+        dp[i][0] = 1
+    }
+    
+    for i in 1...A {
+        for j in 1...B {
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        }
+    }
+    
+    Swift.print(dp)
+    var result = [Character]()
+    
+    
+    while A > 0 && B > 0 {
+        let aCount = dp[A-1][B]
+//        Swift.print("A = \(A), B = \(B), K = \(K), aCount = \(aCount)")
+        if K <= aCount {
+            result.append("a")
+            A -= 1
+        } else {
+            result.append("b")
+            B -= 1
+            K -= aCount
+            
+        }
+    }
+    if A > 0 {
+        result += [Character](repeating: "a", count: A)
+    }
+    if B > 0 {
+        result += [Character](repeating: "b", count: B)
+    }
+    
+    
+    print(String(result))
+    
 }
 
 func main(label: String, example: Example) {
