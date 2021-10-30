@@ -1,4 +1,4 @@
-// https://atcoder.jp/contests/abc225_a
+// https://atcoder.jp/contests/abc225/tasks/abc225_a
 // 2021-10-30 20:58:53
 
 import Foundation
@@ -11,18 +11,24 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            aba
             """,
         expected: """
+            3
             """)),
     ("2", Example(
         input: """
+            ccc
             """,
         expected: """
+            1
             """)),
     ("3", Example(
         input: """
+            xyz
             """,
         expected: """
+            6
             """)),
 ]
 
