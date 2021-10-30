@@ -47,7 +47,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let count = Set(readLine()!.map{ $0 }).count
+    switch(count) {
+    case 3:
+        print("6")
+    case 2:
+        print("3")
+    default:
+        print("1")
+    }
+    
 }
 
 func main(label: String, example: Example) {
