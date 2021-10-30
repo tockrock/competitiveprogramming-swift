@@ -63,16 +63,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     var count = 0
     
-    for i in 1...3 {
-        let intCount = As.filter({$0 == i}).count
-        if intCount < 1 {
-            continue
-        }
-        
+    for (_, a) in As.enumerated() {
         for (k, b) in Bs.enumerated() {
-            if i == b {
-                count += Cs.filter({$0 == k + 1}).count * intCount
+            if a == b {
+                count += Cs.filter({$0 == k + 1}).count
             }
+            
         }
     }
     
