@@ -56,24 +56,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    let _ = readInt()
+    let N = readInt()
     let As = readInts()
     let Bs = readInts()
     let Cs = readInts()
-    
+    let BCs = Cs.map {Bs[$0 - 1]}
+
     var count = 0
-     
-    for a in Set(As) {
-        for (k, b) in Bs.enumerated().filter({a == $0.1}) {
-            if a == b {
-                count += Cs.filter({$0 == k + 1}).count * As.filter({$0 == a}).count
-            }
-            
-        }
+    
+    var countArray = Array(repeating: 0, count: N)
+    
+    for j in 0..<N {
+        countArray[BCs[j] - 1] += 1
     }
     
+    for i in 0..<N {
+        count += countArray[As[i] - 1]
+    }
+        
     print(count)
-    
 }
 
 func main(label: String, example: Example) {
