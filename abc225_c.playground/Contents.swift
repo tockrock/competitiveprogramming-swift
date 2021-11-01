@@ -20,9 +20,25 @@ let examples: [(String, Example)] = [
             """)),
     ("2", Example(
         input: """
+            1 1
+            1
+            """,
+        expected: """
+            Yes
+            """)),
+    ("2-2", Example(
+        input: """
             2 1
             1
             2
+            """,
+        expected: """
+            No
+            """)),
+    ("2-3", Example(
+        input: """
+            1 2
+            7 8
             """,
         expected: """
             No
@@ -61,7 +77,41 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    func calendar_validator() -> String {
+        var expected = 0
+        let (N, M) = readTwoInts()
+        
+        var expectedLine = readInts()
+        expected = expectedLine[0]
+
+        if expected % 7 + M > 8 {
+            return "No"
+        } else if expected % 7 == 0 && M > 1 {
+            return "No"
+        }
+                        
+        for B in expectedLine[1...] {
+            expected += 1
+            if B != expected {
+                return "No"
+            }
+        }
+        if N < 2 {
+            return "Yes"
+        }
+        
+        for _ in 1..<N  {
+            expectedLine = expectedLine.map { $0 + 7 }
+            if expectedLine != readInts() {
+                return "No"
+            }
+        }
+        
+        return "Yes"
+        
+    }
+    
+    print(calendar_validator())
 }
 
 func main(label: String, example: Example) {
