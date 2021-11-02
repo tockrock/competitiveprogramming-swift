@@ -51,7 +51,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let s = readLine()!
+    let charCount = s.count - 2
+    let short = String(s.first!) + String(charCount) + String(s.last!)
+    
+    print(short)
+    
     
     // ===============
     // actual code end
