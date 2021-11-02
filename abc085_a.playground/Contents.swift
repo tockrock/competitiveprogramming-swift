@@ -12,18 +12,17 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            2017/01/07
             """,
         expected: """
+            2018/01/07
             """)),
     ("2", Example(
         input: """
+            2017/01/31
             """,
         expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            2018/01/31
             """)),
 ]
 
@@ -45,7 +44,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let S = readLine()!
+    let correct = S.replacingOccurrences(of: "2017", with: "2018")
+    
+    print(correct)
     
     // ===============
     // actual code end
