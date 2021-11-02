@@ -51,7 +51,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let S = readLine()!
+    let circleCount = S.replacingOccurrences(of: "x", with: "") .count
+    let price = 700 + 100 * circleCount
+    print(price)
     
     // ===============
     // actual code end
