@@ -53,8 +53,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (a: ints[0], b: ints[1], c: ints[2])
     }
+    let amount = readInt()
+    let coins = readInt()
     
-    print("foo")
+    amount % 500 <= coins ? print("Yes") : print("No")
+    
     
     // ===============
     // actual code end
