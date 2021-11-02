@@ -2,6 +2,7 @@
 // 2021-11-02 09:14:25
 
 import Foundation
+let DEBUG = true
 
 struct Example {
     let input: String
@@ -11,23 +12,30 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            4 3 2
             """,
         expected: """
+            YES
             """)),
     ("2", Example(
         input: """
+            2 3 4
             """,
         expected: """
+            NO
             """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
-            """)),
+//    ("3", Example(
+//        input: """
+//            """,
+//        expected: """
+//            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
+    // =====================
     // actual code goes here
+    // =====================
+    func debugPrint (_ s: String ) { if DEBUG { Swift.print(s) } }
     func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
@@ -41,7 +49,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let input = readLine()!
+    
+    debugPrint(input)
+    
+    let num = Int(input.split(separator: " ").joined(separator: ""))!
+
+    num % 4 == 0 ? print("YES") : print("NO")
+    
+    // ===============
+    // actual code end
+    // ===============
 }
 
 func main(label: String, example: Example) {
