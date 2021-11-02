@@ -50,12 +50,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (a: ints[0], b: ints[1], c: ints[2])
     }
+
+    let N = readInt()
     
-    print("foo")
+    let answer = N / 2 + N % 2
     
-    // ===============
-    // actual code end
-    // ===============
+    print(answer)
 }
 
 func main(label: String, example: Example) {
