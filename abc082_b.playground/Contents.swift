@@ -2,6 +2,7 @@
 // 2021-11-03 08:31:21
 
 import Foundation
+import Darwin
 let DEBUG = true
 
 struct Example {
@@ -70,7 +71,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let s = readLine()!
+    let t = readLine()!
+    
+    let sSoreted = String(s.map({$0}).sorted(by: <))
+    let tSorted = String(t.map({$0}).sorted(by: >))
+    debugPrint(sSoreted)
+    debugPrint(tSorted)
+    
+    print(sSoreted < tSorted ? "Yes" : "No")
     
     // ===============
     // actual code end
