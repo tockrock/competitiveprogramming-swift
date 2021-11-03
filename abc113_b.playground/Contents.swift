@@ -34,7 +34,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-    func debugPrint (_ s: String ) { if DEBUG { Swift.print(s) } }
+    func debugPrint(_ s: String ) { if DEBUG { Swift.print(s) } }
     func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
@@ -48,7 +48,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let _ = readInt()
+    let (T, A) = readTwoInts()
+    let Hs = readInts()
+    
+    let Ts = Hs.map({Double(T) - Double($0) * 0.006})
+    
+    let hotter = Ts.filter({$0 >= Double(A)}).min()
+    let colder = Ts.filter({$0 <= Double(A)}).max()
+    let closest: Double
+    if hotter == nil {
+        closest = colder!
+    } else if colder == nil {
+        closest = hotter!
+    } else {
+        closest = abs(hotter! - Double(A)) > abs(colder! - Double(A)) ? colder! : hotter!
+    }
+    
+    debugPrint(String(closest))
+    print(Ts.firstIndex(of: closest)! + 1 )
     
     // ===============
     // actual code end
