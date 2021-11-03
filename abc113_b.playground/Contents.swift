@@ -51,22 +51,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let _ = readInt()
     let (T, A) = readTwoInts()
     let Hs = readInts()
-    
-    let Ts = Hs.map({Double(T) - Double($0) * 0.006})
-    
-    let hotter = Ts.filter({$0 >= Double(A)}).min()
-    let colder = Ts.filter({$0 <= Double(A)}).max()
-    let closest: Double
-    if hotter == nil {
-        closest = colder!
-    } else if colder == nil {
-        closest = hotter!
-    } else {
-        closest = abs(hotter! - Double(A)) > abs(colder! - Double(A)) ? colder! : hotter!
+        
+    func diff(H: Int) -> Double {
+        return abs((Double(T) - Double(H) * 0.006) - Double(A))
     }
     
-    debugPrint(String(closest))
-    print(Ts.firstIndex(of: closest)! + 1 )
+    let diffs = Hs.map({diff(H: $0)})
+    let min = diffs.min()!
+    
+    print(diffs.firstIndex(of: min)! + 1)
     
     // ===============
     // actual code end
