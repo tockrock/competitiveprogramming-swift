@@ -59,19 +59,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     let s = readLine()!
-    let ss = s.map({"\($0)"})
+    let ss = s.map({"\($0)"}).enumerated()
     debugPrint(ss)
-    
-    var odd = true
-    var output = ""
-    for c in ss {
-        if odd {
-            output += c
-            odd = false
-        } else {
-            odd = true
-        }
-    }
+
+    let output = ss.filter({$0.0 % 2 == 0}).map({$0.1}).joined()
     
     print(output)
     
