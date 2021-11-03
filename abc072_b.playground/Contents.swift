@@ -44,7 +44,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-    func debugPrint (_ s: String ) { if DEBUG { Swift.print(s) } }
+    func debugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
     func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
@@ -58,7 +58,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let s = readLine()!
+    let ss = s.map({"\($0)"})
+    debugPrint(ss)
+    
+    var odd = true
+    var output = ""
+    for c in ss {
+        if odd {
+            output += c
+            odd = false
+        } else {
+            odd = true
+        }
+    }
+    
+    print(output)
+    
     
     // ===============
     // actual code end
