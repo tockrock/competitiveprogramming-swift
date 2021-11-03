@@ -54,7 +54,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let _ = readInt()
+    let As = readInts()
+    let max = As.max()!
+    let min = As.min()!
+    
+    print(max - min)
     
     // ===============
     // actual code end
