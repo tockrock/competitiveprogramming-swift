@@ -22,9 +22,16 @@ let examples: [(String, Example)] = [
             32
             """,
         expected: """
-            1
+            32
             """)),
     ("3", Example(
+        input: """
+            1
+            """,
+        expected: """
+            1
+            """)),
+    ("4", Example(
         input: """
             100
             """,
@@ -51,7 +58,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let N = readInt()
+    
+    let powerTwo = [1, 2, 4, 8, 16, 32, 64]
+    debugPrint(String(32 <= 1))
+    debugPrint(powerTwo.filter({$0 <= N}).map({String($0)}).joined(separator: ", "))
+    print(powerTwo.filter({$0 <= N}).max()!)
     
     // ===============
     // actual code end
