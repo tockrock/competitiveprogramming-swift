@@ -2,7 +2,7 @@
 // 2021-11-04 08:49:45
 
 import Foundation
-let DEBUG = true
+let DEBUG = false
 
 struct Example {
     let input: String
@@ -51,7 +51,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    let s = readLine()!
+    
+    let aIndex = s.firstIndex(of: "A")!
+    let zIndex = s.lastIndex(of: "Z")!
+    
+    debugPrint(aIndex, zIndex)
+    debugPrint(s.distance(from: aIndex, to: zIndex))
+    
+    print(s.distance(from: aIndex, to: zIndex) + 1)
     
     // ===============
     // actual code end
