@@ -59,28 +59,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     for _ in 0..<n {
         R.append(readInt())
     }
-    var startIndex = 0
+
+    var minv = R[0]
     var diff = Int.min
     
-    while true {
-        let peak = R[(startIndex+1)...].max()!
-        
-        // get the lowest of the current scope
-        let peakIndex = R.lastIndex(of: peak)!
-        let valley = R[..<peakIndex].min()!
-        
-        diff = max(diff, peak - valley)
-        
-        if peakIndex == n - 1 {
-            break
-        }
-        
-        if R[(peakIndex+1)...].sorted(by: >) == [Int](R[(peakIndex+1)...]) {
-            break
-        }
-        
-        startIndex = peakIndex
-        
+    for j in 1..<n {
+        diff = max(diff, R[j] - minv)
+        minv = min(minv, R[j])
     }
     
     print(diff)
