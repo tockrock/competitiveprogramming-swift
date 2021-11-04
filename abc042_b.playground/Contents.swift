@@ -12,18 +12,13 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            3 3
+            dxx
+            axx
+            cxx
             """,
         expected: """
-            """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            axxcxxdxx
             """)),
 ]
 
@@ -46,7 +41,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, _) = readTwoInts()
+    var S = [String]()
+    for _ in 0..<N {
+        S.append(readString())
+    }
+    print(S.sorted().joined())
+    
+//    print("foo")
     
     // ===============
     // actual code end
