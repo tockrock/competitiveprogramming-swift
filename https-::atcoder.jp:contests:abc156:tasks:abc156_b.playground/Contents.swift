@@ -35,10 +35,11 @@ let examples: [(String, Example)] = [
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     func debugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
-    func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
+    func readString () -> String { readLine()! }
+    func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
-    func readInt() -> Int { Int(readLine()!)! }
+    func readInt() -> Int { Int(readString())! }
     func readTwoInts() -> (a: Int, b: Int) {
         let ints = readInts()
         return (a: ints[0], b: ints[1])
@@ -51,7 +52,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, K) = readTwoInts()
+    
+    var count = 1
+    var remaining = N
+    while remaining > K {
+        count += 1
+        remaining = remaining / K
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
