@@ -79,7 +79,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, M) = readTwoInts()
+    var roads = [Int]()
+    
+    for _ in 0..<M {
+        roads += readInts()
+    }
+    
+    for i in 1...N {
+        print(roads.filter({$0 == i}).count)
+    }
     
     // ===============
     // actual code end
