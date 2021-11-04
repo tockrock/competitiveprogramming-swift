@@ -56,7 +56,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     var count = 1
     var remaining = N
-    while remaining > K {
+    while remaining >= K {
         count += 1
         remaining = remaining / K
     }
