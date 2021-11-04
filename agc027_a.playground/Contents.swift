@@ -55,7 +55,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (_, x) = readTwoInts()
+    let As = readInts().sorted()
+    
+    var remaining = x
+    var count = 0
+    for a in As {
+        remaining -= a
+        if remaining >= 0 {
+            count += 1
+            continue
+        }
+        break
+    }
+    
+    print(remaining > 0 ? count - 1 : count)
+
     
     // ===============
     // actual code end
