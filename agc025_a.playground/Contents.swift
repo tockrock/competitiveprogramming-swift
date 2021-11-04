@@ -44,7 +44,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readLine()!
+    let sum = N.map({Int(String($0))!}).reduce(0, +)
+    
+    print(sum == 1 ? 10 : sum)
     
     // ===============
     // actual code end
