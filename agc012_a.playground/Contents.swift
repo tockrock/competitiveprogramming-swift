@@ -47,7 +47,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    let As = readInts()
+    
+    let power = As.sorted()[N...].enumerated().filter({$0.0 % 2 == 0}).reduce(0, {$0 + $1.1})
+    
+    print(power)
     
     // ===============
     // actual code end
