@@ -52,7 +52,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let alphabet = "abcdefghijklmnopqrstuvwxyz".map {$0}
+    
+    let S = readString().map {$0}
+
+    var na: Character? = nil
+    for a in alphabet {
+        if S.contains(a) {
+            continue
+        }
+        na = a
+        break
+    }
+    
+    print(na != nil ? na! : "None")
     
     // ===============
     // actual code end
