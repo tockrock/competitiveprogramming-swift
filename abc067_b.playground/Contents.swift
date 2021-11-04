@@ -47,7 +47,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (_, K) = readTwoInts()
+    let ls = readInts().sorted(by: >)
+    
+    let sum = ls[0..<K].reduce(0, +)
+    
+    print(sum)
     
     // ===============
     // actual code end
