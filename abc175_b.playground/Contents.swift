@@ -62,7 +62,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let _ = readInt()
+    let Ls = readInts()
+    var count = 0
+    
+    for i in Ls {
+        let notI = Ls.filter({$0 < i})
+        for j in notI {
+            let notIJ = notI.filter({$0 < j})
+            let min = i - j
+            count += notIJ.filter({$0 > min}).count
+        }
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
