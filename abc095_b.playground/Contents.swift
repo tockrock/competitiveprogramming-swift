@@ -46,9 +46,6 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    // =====================
-    // actual code goes here
-    // =====================
     func debugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
     func readSubsequence () -> [String.SubSequence] { readLine()!.split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
@@ -63,7 +60,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (a: ints[0], b: ints[1], c: ints[2])
     }
     
-    print("foo")
+    // =====================
+    // actual code goes here
+    // =====================
+
+    let (N, X) = readTwoInts()
+    var ms = [Int]()
+    for _ in 0..<N {
+        ms.append(readInt())
+    }
+    let remainder = X - ms.reduce(0, +)
+    
+    print(remainder / ms.min()! + N)
     
     // ===============
     // actual code end
