@@ -44,7 +44,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (A, B) = readTwoInts()
+    var count = 0
+    for i in A...B {
+        let s = String(i)
+        let reversedS = String(s.reversed())
+        if s == reversedS {
+            count += 1
+        }
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
