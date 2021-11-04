@@ -44,11 +44,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let N = readLine()!
-    let sum = N.map({Int(String($0))!}).reduce(0, +)
+    // Trying to figure out the difference with submission below
+    // https://atcoder.jp/contests/agc025/submissions/19307807
+    let N = readInt()
+    var smallest = Int.max
     
-    print(sum == 1 ? 10 : sum)
-    
+    for a in 1...N/2 {
+        var sum = String(a).map({Int(String($0))!}).reduce(0, +)
+        if smallest < sum {
+            continue
+        }
+        let b = N - a
+        sum += String(b).map({Int(String($0))!}).reduce(0, +)
+        smallest = min(smallest, sum)
+    }
+    print(smallest)
+
+    var wa = 9000000000000000000
+    for i in 1...N-1 {
+        if i<=N-i {
+            let a = String(i).map({Int(String($0))!}).reduce(0,+)
+            let b = String(N-i).map({Int(String($0))!}).reduce(0,+)
+            wa = min(wa,a+b)
+        }
+    }
+    debugPrint(smallest, wa)
+
     // ===============
     // actual code end
     // ===============
