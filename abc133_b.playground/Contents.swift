@@ -62,7 +62,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, D) = readTwoInts()
+    var grid = [[Int]]()
+    for _ in 0..<N {
+        grid.append(readInts())
+    }
+    
+    var count = 0
+    
+//    debugPrint(grid[0][1])
+    
+    for i1 in 0..<(N - 1) {
+        for i2 in (i1+1)..<N {
+            var sum = 0.0
+            for j in 0..<D {
+                let diff = abs(grid[i1][j] - grid[i2][j])
+                sum += pow(Double(diff), 2.0)
+            }
+            let distance = sqrt(Double(sum))
+            if distance == floor(distance) {
+                count += 1
+            }
+        }
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
