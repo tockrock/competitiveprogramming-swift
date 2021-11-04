@@ -51,7 +51,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    var possible = false
+    
+    for i in 1...9 {
+        if N % i == 0 && N / i < 10 {
+            possible = true
+            break
+        }
+    }
+    
+    print(possible ? "Yes" : "No")
     
     // ===============
     // actual code end
