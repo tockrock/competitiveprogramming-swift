@@ -12,18 +12,24 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            11
             """,
         expected: """
+            Yes
             """)),
     ("2", Example(
         input: """
+            40
             """,
         expected: """
+            Yes
             """)),
     ("3", Example(
         input: """
+            3
             """,
         expected: """
+            No
             """)),
 ]
 
@@ -45,7 +51,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    
+    var cakeCount = 0
+    var combination = false
+    
+    while cakeCount * 4 <= N {
+        if (N - cakeCount * 4) % 7 == 0 {
+            combination = true
+            break
+        }
+        cakeCount += 1
+    }
+    
+    print(combination ? "Yes" : "No")
+    
     
     // ===============
     // actual code end
