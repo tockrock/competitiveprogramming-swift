@@ -37,7 +37,7 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+    func debugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
     func readString () -> String { readLine()! }
     func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
@@ -58,14 +58,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (_, K) = readTwoInts()
     let As = readInts()
     let unique = Set(As)
-    let numbersToRemove = unique.count - K
     
-    if numbersToRemove < 1 {
+    if K >= unique.count {
         print(0)
     } else {
-        let dictionary = As.reduce(into: [:]) {counts, number in counts[number, default: 0] += 1}
-        print(dictionary.map({$0.1}).sorted(by: <)[..<numbersToRemove].reduce(0, +))
+        let numberCount = unique.map({i in As.filter({$0 == i}).count})        
+        print(numberCount.sorted(by: >)[K...].reduce(0, +))
     }
+    
     // ===============
     // actual code end
     // ===============
