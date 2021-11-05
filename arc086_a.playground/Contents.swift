@@ -62,11 +62,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     if K >= unique.count {
         print(0)
     } else {
-        var numberCount = [(Int, Int)]()
+        var numberCount = [Int]()
         for number in unique {
-            numberCount.append((number, As.filter({$0 == number}).count))
+            numberCount.append( As.filter({$0 == number}).count)
         }
-        print(numberCount.sorted(by: {$0.1 > $1.1})[K...].reduce(0, {$0 + $1.1}))
+        print(numberCount.sorted(by: >)[K...].reduce(0, +))
     }
     
     // ===============
