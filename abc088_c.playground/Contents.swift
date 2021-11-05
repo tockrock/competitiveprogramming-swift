@@ -67,7 +67,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var grid = [[Int]]()
+    
+    for _ in 0..<3 {
+        grid.append(readInts())
+    }
+    
+    let start = grid[0][0]
+    
+    for i in 1...2 {
+        grid[i] = grid[i].map({$0 - (grid[i][0] - start)})
+    }
+    
+    print(grid[0] == grid[1] && grid[0] == grid[2] ? "Yes" : "No")
+    
     
     // ===============
     // actual code end
