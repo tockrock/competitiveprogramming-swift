@@ -96,8 +96,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+        
+    let N = readInt()
+    var blueCards = [String]()
+    for _ in 0..<N {
+        blueCards.append(readString())
+    }
+
+    let M = readInt()
+    var redCards = [String]()
+    for _ in 0..<M {
+        redCards.append((readString()))
+    }
     
-    print("foo")
+    var maxAmount = Int.min
+    let terms = Set(blueCards + redCards)
+    
+    for term in terms {
+        let amount = blueCards.filter({$0 == term}).count - redCards.filter({$0 == term}).count
+        maxAmount = max(maxAmount, amount)
+    }
+    
+    print(maxAmount > 0 ? maxAmount : 0)
+    
     
     // ===============
     // actual code end
