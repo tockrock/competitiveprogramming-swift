@@ -55,7 +55,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (_, K) = readTwoInts()
+    let As = readInts()
+    let unique = Set(As)
+    
+    if K >= unique.count {
+        print(0)
+    } else {
+        var numberCount = [(Int, Int)]()
+        for number in unique {
+            numberCount.append((number, As.filter({$0 == number}).count))
+        }
+        print(numberCount.sorted(by: {$0.1 > $1.1})[K...].reduce(0, {$0 + $1.1}))
+    }
     
     // ===============
     // actual code end
