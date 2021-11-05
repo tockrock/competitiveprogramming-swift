@@ -59,14 +59,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let As = readInts()
     let unique = Set(As)
     
-    if K >= unique.count {
+    let numbersToRemove = unique.count - K
+    
+    if numbersToRemove < 1 {
         print(0)
     } else {
-        var numberCount = [(Int, Int)]()
+        var numberCounts = [Int](repeating: Int.max, count: numbersToRemove)
+        var largest = Int.max
         for number in unique {
-            numberCount.append((number, As.filter({$0 == number}).count))
+            let numberCount = As.filter({$0 == number}).count
+            if numberCount < largest {
+                debugPrint(numberCount, largest)
+                numberCounts.remove(at: numberCounts.firstIndex(of: largest)!)
+                numberCounts.append(numberCount)
+                largest = numberCounts.max()!
+            }
         }
-        print(numberCount.sorted(by: {$0.1 > $1.1})[K...].reduce(0, {$0 + $1.1}))
+        print(numberCounts.reduce(0, +))
     }
     
     // ===============
