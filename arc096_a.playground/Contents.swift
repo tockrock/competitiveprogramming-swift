@@ -52,7 +52,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let inputs = readInts()
+    var sum = 0
+    let A = inputs[0]
+    let B = inputs[1]
+    let twoAB = inputs[2] * 2
+    var x = inputs[3]
+    var y = inputs[4]
+
+    if A + B > twoAB {
+        let common = min(x, y)
+        x -= common
+        y -= common
+        sum += twoAB * common
+    }
+    
+    if A > twoAB {
+        sum += twoAB * x
+        x = 0
+    }
+    
+    if B > twoAB {
+        sum += twoAB * y
+        y = 0
+    }
+    
+    sum += A * x
+    sum += B * y
+    
+    print(sum)
     
     // ===============
     // actual code end
