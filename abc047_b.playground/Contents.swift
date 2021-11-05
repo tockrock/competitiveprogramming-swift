@@ -62,7 +62,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var xMin = 0, yMin = 0
+    var xMax, yMax: Int
+    let N: Int
+    (xMax, yMax, N) = readThreeInts()
+    
+    for _ in 0..<N {
+        let (x, y, a) = readThreeInts()
+        switch(a) {
+        case 1:
+            xMin = max(xMin, x)
+        case 2:
+            xMax = min(xMax, x)
+        case 3:
+            yMin = max(yMin, y)
+        case 4:
+            yMax = min(yMax, y)
+        default:
+            print("something terrible happened")
+        }
+    }
+    
+    if xMax <= xMin || yMax <= yMin {
+        print(0)
+    } else {
+        print((xMax - xMin) * (yMax - yMin))
+    }
     
     // ===============
     // actual code end
