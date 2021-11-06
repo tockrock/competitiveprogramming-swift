@@ -56,18 +56,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let N = readInt()
     let sqrtN = Int(sqrt(Double(N)))
     
-    print((1...sqrtN).filter { i in
-        N % i == 0
-    }.map { i in
-        String(N / i).count
-    }.min()!)
+//    print((1...sqrtN).filter { i in
+//        N % i == 0
+//    }.map { i in
+//        String(N / i).count
+//    }.min()!)
     
     // get an Array of Factors
 
+    var maxFactor = String(N).count
+    for i in 1...sqrtN where N % i == 0  {
+        maxFactor = min(maxFactor, String(N/i).count)
+    }
     
-//    for i in 1...Int(sqrt(Double(N))) where N % i == 0  {
-//
-//    }
+    print(maxFactor)
     
     // try all combinations of factors and get the minimum result
     
