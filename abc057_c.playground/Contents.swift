@@ -53,45 +53,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     
-    var N = readInt()
+    let N = readInt()
+    let sqrtN = Int(sqrt(Double(N)))
+    
+    print((1...sqrtN).filter { i in
+        N % i == 0
+    }.map { i in
+        String(N / i).count
+    }.min()!)
     
     // get an Array of Factors
 
-    func findFactor(_ base: Int, divisibleBy factor: Int) -> (remaining: Int, factors: [Int]) {
-        var remaining = base
-        var count = 0
-        while true {
-            if remaining % factor == 0 {
-                remaining /= factor
-                count += 1
-            } else {
-                break
-            }
-        }
-        
-        return (remaining, Array(repeatElement(factor, count: count)))
-    }
-
-    var factors = [[Int]]()
-    let twos: [Int]
-    (N, twos) = findFactor(N, divisibleBy: 2)
     
-    factors.append(twos)
-    
-    for i in stride(from: 3, to: Int(sqrt(Double(N))), by: 2) {
-        let factorArray: [Int]
-        (N, factorArray) = findFactor(N, divisibleBy: i)
-        if !factorArray.isEmpty { factors.append(factorArray) }
-        if i > Int(sqrt(Double(N))) {
-            break
-        }
-    }
+//    for i in 1...Int(sqrt(Double(N))) where N % i == 0  {
+//
+//    }
     
     // try all combinations of factors and get the minimum result
     
     
     
-    print(factors)
+//    print(factors)
 
     // ===============
     // actual code end
