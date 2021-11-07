@@ -54,7 +54,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (a: ints[0], b: ints[1])
     }
-    func readThreeInts() -> (a: Int, b: Int, c: Int) {
+    func readThreeInts() -> (Int, Int, Int) {
         let ints = readInts()
         return (a: ints[0], b: ints[1], c: ints[2])
     }
@@ -62,7 +62,45 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    var p = [(x: Int, y: Int, z: Int)]()
+    
+    for _ in 0..<N {
+        p.append(readThreeInts())
+    }
+    
+    p = p.sorted(by: {$0.z > $1.z})
+    myDebugPrint(p)
+    var cX, cY, cZ: Int
+    cX = 0
+    cY = 0
+    cZ = 0
+    
+    // Go though all the points on the grid for checking
+    overall: for i in 0...100 {
+        next_point: for j in 0...100 {
+            let possibleHeight = abs(i-p[0].x) + abs(j-p[0].y) + p[0].z
+            
+            // checks if the provided points support the current checking point
+            for (x, y, z) in p[1...] {
+                let fromCurrent = abs(i-x) + abs(j-y) + z
+                if z == 0 {
+                    if possibleHeight > fromCurrent {
+                        myDebugPrint(possibleHeight, fromCurrent)
+                        continue next_point
+                    }
+                } else if possibleHeight != fromCurrent{
+                    continue next_point
+                }
+            }
+            cX = i
+            cY = j
+            cZ = possibleHeight
+            break overall
+        }
+    }
+    
+    print(cX, cY, cZ)
     
     // ===============
     // actual code end
