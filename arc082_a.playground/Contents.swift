@@ -55,7 +55,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    let a = readInts()
+    
+    var count = [Int](repeating: 0, count: 100_000)
+    
+    for i in a {
+        count[i] += 1
+        if i > 0 {
+            count[i-1] += 1
+        }
+        
+        if i < N-2 {
+            count[i+1] += 1
+        }
+    }
+    
+//    myDebugPrint(count.enumerated().filter({$0.1 != 0}))
+    print(count.max()!)
     
     // ===============
     // actual code end
