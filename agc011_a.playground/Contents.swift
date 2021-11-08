@@ -56,7 +56,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, C, K) = readThreeInts()
+    var Ts = [Int]()
+    for _ in 0..<N {
+        Ts.append(readInt())
+    }
+    Ts.sort()
+    myDebugPrint(Ts)
+    
+    var i = 0
+    var bus = 0
+    while i < N {
+        let limit = Ts[i] + K
+        i += Ts[i..<min(i+C, N)].filter({$0 <= limit}).count
+        bus += 1
+    }
+    
+    print(bus)
     
     // ===============
     // actual code end
