@@ -55,7 +55,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    let As = readInts()
+    
+    func reverseOne(_ x: Int) -> Int {
+        return x > 0 ? -1 : 1
+    }
+    
+    func sequence(start: Int, array: [Int]) -> Int {
+        var sum = start
+        var count = 0
+        for i in 1..<n {
+            let target = reverseOne(sum)
+            sum += As[i]
+            if sum * target > 0 {
+                continue
+            }
+            count += abs(sum - target)
+            sum = target
+        }
+        return(count)
+    }
+    
+    var start = As[0]
+    var offset = 0
+    
+    if start == 0 {
+        offset = 1
+        start = 1
+    }
+    
+    let altTarget = reverseOne(start)
+    let altOffset = abs(As[0] - altTarget)
+    print(min(sequence(start: start, array: As) + offset, sequence(start: altTarget, array: As) + altOffset))
+    
     
     // ===============
     // actual code end
