@@ -12,8 +12,8 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            6
-            1 2 3 2 2 1
+            8
+            1 1 1 2 3 2 2 1
             """,
         expected: """
             2
@@ -33,6 +33,22 @@ let examples: [(String, Example)] = [
             """,
         expected: """
             3
+            """)),
+    ("4", Example(
+        input: """
+            1
+            1000000000
+            """,
+        expected: """
+            1
+            """)),
+    ("5", Example(
+        input: """
+            2
+            2 2
+            """,
+        expected: """
+            1
             """)),
 ]
 
@@ -55,7 +71,55 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    enum Velocity {
+        case increasing
+        case decreasing
+        case undecided
+    }
+    func sortedArrays() -> Int {
+        let N = readInt()
+        if N < 3 {
+            return 1
+        }
+        let As = readInts()
+        var count = 1
+
+        // remove the same numbers repeating at the start
+        var previous = As[0]
+        var v = Velocity.undecided
+
+        for i in (1..<N) {
+            myDebugPrint(previous, As[i], v, count)
+            if As[i] > previous {
+                previous = As[i]
+                switch(v) {
+                case .increasing:
+                    continue
+                case .decreasing:
+                    v = .undecided
+                    count += 1
+                case .undecided:
+                    v = .increasing
+                }
+            }
+            if As[i] < previous {
+                previous = As[i]
+                switch(v) {
+                case .increasing:
+                    v = .undecided
+                    count += 1
+                case .decreasing:
+                    continue
+                case .undecided:
+                    v = .decreasing
+                }
+            }
+        }
+        return count
+    }
+    
+    print(sortedArrays())
+    
     
     // ===============
     // actual code end
