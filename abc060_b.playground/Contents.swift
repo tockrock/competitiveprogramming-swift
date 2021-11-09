@@ -73,7 +73,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (a, b, c) = readThreeInts()
+    
+    var doable = false
+    var i = 1
+    var remain = c + 1
+    while true {
+        remain = a * i % b
+        if remain == c {
+            doable = true
+            break
+        }
+        if remain == 0 {
+            break
+        }
+        i += 1
+        
+    }
+    
+    print(doable ? "YES" : "NO")
     
     // ===============
     // actual code end
