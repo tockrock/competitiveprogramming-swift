@@ -73,7 +73,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (H, W) = readTwoInts()
+    
+    var s = [[Character]]()
+    var c = Array.init(repeating: Array.init(repeating: 0, count: W), count: H)
+    var a = Array.init(repeating: Array.init(repeating: "", count: W), count: H)
+    for i in 0..<H {
+        let hArray = readString().map({$0})
+        for j in 0..<W {
+            if hArray[j] == "#" {
+                for h in max(0, i-1)..<min(H, i+2) {
+                    for w in max(0, j-1)..<min(W, j+2 ) {
+                        c[h][w] += 1
+                    }
+                }
+            }
+        }
+        s.append(hArray)
+        
+    }
+    
+    
+    
+    for h in 0..<H {
+        for w in 0..<W {
+            a[h][w] = s[h][w] == "#" ? "#" : String(c[h][w])
+        }
+        print(a[h].joined(separator: ""))
+    }
     
     // ===============
     // actual code end
