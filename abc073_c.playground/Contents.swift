@@ -65,7 +65,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+
+    var array = [Int]()
+    
+    for _ in 1...n {
+        let i = readInt()
+        array.append(i)
+    }
+    
+    array.sort()
+    
+    var x = 0
+    var count = 0
+    while x < n {
+        let i = array[0]
+        let iCount = array.filter({$0 == i}).count
+        if iCount % 2 == 1 {
+            count += 1
+        }
+        array.removeFirst(iCount)
+        x += iCount
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
