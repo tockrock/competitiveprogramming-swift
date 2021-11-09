@@ -12,18 +12,24 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            5 2 4
             """,
         expected: """
+            Alice
             """)),
     ("2", Example(
         input: """
+            2 1 2
             """,
         expected: """
+            Borys
             """)),
     ("3", Example(
         input: """
+            58 23 42
             """,
         expected: """
+            Borys
             """)),
 ]
 
@@ -46,7 +52,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (_, A, B) = readThreeInts()
+    
+    print((B-A)%2==1 ? "Borys" : "Alice")
     
     // ===============
     // actual code end
