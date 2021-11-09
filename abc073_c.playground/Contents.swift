@@ -67,28 +67,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let n = readInt()
 
-    var array = [Int]()
+    var dict = [Int:Int]()
     
     for _ in 1...n {
         let i = readInt()
-        array.append(i)
+        dict[i, default: 0] += 1
     }
     
-    array.sort()
+    let array = dict.values
     
-    var x = 0
-    var count = 0
-    while x < n {
-        let i = array[0]
-        let iCount = array.filter({$0 == i}).count
-        if iCount % 2 == 1 {
-            count += 1
-        }
-        array.removeFirst(iCount)
-        x += iCount
-    }
-    
-    print(count)
+    print(array.filter({$0 % 2 == 1}).count)
     
     // ===============
     // actual code end
