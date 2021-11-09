@@ -45,6 +45,13 @@ let examples: [(String, Example)] = [
         expected: """
             NO
             """)),
+    ("6", Example(
+        input: """
+            100 99 98
+            """,
+        expected: """
+            YES
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
