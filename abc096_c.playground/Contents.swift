@@ -12,18 +12,44 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            3 3
+            .#.
+            ###
+            .#.
             """,
         expected: """
+            Yes
             """)),
     ("2", Example(
         input: """
+            5 5
+            #.#.#
+            .#.#.
+            #.#.#
+            .#.#.
+            #.#.#
             """,
         expected: """
+            No
             """)),
     ("3", Example(
         input: """
+            11 11
+            ...#####...
+            .##.....##.
+            #..##.##..#
+            #..##.##..#
+            #.........#
+            #...###...#
+            .#########.
+            .#.#.#.#.#.
+            ##.#.#.#.##
+            ..##.#.##..
+            .##..#..##.
+            
             """,
         expected: """
+            Yes
             """)),
 ]
 
@@ -46,7 +72,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (H, W) = readTwoInts()
+    var s = [[Character]]()
+    
+    for _ in 0..<H {
+        s.append(readString().map({$0}))
+    }
+    
+    var possible = "Yes"
+    
+    // find for any adjacent paintable cells
+    overall: for h in 0..<H {
+        for w in 0..<W {
+            if s[h][w] == "#" {
+                if h > 0 && s[h - 1][w] == "#" {
+                    continue
+                }
+                if h < H-1 && s[h+1][w] == "#" {
+                    continue
+                }
+                if w > 0 && s[h][w-1] == "#" {
+                    continue
+                }
+                if w < W-1 && s[h][w+1] == "#" {
+                    continue
+                }
+                
+                // no adjacent paintable cell
+                possible = "No"
+                break overall
+            }
+        }
+    }
+    
+    print(possible)
     
     // ===============
     // actual code end
