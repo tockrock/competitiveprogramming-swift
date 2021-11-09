@@ -47,7 +47,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let _ = readString()
+    let a = readInts()
+    
+    print(a.filter({$0 % 2 == 1}).count % 2 == 1 ? "NO" : "YES")
     
     // ===============
     // actual code end
