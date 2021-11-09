@@ -67,7 +67,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    let a1 = readInts()
+    let a2 = readInts()
+    
+    var answer = [Int]()
+    for i in 0..<n {
+        answer.append((a1[0...i] + a2[i..<n]).reduce(0, +))
+    }
+    
+    print(answer.max()!)
     
     // ===============
     // actual code end
