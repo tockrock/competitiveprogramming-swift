@@ -52,7 +52,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let input = readInts()
+    
+    let A = input[0]
+    let B = input[1]
+    let C = input[2]
+    let D = input[3]
+    
+    if B<=C || D<=A {
+        print(0)
+    } else {
+        print(min(B, D) - max(A, C))
+    }
     
     // ===============
     // actual code end
