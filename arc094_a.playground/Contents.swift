@@ -52,7 +52,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var (a, b, c) = readThreeInts()
+    var count = 0
+    let aRemainder = a % 2
+    let bRemainder = b % 2
+    let cRemainder = c % 2
+    
+    if aRemainder == bRemainder && aRemainder != cRemainder {
+        a += 1
+        b += 1
+        count += 1
+    } else if aRemainder == cRemainder && aRemainder != bRemainder {
+        a += 1
+        c += 1
+        count += 1
+    } else if bRemainder == cRemainder && aRemainder != bRemainder {
+        b += 1
+        c += 1
+        count += 1
+    }
+    myDebugPrint(a, b, c)
+    
+    let max = [a, b, c].max()!
+    
+    for i in [a, b, c] {
+        count += (max - i) / 2
+    }
+    
+    print(count)
+    
+    
     
     // ===============
     // actual code end
