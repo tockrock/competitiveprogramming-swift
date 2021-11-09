@@ -37,31 +37,6 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    // =====================
-    // actual code goes here
-    // =====================
-    
-    let n = readInt()
-    let s = readCharStrings()
-    
-    var answers = [Int]()
-    for i in 0..<n {
-        var count = 0
-        if i > 0 {
-            count += s[0..<i].filter({$0 == "W"}).count
-        }
-        if i < n-1 {
-            count += s[i+1..<n].filter({$0 == "E"}).count
-        }
-        answers.append(count)
-    }
-    
-    print(answers.min()!)
-    
-    // ===============
-    // actual code end
-    // ===============
-    
     func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
     func readString () -> String { readLine()! }
     func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
@@ -77,6 +52,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return (ints[0], ints[1], ints[2])
     }
     func readCharStrings () -> [String] {readString().map({String($0)})}
+
+    // =====================
+    // actual code goes here
+    // =====================
+    
+    func attention() -> Int {
+        let _ = readInt()
+        var s = readString()
+        
+        var total = 0
+        
+        while true {
+            let before = s
+            s = s.replacingOccurrences(of: "WE", with: "")
+            let diff = before.count - s.count
+            if diff == 0 {
+                return total
+            }
+            total += diff / 2
+        }
+
+    }
+    
+    
+    print(attention())
+    
+    // ===============
+    // actual code end
+    // ===============
+    
 }
 
 func main(label: String, example: Example) {
