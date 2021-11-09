@@ -41,7 +41,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    let s = readCharStrings()
+    
+    var answers = [Int]()
+    for i in 0..<n {
+        var count = 0
+        if i > 0 {
+            count += s[0..<i].filter({$0 == "W"}).count
+        }
+        if i < n-1 {
+            count += s[i+1..<n].filter({$0 == "E"}).count
+        }
+        answers.append(count)
+    }
+    
+    print(answers.min()!)
     
     // ===============
     // actual code end
@@ -61,6 +76,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (ints[0], ints[1], ints[2])
     }
+    func readCharStrings () -> [String] {readString().map({String($0)})}
 }
 
 func main(label: String, example: Example) {
