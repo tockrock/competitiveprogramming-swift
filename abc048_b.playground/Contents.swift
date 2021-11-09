@@ -52,7 +52,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (a, b, x) = readThreeInts()
+    
+    let offset = a % x
+    var first: Int
+    
+    if  offset != 0 {
+        first = a - offset + x
+    } else {
+        first = a
+    }
+    
+    if first > b {
+        print(0)
+    } else {
+        print((b - first) / x + 1)
+    }
     
     // ===============
     // actual code end
