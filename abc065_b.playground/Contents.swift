@@ -64,7 +64,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var array = [Int]()
+    for _ in 1...n {
+        array.append(readInt())
+    }
+    myDebugPrint(array)
+    
+    var next = 1
+    var count = 1
+    while true {
+        let next_temp = array[next - 1]
+        if next_temp == 0 {
+            print(-1)
+            break
+        }
+        if next_temp == 2 {
+            print(count)
+            break
+        }
+        array[next - 1] = 0
+        next = next_temp
+        count += 1
+        
+    }
     
     // ===============
     // actual code end
