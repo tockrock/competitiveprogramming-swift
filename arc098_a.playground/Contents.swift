@@ -64,9 +64,28 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var total = 0
         
         while true {
-            let before = s
+            
+            let beforeTrimming = s
+            
+            let firstE = s.firstIndex(of: "E")
+            guard firstE != nil else {
+                return total
+            }
+            let lastW = s.lastIndex(of: "W")
+            guard lastW != nil else {
+                return total
+            }
+            if firstE! > lastW! {
+                
+                total += min(s[..<firstE!].count, s[lastW!...].count - 1)
+                return total
+            }
+            s = String(s[firstE!...lastW!])
+            total += beforeTrimming.count - s.count
+            
+            let beforeReplacement = s
             s = s.replacingOccurrences(of: "WE", with: "")
-            let diff = before.count - s.count
+            let diff = beforeReplacement.count - s.count
             if diff == 0 {
                 return total
             }
