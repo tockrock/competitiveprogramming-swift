@@ -52,7 +52,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var multiplier = 1
+    let N = readInt()
+    let divider = 1_000_000_007
+    
+    for i in 1...N {
+        multiplier = multiplier * i % divider
+        if multiplier == 0 { break }
+    }
+    
+    print(multiplier % divider)
+
     
     // ===============
     // actual code end
