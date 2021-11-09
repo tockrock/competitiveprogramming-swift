@@ -49,20 +49,6 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
-    func readString () -> String { readLine()! }
-    func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
-    func readStrings () -> [String] { readSubsequence().map({String($0)}) }
-    func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
-    func readInt() -> Int { Int(readString())! }
-    func readTwoInts() -> (Int, Int) {
-        let ints = readInts()
-        return (ints[0], ints[1])
-    }
-    func readThreeInts() -> (Int, Int, Int) {
-        let ints = readInts()
-        return (ints[0], ints[1], ints[2])
-    }
     // =====================
     // actual code goes here
     // =====================
@@ -81,6 +67,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // ===============
     // actual code end
     // ===============
+
+    func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+    func readString () -> String { readLine()! }
+    func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
+    func readStrings () -> [String] { readSubsequence().map({String($0)}) }
+    func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
+    func readInt() -> Int { Int(readString())! }
+    func readTwoInts() -> (Int, Int) {
+        let ints = readInts()
+        return (ints[0], ints[1])
+    }
+    func readThreeInts() -> (Int, Int, Int) {
+        let ints = readInts()
+        return (ints[0], ints[1], ints[2])
+    }
 }
 
 func main(label: String, example: Example) {
