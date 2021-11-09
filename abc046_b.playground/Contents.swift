@@ -52,7 +52,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, K) = readTwoInts()
+    
+    print(Int(pow(Double(K-1), Double(N-1))) * K)
     
     // ===============
     // actual code end
