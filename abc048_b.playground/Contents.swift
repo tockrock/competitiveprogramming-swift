@@ -31,6 +31,13 @@ let examples: [(String, Example)] = [
         expected: """
             0
             """)),
+    ("4", Example(
+        input: """
+            1 1000000000000000000 3
+            """,
+        expected: """
+            333333333333333333
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
