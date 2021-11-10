@@ -12,18 +12,19 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            5 100
+            p1 150
+            p2 80
+            p3 200
+            p4 350
+            p5 20
             """,
         expected: """
-            """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            p2 180
+            p5 400
+            p1 450
+            p3 550
+            p4 800
             """)),
 ]
 
@@ -46,8 +47,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    let (n, q) = readTwoInts()
+    var queue = [(name: String, t: Int)]()
+    for _ in 0..<n {
+        let input = readStrings()
+        queue.append((input[0], Int(input[1])!))
+    }
+    var time = 0
+    while queue.isEmpty == false {
+        var process = queue.removeFirst()
+        if process.t > q {
+            process.t -= q
+            queue.append(process)
+            time += q
+            continue
+        }
+        time += process.t
+        print(process.name, time)
+    }
     
-    print("foo")
     
     // ===============
     // actual code end
