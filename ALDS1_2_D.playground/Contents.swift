@@ -80,9 +80,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let g = [3, 1]
+    let g = [4, 3, 1]
     
     func insertionSort(a: [Int], n: Int, g: Int) -> (Int, [Int]) {
+        myDebugPrint("g: \(g)")
         var count = 0
         var working = a
         
@@ -101,7 +102,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 
         }
         
-        myDebugPrint("g: \(g)", working)
         return (count, working)
     }
     
