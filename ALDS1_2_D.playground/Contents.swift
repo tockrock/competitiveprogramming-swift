@@ -29,6 +29,35 @@ let examples: [(String, Example)] = [
             4
             5
             """)),
+    ("2", Example(
+        input: """
+            10
+            4
+            8
+            9
+            1
+            10
+            6
+            2
+            5
+            3
+            7
+            """,
+        expected: """
+            3
+            4 3 1
+            foo
+            1
+            2
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+            10
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -51,7 +80,51 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let g = [3, 1]
+    
+    func insertionSort(a: [Int], n: Int, g: Int) -> (Int, [Int]) {
+        var count = 0
+        var working = a
+        
+        for i in g...n-1 {
+            let v = working[i]
+            var j = i - g
+            myDebugPrint(v, working)
+            while j>=0 && working[j] > v {
+                working[j+g] = working[j]
+                j = j - g
+                count += 1
+                myDebugPrint(v, working, count)
+            }
+            working[j+g] = v
+            myDebugPrint(v, working)
+
+        }
+        
+        myDebugPrint("g: \(g)", working)
+        return (count, working)
+    }
+    
+    let n = readInt()
+    var a = [Int]()
+    var sum = 0
+    for _ in 0..<n {
+        a.append(readInt())
+    }
+    
+    for i in g {
+        let count: Int
+        (count, a) = insertionSort(a: a, n: n, g: i)
+        sum += count
+    }
+    
+    print(g.count)
+    print(g[0], g[1])
+    print(sum)
+    for i in a {
+        print(i)
+    }
+
     
     // ===============
     // actual code end
