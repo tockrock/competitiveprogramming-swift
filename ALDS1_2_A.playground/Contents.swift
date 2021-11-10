@@ -12,18 +12,12 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            5
+            5 3 2 4 1
             """,
         expected: """
-            """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            1 2 3 4 5
+            8
             """)),
 ]
 
@@ -47,7 +41,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var bubble = readInts()
+    func printArray(array: [Int]) {
+        print(array.map({String($0)}).joined(separator: " "))
+    }
+    
+    var flag = true
+    var count = 0
+    var i = 0
+    while flag {
+        flag = false
+        for j in 1..<n-i {
+            let k = n - j
+            if bubble[k] < bubble[k-1] {
+                let v = bubble[k]
+                bubble[k] = bubble[k-1]
+                bubble[k-1] = v
+                flag = true
+                count += 1
+            }
+        }
+        i += 1
+    }
+    printArray(array: bubble)
+    print(count)
     
     // ===============
     // actual code end
