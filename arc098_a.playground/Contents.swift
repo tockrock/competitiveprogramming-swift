@@ -58,40 +58,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     func attention() -> Int {
-        let _ = readInt()
-        var s = readString()
+        let n = readInt()
+        let s = readCharStrings()
         
-        var total = 0
+        var w = [Int](repeating: 0, count: n)
+        var e = [Int](repeating: 0, count: n)
         
-        while true {
-            
-            let beforeTrimming = s
-            
-            let firstE = s.firstIndex(of: "E")
-            guard firstE != nil else {
-                return total
+        for i in 0..<n {
+            if s[i] == "E" {
+                e[i] = 1
+            } else {
+                w[i] = 1
             }
-            let lastW = s.lastIndex(of: "W")
-            guard lastW != nil else {
-                return total
-            }
-            if firstE! > lastW! {
-                
-                total += min(s[..<firstE!].count, s[lastW!...].count - 1)
-                return total
-            }
-            s = String(s[firstE!...lastW!])
-            total += beforeTrimming.count - s.count
-            
-            let beforeReplacement = s
-            s = s.replacingOccurrences(of: "WE", with: "")
-            let diff = beforeReplacement.count - s.count
-            if diff == 0 {
-                return total
-            }
-            total += diff / 2
         }
 
+        for i in 1..<n {
+            w[i] += w[i-1]
+            e[i] += e[i-1]
+        }
+
+        var ans = Int.max
+        for i in 0..<n {
+            var sum = 0
+            if i > 0 {
+                sum += w[i-1]
+            }
+            sum += e[n-1] - e[i]
+            ans = min(ans, sum)
+        }
+        return ans
     }
     
     
