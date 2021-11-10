@@ -41,7 +41,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var array = readInts()
+    var count = 0
+    for i in 0..<n-1 {
+        var minJ = i
+        for j in i+1..<n {
+            if array[j] < array[minJ] {
+                minJ = j
+            }
+        }
+        if i != minJ {
+            let v = array[i]
+            array[i] = array[minJ]
+            array[minJ] = v
+            count += 1
+        }
+    }
+    
+    print(array.reduce("", {$0 + "\($1) "}).dropLast())
+    print(count)
     
     // ===============
     // actual code end
