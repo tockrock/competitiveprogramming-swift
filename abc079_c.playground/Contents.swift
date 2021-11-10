@@ -34,16 +34,6 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    // =====================
-    // actual code goes here
-    // =====================
-    
-    print("foo")
-    
-    // ===============
-    // actual code end
-    // ===============
-    
     func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
     func readString () -> String { readLine()! }
     func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
@@ -59,6 +49,52 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (ints[0], ints[1], ints[2])
     }
+    // =====================
+    // actual code goes here
+    // =====================
+    
+    
+    // Ugly but should work...
+    func finalResult(_ formula: String) {
+        print(formula + "=7")
+    }
+    
+    func plusMinus(rest input: [Int], target: Int, current: String) -> Bool {
+        let n = input[0]
+        
+        if input.count == 1 {
+            if target - n == 0 {
+                finalResult(current + "+\(n)")
+                return true
+            }
+            if target + n == 0 {
+                finalResult(current + "-\(n)")
+                return true
+            }
+            return false
+        }
+        
+        if plusMinus(rest: Array(input[1...]), target: target-n, current: current + "+\(n)") {
+            return true
+        }
+        if plusMinus(rest: Array(input[1...]), target: target+n, current: current + "-\(n)") {
+            return true
+        }
+            
+        return false
+    }
+    
+    let input = readCharStrings().map({Int($0)!})
+    
+    let a = input[0]
+    
+    
+    plusMinus(rest: Array(input[1...]), target: 7-a, current: "\(a)")
+    
+    // ===============
+    // actual code end
+    // ===============
+    
 }
 
 func main(label: String, example: Example) {
