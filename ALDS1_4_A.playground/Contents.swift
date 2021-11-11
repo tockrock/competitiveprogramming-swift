@@ -15,10 +15,10 @@ let examples: [(String, Example)] = [
             5
             1 2 3 4 5
             3
-            3 4 1
+            3 4 6
             """,
         expected: """
-            3
+            2
             """)),
 ]
 
@@ -42,21 +42,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let _ = readInt()
+    func search(_ A: [Int], _ n: Int, _ key: Int) -> Bool {
+        var i = 0
+        var array = A
+        array.append(key)
+        while array[i] != key {
+            i += 1
+        }
+        return i != n
+    }
+    
+    let n = readInt()
     let S = readInts()
     let _ = readInt()
     let T = readInts()
     
     var count = 0
-    overall: for t in T {
-        for s in S{
-            if s == t {
-                count += 1
-                continue overall
-            }
+    
+    for t in T {
+        if search(S, n, t) {
+            count += 1
         }
     }
-    
+
     print(count)
     
     // ===============
