@@ -52,13 +52,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var i = 0
         for _ in 0..<k {
             var load = 0
-            while i < w.count && w[i] + load <= p {
+            while w[i] + load <= p {
                 load += w[i]
                 i += 1
+                if i == w.count {
+                    return true
+                }
             }
-        }
-        if i == w.count {
-            return true
         }
         return false
     }
@@ -74,19 +74,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var left = 0
         var right = myConstant.maxLoad
         
-        while left < right {
+        while right - left > 1 {
             let mid = (left + right) / 2
-            if !loadable(packages: w, truckCount: k, maxWeight: mid) {
-                if loadable(packages: w, truckCount: k, maxWeight: mid + 1) {
-                    return mid + 1
-                } else {
-                    left = mid + 1
-                }
-            } else {
+            if loadable(packages: w, truckCount: k, maxWeight: mid) {
                 right = mid
+            } else {
+                left = mid
             }
         }
-        return -1
+        return right
     }
     
     print(searchPerfectLoad())
