@@ -42,33 +42,33 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    func search(A: [Int], n: Int, key: Int) -> Bool {
-        let m = n / 2
+    func binarySearch(A: [Int], key: Int) -> Bool {
+        var left = 0
+        var right = A.count
         
-        if A[m] == key {
-            return true
+        while left < right {
+            let mid = (left + right) / 2
+            if A[mid] == key {
+                return true
+            } else if key < A[mid] {
+                right = mid
+            } else {
+                left = mid + 1
+            }
         }
-        
-        if A.count == 1 {
-            return false
-        }
-        
-        if A[m] > key {
-            return search(A: Array(A[..<m]), n: A[..<m].count, key: key)
-        } else {
-            return search(A: Array(A[m...]), n: A[m...].count, key: key)
-        }
+        return false
     }
-    
-    let n = readInt()
+        
+    let _ = readInt()
     let S = readInts()
     let _ = readInt()
     let T = readInts()
     
+    
     var count = 0
     
     for t in T {
-        if search(A: S, n: n, key: t) {
+        if binarySearch(A: S, key: t) {
             count += 1
         }
     }
