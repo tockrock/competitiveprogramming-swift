@@ -24,16 +24,6 @@ let examples: [(String, Example)] = [
         expected: """
             6 1 2
             """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
-            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -56,7 +46,28 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var linkedList = [Int]()
+    for _ in 0..<n {
+        let command = readStrings()
+        switch(command[0]) {
+        case "insert":
+            linkedList.insert(Int(command[1])!, at: 0)
+        case "delete":
+            linkedList.remove(at: linkedList.firstIndex(of: Int(command[1])!)!)
+        case "deleteFirst":
+            linkedList.removeFirst()
+        case "deleteLast":
+            linkedList.removeLast()
+        default:
+            myDebugPrint("Something when horrible")
+        }
+        myDebugPrint(linkedList)
+    }
+    
+    print(linkedList)
+    
+    
     
     // ===============
     // actual code end
