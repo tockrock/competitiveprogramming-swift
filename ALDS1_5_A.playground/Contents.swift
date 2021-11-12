@@ -12,18 +12,16 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            5
+            1 5 7 10 21
+            4
+            2 4 17 8
             """,
         expected: """
-            """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            no
+            no
+            yes
+            yes
             """)),
 ]
 
@@ -46,9 +44,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    struct myConstants {
+        let n: Int
+        let A: [Int]
+        let q: Int
+        let m: [Int]
+    }
+
+    func solve(i: Int, m: Int, mc: myConstants) -> Bool {
+        if m == 0 { return true }
+        if i >= mc.n { return false }
+        let res = solve(i: i+1, m: m, mc: mc) || solve(i: i+1, m: m - mc.A[i], mc: mc)
+        return res
+    }
     
-    print("foo")
+    let mc = myConstants(n: readInt(), A: readInts(), q: readInt(), m: readInts())
     
+    for i in mc.m {
+        print(solve(i: 0, m: i, mc: mc) ? "yes" : "no")
+    }
+
     // ===============
     // actual code end
     // ===============
@@ -65,6 +81,7 @@ func main(label: String, example: Example) {
         let isSuccessful = expectedLines == outputLines
         print("== Test[\(label)] =========")
         print(isSuccessful ? "successful." : "failed.")
+//        print(outputLines, expectedLines)
         if !isSuccessful {
             print("expected | actual")
             while !outputLines.isEmpty && !expectedLines.isEmpty {
