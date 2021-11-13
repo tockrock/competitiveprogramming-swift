@@ -54,7 +54,37 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let _ = readInt()
+    let S = readInts()
+    
+    var possible = [Int]()
+    
+    func buildingArea(a: Int, b: Int) -> Int {
+        return 4 * a * b + 3 * a + 3 * b
+    }
+    var a = 1
+    var b = 1
+    
+    while true {
+        while true {
+            let area = buildingArea(a: a, b: b)
+            if area <= 1000 {
+                possible.append(area)
+                b += 1
+            } else {
+                break
+            }
+        }
+        
+        if a == b {
+            break
+        }
+        a += 1
+        b = a
+    }
+
+    print(S.filter({!possible.contains($0)}).count)
+    
     
     // ===============
     // actual code end
