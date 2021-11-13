@@ -31,6 +31,13 @@ let examples: [(String, Example)] = [
         expected: """
             3
             """)),
+    ("4", Example(
+        input: """
+            5 12 5
+            """,
+        expected: """
+            foo
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -54,7 +61,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, k, a) = readThreeInts()
+    
+    let remain = (k + a) % n - 1
+
+    if n == 1 {
+        print(1)
+    } else if remain < 1 {
+        print(n + remain)
+    } else {
+        print(remain)
+    }
     
     // ===============
     // actual code end
