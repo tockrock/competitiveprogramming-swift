@@ -70,7 +70,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return new
     }
     
-    for _ in 0..<n {
+    for _ in 0..<2 {
         points = koch(points: points)
     }
     
@@ -89,6 +89,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     for point in points {
+        myDebugPrint(point)
         print(outputPoint(point: point))
     }
     
