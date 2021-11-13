@@ -12,18 +12,24 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            4
             """,
         expected: """
+            5
             """)),
     ("2", Example(
         input: """
+            100
             """,
         expected: """
+            323
             """)),
     ("3", Example(
         input: """
+            100000000000
             """,
         expected: """
+            5745290566750
             """)),
 ]
 
@@ -48,7 +54,33 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var a = 1
+    var b = 1
+    var total = 0
+    overall: while true {
+        while true {
+            let maxC =  n / (a * b)
+            if a == maxC {
+                total += 1
+                break overall
+            } else if a > maxC {
+                break overall
+            } else if b == maxC {
+                total += 1
+                break
+            } else if b > maxC {
+                break
+            }
+            total += maxC - b + 1
+            b += 1
+        }
+        a += 1
+        b = a
+    }
+    
+    print(total)
     
     // ===============
     // actual code end
