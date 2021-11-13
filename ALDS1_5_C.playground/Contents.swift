@@ -44,7 +44,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var points: [(Double, Double)] = [(0, 0), (100, 0)]
+    
+    func koch(points given: [(x: Double, y: Double)]) -> [(Double, Double)]{
+        var new = [given[0]]
+        for i in 1..<given.count {
+            let start = given[i-1]
+            let end = given[i]
+            let vector = (x: (end.x - start.x) / 3, y: (end.y - start.y) / 3)
+            let first = (start.x + vector.x, start.y + vector.y)
+            let second = (start.x + vector.x * 2, start.y + vector.y * 2)
+            
+            new.append(first)
+            new.append(second)
+            new.append(end)
+        }
+        return new
+    }
+    
+    for _ in 0..<n {
+        points = koch(points: points)
+    }
+    
     
     // ===============
     // actual code end
