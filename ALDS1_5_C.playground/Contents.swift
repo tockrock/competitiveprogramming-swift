@@ -68,6 +68,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         points = koch(points: points)
     }
     
+    // output formatter
+    
+    func outputPoint(point: (Double, Double)) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 8
+        formatter.maximumFractionDigits = 8
+        
+        let outputX = formatter.string(from: point.0 as NSNumber)!
+        let outputY = formatter.string(from: point.1 as NSNumber)!
+        return "\(outputX) \(outputY)"
+        
+    }
+    
+    for point in points {
+        print(outputPoint(point: point))
+    }
     
     // ===============
     // actual code end
