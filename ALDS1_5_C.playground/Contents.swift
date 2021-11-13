@@ -57,7 +57,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             let first = (start.x + vector.x, start.y + vector.y)
             let second = (start.x + vector.x * 2, start.y + vector.y * 2)
             
+            let pi = Double.pi
+            
+            let midX = vector.x * cos(pi / 3) - vector.y * sin(pi/3) + first.0
+            let midY = vector.x * sin(pi / 3) + vector.y * cos(pi/3) + first.1
+            
             new.append(first)
+            new.append((midX, midY))
             new.append(second)
             new.append(end)
         }
