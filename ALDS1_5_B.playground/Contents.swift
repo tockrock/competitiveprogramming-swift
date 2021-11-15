@@ -42,7 +42,64 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func merge(A: [Int], left: Int, mid: Int, right: Int) -> ([Int], Int) {
+        var working = A
+        let n1 = mid - left
+        let n2 = right - mid
+        var L = [Int]()
+        var R = [Int]()
+        
+        for i in  0..<n1 {
+            L.append(working[left + i])
+        }
+        L.append(Int.max)
+        for i in 0..<n2 {
+            R.append(working[mid + i])
+        }
+        R.append(Int.max)
+        
+        var i = 0
+        var j = 0
+        var count = 0
+        
+        for k in left..<right {
+            if L[i] <= R[j] {
+                working[k] = L[i]
+                i += 1
+            } else {
+                working[k] = R[j]
+                j += 1
+            }
+            count += 1
+        }
+        myDebugPrint(working, "L: \(left), \(right)")
+        return (working, count)
+    }
+    
+    func mergeSort(A: [Int], left: Int, right: Int) -> ([Int], Int) {
+        var working = A
+        var count = 0
+        if left + 1 < right {
+            let mid = (left + right) / 2
+            let countL: Int
+            let countR: Int
+            let countM: Int
+            (working, countL) = mergeSort(A: working, left: left, right: mid)
+            (working, countR) = mergeSort(A: working, left: mid, right: right)
+            (working, countM) = merge(A: working, left: left, mid: mid, right: right)
+            count = countL + countR + countM
+        }
+        
+        return (working, count)
+    }
+    
+    let n = readInt()
+    let A = readInts()
+    
+    let (working, count) = mergeSort(A: A, left: 0, right: n)
+    
+    print(working.reduce("", {$0 + "\($1) "}).dropLast())
+    print(count)
     
     // ===============
     // actual code end
