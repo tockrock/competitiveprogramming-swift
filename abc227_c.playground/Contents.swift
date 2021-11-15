@@ -55,18 +55,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let intN = readInt()
-    let n = Double(intN)
+    let n = readInt()
     var total = 0
-    let cubic: Double = 1/3
     
-    for intA in 1...Int(pow(n, cubic)) {
-        let a = Double(intA)
-        for intB in intA...Int(sqrt(n/a)) {
-            let b = Double(intB)
-            let cCount = Int(floor(n/(a*b))) - intB + 1
-            if cCount > 0 { total += cCount }
+    var a = 1
+    while true {
+        if a * a * a > n { break }
+        var b = a
+        while true {
+            if a * b * b > n { break }
+            total += n / (a * b) - b + 1
+            b += 1
         }
+        a += 1
     }
     
     print(total)
