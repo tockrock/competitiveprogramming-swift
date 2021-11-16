@@ -57,7 +57,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (_, k) = readTwoInts()
+    let A = readInts()
+    
+    var ok = 0
+    var ng = Int(1e18) / k
+    
+    while ng - ok > 1 {
+        let md = (ok + ng) / 2
+        var sum = 0
+        for x in A {
+            sum += min(x, md)
+        }
+        if sum >= k * md {
+            ok = md
+        } else {
+            ng = md
+        }
+    }
+    
+    print(ok)
     
     // ===============
     // actual code end
