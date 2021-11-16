@@ -62,18 +62,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let (n, x) = readTwoInts()
-    var points = readInts()
-    points.append(x)
-    points.sort()
-    
-    var common = 0
-    
-    for i in 1...n {
-        common = gcd(common, points[i] - points[i-1])
-    }
-    
-    print(common)
+    let (_, x) = readTwoInts()
+    let points = readInts()
+    let common = points.reduce(0, {gcd($0, x - $1)})
+    print(abs(common))
     
     // ===============
     // actual code end
