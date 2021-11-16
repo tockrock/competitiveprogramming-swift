@@ -64,7 +64,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var l: Set = Set<[Int]>()
+    for _ in 0..<n {
+        l.insert(Array(readInts()[1...]))
+    }
+    
+    print(l.count)
     
     // ===============
     // actual code end
