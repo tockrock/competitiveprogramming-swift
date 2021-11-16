@@ -55,7 +55,39 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    
+    struct Move {
+        let t: Int
+        let k: Int
+        let a: [Int]?
+    }
+    
+    let n = readInt()
+    var moves = [Move]()
+    
+    for _ in 0..<n {
+        let m = readInts()
+        moves.append(Move(t: m[0], k: m[1], a: m))
+    }
+    
+    var required = Set<Int>()
+
+    func getRequirements(m: Int, required: inout Set<Int>) {
+        let move = moves[m-1]
+        if move.k > 0 {
+            for i in move.a![2...] {
+                if !required.contains(i) {
+                    getRequirements(m: i, required: &required)
+                }
+            }
+        }
+        required.insert(m)
+    }
+    
+    getRequirements(m: n, required: &required)
+        
+    print(required.reduce(0, {$0 + moves[$1-1].t}))
+    
     
     // ===============
     // actual code end
