@@ -12,7 +12,7 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            2 3            
+            2 3
             """,
         expected: """
             6
@@ -61,7 +61,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (a, b) = readTwoInts()
+    print(a * b / gcd(a, b))
     
     // ===============
     // actual code end
