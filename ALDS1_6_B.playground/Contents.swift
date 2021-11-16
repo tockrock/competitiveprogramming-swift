@@ -41,7 +41,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var A = readInts()
+    
+    func partition(A: inout [Int], p: Int, r: Int) -> Int {
+        let x = A[r]
+        var i = p - 1
+        for j in p..<r {
+            if A[j] <= x {
+                i += 1
+                let temp = A[i]
+                A[i] = A[j]
+                A[j] = temp
+            }
+            let temp = A[i+1]
+            A[i+1] = A[r]
+            A[r] = temp
+        }
+        
+        return i+1
+    }
+    
+    myDebugPrint(A)
+    let foo = partition(A: &A, p: 0, r: n-1)
+    myDebugPrint(A)
+    print(foo)
+    
     
     // ===============
     // actual code end
