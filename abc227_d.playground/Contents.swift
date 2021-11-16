@@ -61,7 +61,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let A = readInts()
     
     var ok = 0
-    var ng = Int(1e18) / k
+    var ng = Int.max / k
     
     while ng - ok > 1 {
         let md = (ok + ng) / 2
