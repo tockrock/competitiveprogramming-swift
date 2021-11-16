@@ -64,7 +64,91 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Point {
+        let x: Int
+        let y: Int
+    }
+    let n = readInt()
+    var points = [Point]()
+    for _ in 0..<n {
+        let (x, y) = readTwoInts()
+        points.append(Point(x: x, y: y))
+    }
+    
+    func minimizedVector(v: Vector) -> Vector {
+        let vx = v.vx
+        let vy = v.vy
+        
+        if vx == 0 { return Vector(vx: 0, vy: 1) }
+        if vy == 0 { return Vector(vx: 1, vy: 0) }
+        
+        if vy % vx == 0 { return Vector(vx: 1, vy: vy/vx) }
+        if vx % vy == 0 { return Vector(vx: vx/vy, vy: 1) }
+        
+        let possible = [abs(vx), abs(vy), abs(vy-vx)].min()!
+        if possible < 2 {
+            return Vector(vx: vx, vy: vy)
+        }
+        for i in 2...possible {
+            let divider = possible - i + 2
+            if abs(vx) % divider == 0 && abs(vy) % divider == 0 {
+                return Vector(vx: vx/divider, vy:vy/divider)
+            }
+        }
+        return Vector(vx: vx, vy: vy)
+    }
+    
+    struct Vector: Hashable, CustomStringConvertible {
+        var description: String {
+            return "(vx: \(vx), vy: \(vy))"
+        }
+        
+        let vx: Int
+        let vy: Int
+    }
+    
+    func getVector(i: Point, j: Point) -> Vector {
+        let vx = j.x - i.x
+        let vy = j.y - i.y
+        
+        if vx < 0 { return Vector(vx: -vx, vy: -vy)}
+        if vx == 0 { return Vector(vx: 0, vy: abs(vy))}
+        return Vector (vx: vx, vy: vy)
+    }
+    
+    func checkVector(v: Vector, vectors: inout Set<Vector>) {
+        for known in vectors {
+            if known.vx == 0 {
+                if v.vx != 0 { continue }
+                return
+            }
+            if known.vy == 0 {
+                if v.vy != 0 { continue }
+                return
+            }
+            
+            if v.vx % known.vx != 0 { continue }
+            if v.vy % known.vy != 0 { continue }
+
+            if v.vx / known.vx == v.vy / known.vy { return }
+        }
+        vectors.insert(minimizedVector(v: v))
+    }
+    
+    var vectors = Set<Vector>()
+    
+    
+    for i in 0..<n-1 {
+        for j in i+1..<n {
+            myDebugPrint(points[i], points[j])
+            let vector = getVector(i: points[i], j: points[j])
+            checkVector(v: vector, vectors: &vectors)
+            myDebugPrint(vectors)
+        }
+    }
+    
+    print(vectors.count * 2)
+    
     
     // ===============
     // actual code end
