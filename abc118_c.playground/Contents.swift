@@ -62,7 +62,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let _ = readInt()
+    let a = readInts()
+    print(a.reduce(0, {gcd($0, $1)}))
     
     // ===============
     // actual code end
