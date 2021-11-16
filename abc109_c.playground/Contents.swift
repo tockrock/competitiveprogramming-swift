@@ -53,18 +53,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (ints[0], ints[1], ints[2])
     }
-    func gcd(_ a: Int, _ b: Int) -> Int { return _gcd(a: max(a, b), b: min(a, b)) }
-    
-    func _gcd(a: Int, b: Int) -> Int {
+    func gcd(_ a: Int, _ b: Int) -> Int {
         if b == 0 { return a }
-        return _gcd(a: b, b: a%b)
+        return gcd(b, a%b)
     }
     
     // =====================
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, x) = readTwoInts()
+    var points = readInts()
+    points.append(x)
+    points.sort()
+    
+    var common = 0
+    
+    for i in 1...n {
+        common = gcd(common, points[i] - points[i-1])
+    }
+    
+    print(common)
     
     // ===============
     // actual code end
