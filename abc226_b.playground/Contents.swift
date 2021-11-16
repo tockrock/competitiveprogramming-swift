@@ -12,18 +12,34 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            4
+            2 1 2
+            2 1 1
+            2 2 1
+            2 1 2
             """,
         expected: """
+            3
             """)),
     ("2", Example(
         input: """
+            5
+            1 1
+            1 1
+            1 2
+            2 1 1
+            3 1 1 1
             """,
         expected: """
+            4
             """)),
     ("3", Example(
         input: """
+            1
+            1 1
             """,
         expected: """
+            1
             """)),
 ]
 
