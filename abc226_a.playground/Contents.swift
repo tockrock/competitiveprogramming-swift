@@ -54,7 +54,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let x = Double(readString())!
+    
+    print(Int(round(x)))
     
     // ===============
     // actual code end
