@@ -69,29 +69,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let ints = readInts()
         return (ints[0], ints[1], ints[2])
     }
+    
+    func gcd(_ a: Int, _ b: Int) -> Int {
+        if b == 0 { return a }
+        return gcd(b, a%b)
+    }
+
     // =====================
     // actual code goes here
     // =====================
     
     let (a, b, c) = readThreeInts()
-    
-    var doable = false
-    var i = 1
-    var remain = c + 1
-    while true {
-        remain = a * i % b
-        if remain == c {
-            doable = true
-            break
-        }
-        if remain == 0 {
-            break
-        }
-        i += 1
-        
-    }
-    
-    print(doable ? "YES" : "NO")
+    print(c % gcd(a, b) == 0 ? "YES" : "NO")
     
     // ===============
     // actual code end
