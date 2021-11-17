@@ -59,7 +59,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var (a, b) = readTwoInts()
+    let common = gcd(a, b)
+    a /= common; b /= common
+    print(gcd(a+b, common)*common)
     
     // ===============
     // actual code end
