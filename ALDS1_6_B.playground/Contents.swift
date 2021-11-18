@@ -47,25 +47,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func partition(A: inout [Int], p: Int, r: Int) -> Int {
         let x = A[r]
         var i = p - 1
-        for j in p..<r {
+        for j in p...r-1 {
             if A[j] <= x {
                 i += 1
                 let temp = A[i]
                 A[i] = A[j]
                 A[j] = temp
             }
-            let temp = A[i+1]
-            A[i+1] = A[r]
-            A[r] = temp
         }
-        
+        let temp = A[i+1]
+        A[i+1] = A[r]
+        A[r] = temp
+
         return i+1
     }
     
     myDebugPrint(A)
-    let foo = partition(A: &A, p: 0, r: n-1)
-    myDebugPrint(A)
-    print(foo)
+    let p = partition(A: &A, p: 0, r: n-1)
+    
+    var ans = String()
+    for (i, numb) in A.enumerated() {
+        if i == p {
+            ans += "[\(numb)] "
+        } else {
+            ans += "\(numb) "
+        }
+    }
+    ans = String(ans.dropLast())
+    myDebugPrint(ans)
+    print(ans)
     
     
     // ===============
