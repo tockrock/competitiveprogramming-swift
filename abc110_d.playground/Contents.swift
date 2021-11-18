@@ -34,33 +34,54 @@ let examples: [(String, Example)] = [
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
-    // this needs to be in run() to get the overwritten readLine()
-    func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+    // these needs to be in run() to get the overwritten readLine()
     func readString () -> String { readLine()! }
     func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
     func readChars () -> [Character] {readString().map({$0})}
     func readStrings () -> [String] { readSubsequence().map({String($0)}) }
     func readInt() -> Int { Int(readString())! }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
-    func readTwoInts() -> (Int, Int) {
-        let ints = readInts()
-        return (ints[0], ints[1])
-    }
-    func readThreeInts() -> (Int, Int, Int) {
-        let ints = readInts()
-        return (ints[0], ints[1], ints[2])
-    }
-    func gcd(_ a: Int, _ b: Int) -> Int {
-        if b == 0 { return a }
-        return gcd(b, a%b)
-    }
+    func readTwoInts() -> (Int, Int) { let ints = readInts(); return (ints[0], ints[1]) }
+    func readThreeInts() -> (Int, Int, Int) { let ints = readInts(); return (ints[0], ints[1], ints[2]) }
     
     // =====================
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, m) = readTwoInts()
+    let mod = 1_000_000_007
     
+    func comb(_ n: Int, _ r: Int) -> Int {
+        let small = min(r, n-r)
+        var divideBy = Array((1...small).reversed())
+        var result = 1
+        for i in Range(n-small+1...n) {
+            result *= i
+            var removeList = [Int]()
+            for (i, d) in divideBy.enumerated() {
+                if result % d == 0 {
+                    result /= d
+                    removeList.append(i)
+                }
+            }
+            for i in removeList.reversed() {
+                divideBy.remove(at: i)
+            }
+            result %= mod
+            
+        }
+        
+        return result
+    }
+        
+    var total = 1
+    
+    for (_, count) in pf(m) {
+        total *= comb(count+n-1, count)
+        total %= mod
+    }
+    
+    print(total)
     // ===============
     // actual code end
     // ===============
@@ -98,7 +119,9 @@ for example in examples {
     main(label: example.0, example: example.1)
 }
 
-func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+func myDebugPrint (_ s: Any... ) {
+    if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) }
+}
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)
