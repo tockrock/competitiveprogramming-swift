@@ -52,7 +52,44 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    func partition(A: inout [(String, Int)], p: Int, r: Int) -> Int {
+        var i = p - 1
+        for j in p..<r {
+            if A[j].1 <= A[r].1 {
+                i += 1
+                let temp = A[i]
+                A[i] = A[j]
+                A[j] = temp
+            }
+        }
+        i += 1
+        let temp = A[i]
+        A[i] = A[r]
+        A[r] = temp
+        return i
+    }
+    
+    func quickSort(A: inout [(String, Int)], p: Int, r: Int) {
+        if p < r {
+            let q = partition(A: &A, p: p, r: r)
+            quickSort(A: &A, p: p, r: q-1)
+            quickSort(A: &A, p: q+1, r: r)
+        }
+    }
+    
+    let n = readInt()
+    var A = [(String, Int)]()
+    for _ in 0..<n {
+        let input = readStrings()
+        A.append((input[0], Int(input[1])!))
+    }
+    
+    quickSort(A: &A, p: 0, r: n-1)
+    
     print("foo")
+    for pair in A {
+        print("\(pair.0) \(pair.1)")
+    }
     
     // ===============
     // actual code end
