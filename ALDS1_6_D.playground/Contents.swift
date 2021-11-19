@@ -49,7 +49,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var w = readInts()
+    let ws = w.sorted()
+    
+    var cost = 0
+    for i in (0...4).reversed() {
+        let target = i + 1
+        if w[i] != target {
+            let currentPosition = w.firstIndex(of: target)!
+            w[currentPosition] = w[i]
+            w[i] = target
+            cost += target + w[currentPosition]
+        }
+    }
+    
+    print(cost)
     
     // ===============
     // actual code end
