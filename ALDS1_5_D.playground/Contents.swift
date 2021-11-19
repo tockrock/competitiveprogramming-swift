@@ -69,12 +69,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var R = [Int]()
         for i in l..<mid { L.append(A[i]) }
         for j in mid..<r { R.append(A[j]) }
+        var lCount = mid-l
         for k in l..<r {
             if !L.isEmpty && (R.isEmpty || !L.isEmpty && L.first! <= R.first!) {
                 A[k] = L.removeFirst()
+                lCount -= 1
             } else {
                 A[k] = R.removeFirst()
-                count += L.count
+                count += lCount
             }
         }
         return count
