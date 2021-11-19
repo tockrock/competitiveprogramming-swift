@@ -26,6 +26,14 @@ let examples: [(String, Example)] = [
         expected: """
             24
             """)),
+    ("3", Example(
+        input: """
+            6
+            2 1 8 10 7 9
+            """,
+        expected: """
+            49
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -51,13 +59,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     readInt()
     var w = readInts()
-    
+    let ws = w.sorted()
+     
     var cost = 0
     for i in 0...4 {
-        let baseTarget = i + 1
+        let baseTarget = ws[i]
         while w[i] != baseTarget {
             let position = w.firstIndex(of: baseTarget)!
-            let nextTarget = position + 1
+            let nextTarget = ws[position]
             let nextPosition = w.firstIndex(of: nextTarget)!
             w[position] = nextTarget
             w[nextPosition] = baseTarget
