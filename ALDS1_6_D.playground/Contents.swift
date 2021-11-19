@@ -57,12 +57,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    readInt()
+    let n = readInt()
     var w = readInts()
     let ws = w.sorted()
      
     var cost = 0
-    for i in 0...4 {
+    for i in 0..<n {
         let baseTarget = ws[i]
         while w[i] != baseTarget {
             let position = w.firstIndex(of: baseTarget)!
