@@ -41,7 +41,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func countingSort(A: [Int], B: inout [Int], k: Int) {
+        var C = [Int](repeating: 0, count: k+1)
+        for j in A {
+            C[j] += 1
+        }
+        myDebugPrint(C)
+        for i in 1...k {
+            C[i] = C[i] + C[i-1]
+        }
+        myDebugPrint(C)
+        for j in A.reversed() {
+            B[C[j]-1] = j
+            C[j] -= 1
+        }
+    }
+    
+    let n = readInt()
+    let A = readInts()
+    var B = A
+    
+    countingSort(A: A, B: &B, k: A.max()!)
+    
+    print(B)
     
     // ===============
     // actual code end
