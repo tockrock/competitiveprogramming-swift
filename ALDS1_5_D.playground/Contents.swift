@@ -41,7 +41,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func bubbleSort(A: inout [Int]) -> Int {
+        var count = 0
+        for i in 0..<A.count {
+            for j in Array(i+1..<A.count).reversed() {
+                if A[j] < A[j-1] {
+                    let temp = A[j]
+                    A[j] = A[j-1]
+                    A[j-1] = temp
+                    count += 1
+                }
+            }
+        }
+        return count
+    }
+    
+    readInt()
+    var A = readInts()
+    myDebugPrint(A)
+    print(bubbleSort(A: &A))
+    myDebugPrint(A)
     
     // ===============
     // actual code end
