@@ -18,6 +18,14 @@ let examples: [(String, Example)] = [
         expected: """
             6
             """)),
+    ("2", Example(
+        input: """
+            6
+            5 3 6 2 1 4
+            """,
+        expected: """
+            10
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -55,11 +63,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
         return count
     }
+    func merge(A: inout [Int], n: Int, l: Int, mid: Int, r: Int) -> Int {
+        var count = 0
+        var L = [Int]()
+        var R = [Int]()
+        for i in l..<mid { L.append(A[i]) }
+        for j in mid..<r { R.append(A[j]) }
+        for k in l..<r {
+            if !L.isEmpty && (R.isEmpty || !L.isEmpty && L.first! <= R.first!) {
+                A[k] = L.removeFirst()
+            } else {
+                A[k] = R.removeFirst()
+                count += L.count
+            }
+        }
+        return count
+    }
     
-    readInt()
+    func mergeSort(A: inout [Int], n: Int, l: Int, r: Int) -> Int {
+        guard l + 1 < r else { return 0 }
+        let mid = (l + r) / 2
+        let v1 = mergeSort(A: &A, n: n, l: l, r: mid)
+        let v2 = mergeSort(A: &A, n: n, l: mid, r: r)
+        let v3 = merge(A: &A, n: n, l: l, mid: mid, r: r)
+        return v1 + v2 + v3
+    }
+    
+    let n = readInt()
     var A = readInts()
     myDebugPrint(A)
-    print(bubbleSort(A: &A))
+    print(mergeSort(A: &A, n: n, l: 0, r: n))
     myDebugPrint(A)
     
     // ===============
