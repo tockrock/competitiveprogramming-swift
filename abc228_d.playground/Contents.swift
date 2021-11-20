@@ -55,7 +55,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let q = readInt()
+    let n = 1048576
+    
+    var A = [Int: Int]()
+    for _ in 1...q {
+        let (t, x) = readTwoInts()
+        if t == 2 {
+            print(A[x % n, default: -1] )
+            continue
+        }
+        var h = x
+        while A[h % n] != nil {
+            h += 1
+        }
+        A[h % n] = x
+        
+    }
     
     // ===============
     // actual code end
