@@ -12,19 +12,26 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            4
+            1 1048577
+            1 1
+            2 2097153
+            2 3
             """,
         expected: """
+            1048577
+            -1
             """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
-            """)),
+//    ("2", Example(
+//        input: """
+//            """,
+//        expected: """
+//            """)),
+//    ("3", Example(
+//        input: """
+//            """,
+//        expected: """
+//            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
