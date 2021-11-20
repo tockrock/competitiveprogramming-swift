@@ -69,7 +69,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, k) = readTwoInts()
+    
+    var Ps = [Int]()
+    for _ in 0..<n {
+        Ps.append(readInts().reduce(0, +))
+    }
+
+    let target = Ps.sorted(by: >)[k-1]
+    
+    for p in Ps {
+        print(p >= target - 300 ? "Yes" : "No")
+    }
+    
     
     // ===============
     // actual code end
