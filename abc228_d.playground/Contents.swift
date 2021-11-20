@@ -58,15 +58,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let q = readInt()
     let n = 1048576
     
-    var A = [Int: Int]()
+    var A = [Int](repeating: -1, count: n)
     for _ in 1...q {
         let (t, x) = readTwoInts()
         if t == 2 {
-            print(A[x % n, default: -1] )
+            print(A[x % n] )
             continue
         }
         var h = x
-        while A[h % n] != nil {
+        // I think this is the bottle neck, but currently don't have the tool for optimization.
+        while A[h % n] != -1 {
             h += 1
         }
         A[h % n] = x
