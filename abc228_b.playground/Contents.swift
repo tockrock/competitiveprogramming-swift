@@ -49,7 +49,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, x) = readTwoInts()
+    let a = readInts()
+    var v = [Bool](repeating: false, count: n)
+    
+    var i = x
+    var count = 0
+    while !v[i-1] {
+        v[i-1] = true
+        count += 1
+        i = a[i-1]
+    }
+    
+    print(count)
+    
     
     // ===============
     // actual code end
