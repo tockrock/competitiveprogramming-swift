@@ -58,21 +58,42 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     let n = readInt()
-    var w = readInts()
-    let ws = w.sorted()
-     
-    var cost = 0
-    for i in 0..<n {
-        let baseTarget = ws[i]
-        while w[i] != baseTarget {
-            let position = w.firstIndex(of: baseTarget)!
-            let nextTarget = ws[position]
-            let nextPosition = w.firstIndex(of: nextTarget)!
-            w[position] = nextTarget
-            w[nextPosition] = baseTarget
-            cost += baseTarget + nextTarget
-        }
+    let A = readInts()
+    let B = A.sorted()
+    let s = A.min()!
+    var V = [Bool](repeating: false, count: n)
+    // Store the position of the sorted array
+    // I guess this allows this to be O(N) instead of O(n^2)?
+    let T = B.enumerated().reduce(into: [Int: Int]()) {
+        $0[$1.1] = $1.0
     }
+    
+    myDebugPrint("A:", A)
+    myDebugPrint("B:", B)
+    myDebugPrint("T:", T)
+
+    var cost = 0
+    
+    for i in 0..<n {
+        guard !V[i] else { continue }
+        var cur = i
+        var S = 0
+        var m = Int.max
+        var an = 0
+        while true {
+            myDebugPrint("cur:", cur)
+            V[cur] = true
+            an += 1
+            let v = A[cur]
+            m = min(m, v)
+            S += v
+            myDebugPrint("v:", v)
+            cur = T[v]!
+            if V[cur] { break }
+        }
+        cost += min(S + (an - 2) * m, m + S + (an + 1) * s)
+    }
+    
     
     print(cost)
     
