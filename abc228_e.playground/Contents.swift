@@ -12,18 +12,17 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            2 2 2
             """,
         expected: """
+            16
             """)),
     ("2", Example(
         input: """
+            3 14 15926535
             """,
         expected: """
-            """)),
-    ("3", Example(
-        input: """
-            """,
-        expected: """
+            109718301
             """)),
 ]
 
@@ -48,7 +47,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, k, m) = readThreeInts()
+    
+    func modPow(a: Int, n: Int, mod: Int) -> Int {
+        var res = 1
+        var b = a
+        var m = n
+        while m > 0 {
+            myDebugPrint(b, m, res)
+            if m & 1 == 1 {
+                res = res * b % mod
+            }
+            b = b * b % mod
+            m >>= 1
+        }
+        return res
+    }
+    
+    print(modPow(a: m, n: n*k, mod: 998244353))
     
     // ===============
     // actual code end
