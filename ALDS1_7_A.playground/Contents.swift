@@ -92,17 +92,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let id = input[0]
         let m = input[1]
         let children = Array(input[2...])
-        
-        if !children.isEmpty {
-            nodes[id].leftChild = children[0]
-        }
-        
-        for (i, child) in children.enumerated() {
+
+        for i in 0..<m {
+            let child = children[i]
             nodes[child].parent = id
-            if i < m - 1 {
-                nodes[child].rightSibling = children[i+1]
+            if i == 0 {
+                nodes[id].leftChild = child
+                continue
             }
-            
+            nodes[children[i-1]].rightSibling = child
+        }
+
+    }
+    
+    var depthMap = [Int](repeating: 0, count: n)
+    
+    func recordDepth(id: Int, depth: Int) {
+        depthMap[id] = depth
+        if let right = nodes[id].rightSibling {
+            recordDepth(id: right, depth: depth)
+        }
+        if let child = nodes[id].leftChild {
+            recordDepth(id: child, depth: depth + 1)
+        }
+    }
+    
+    for i in 0..<n {
+        if nodes[i].parent == -1 {
+            recordDepth(id: i, depth: 0)
+            break
         }
     }
     
@@ -125,7 +143,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         print("""
             node \(id): \
             parent = \(node.parent), \
-            depth = \(getDepth(id: id)), \
+            depth = \(depthMap[id]), \
             \(node.getState()), \
             \(getSibling(id: node.leftChild))
             """)
