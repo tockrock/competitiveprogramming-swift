@@ -51,14 +51,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (n, k, m) = readThreeInts()
     let mod = 998244353
     
-    myDebugPrint(n, k, m)
-    
     func modPow(a: Int, n: Int, mod: Int) -> Int {
         if n == 0 {
             return 1
         } else if n % 2 == 1 {
             // odd
-            return a * modPow(a: a, n: n - 1, mod: mod)
+            return a * modPow(a: a, n: n - 1, mod: mod) % mod
         } else {
             // even
             return modPow(a: a * a % mod, n: n / 2, mod: mod)
@@ -66,12 +64,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     
-    var e = modPow(a: k % (mod - 1), n: n, mod: mod - 1)
+    var e = modPow(a: k % mod, n: n, mod: mod)
     if e == 0 {
-        e = e + mod - 1
+        e = e + mod
     }
-    
-    myDebugPrint(e)
     
     print(modPow(a: m % mod, n: e, mod: mod))
     
