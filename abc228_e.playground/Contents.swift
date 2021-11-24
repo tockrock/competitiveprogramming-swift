@@ -64,9 +64,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     
-    var e = modPow(a: k % mod, n: n, mod: mod)
+    var e = modPow(a: k % (mod - 1), n: n, mod: mod - 1)
     if e == 0 {
-        e = e + mod
+        e = e + mod - 1
     }
     
     print(modPow(a: m % mod, n: e, mod: mod))
