@@ -55,22 +55,38 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    // improvements from https://atcoder.jp/contests/abc228/submissions/27366365
     let q = readInt()
-    let n = 1048576
+    let n = 1 << 20
     
     var A = [Int](repeating: -1, count: n)
+    var next = [Int?](repeating: nil, count: n)
+    
+    func findNext(_ x: Int) -> Int {
+        if let y = next[x] {
+            let z = findNext(y) // recursively lookup the next index
+            next[x] = z // updates the current index
+            return z
+        } else {
+            return x
+        }
+    }
+    
     for _ in 1...q {
         let (t, x) = readTwoInts()
         if t == 2 {
             print(A[x % n] )
             continue
         }
-        var h = x
-        // I think this is the bottle neck, but currently don't have the tool for optimization.
-        while A[h % n] != -1 {
-            h += 1
-        }
-        A[h % n] = x
+        
+        let index = findNext(x % n)
+        
+        A[index] = x
+        // Thought about looking up the value by findNext((index + 1) % n) but,
+        // a: the cost of looking up is the same in the future
+        // b: you might not need to lookup
+        // c: value could be updated
+        next[index] = (index + 1) % n
         
     }
     
