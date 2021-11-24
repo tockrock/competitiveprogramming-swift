@@ -69,23 +69,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let n = readInt()
     
     struct Node {
-        
-        var parent: Int
+        var parent: Int?
         var leftChild: Int?
         var rightSibling: Int?
         
         func getState() -> String {
-            if parent < 0 {
-                return "root"
-            }
-            if leftChild == nil {
-                return "leaf"
-            }
+            if parent == nil { return "root" }
+            if leftChild == nil { return "leaf" }
             return "internal node"
         }
     }
 //    var tree = [(id: Int, child_count: Int, children: [Int])]()
-    var nodes = [Node](repeating: Node(parent: -1, leftChild: nil, rightSibling: nil), count: n)
+    var nodes = [Node](repeating: Node(parent: nil, leftChild: nil, rightSibling: nil), count: n)
         
     for _ in 1...n {
         let input = readInts()
@@ -118,31 +113,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     for i in 0..<n {
-        if nodes[i].parent == -1 {
+        if nodes[i].parent == nil {
             recordDepth(id: i, depth: 0)
             break
         }
     }
     
-    func getDepth(id: Int) -> Int {
-        let parentId = nodes[id].parent
-        if parentId < 0 {
-            return 0
-        }
-        return getDepth(id: parentId) + 1
-    }
-    
     func getSibling(id: Int?) -> [Int] {
-        guard let id = id else {
-            return []
-        }
+        guard let id = id else { return [] }
         return [id] + getSibling(id: nodes[id].rightSibling)
     }
         
     for (id, node) in nodes.enumerated() {
         print("""
             node \(id): \
-            parent = \(node.parent), \
+            parent = \(node.parent ?? -1), \
             depth = \(depthMap[id]), \
             \(node.getState()), \
             \(getSibling(id: node.leftChild))
