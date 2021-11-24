@@ -47,24 +47,33 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    // referenced: https://atcoder.jp/contests/abc228/submissions/27370336
     let (n, k, m) = readThreeInts()
+    let mod = 998244353
+    
+    myDebugPrint(n, k, m)
     
     func modPow(a: Int, n: Int, mod: Int) -> Int {
-        var res = 1
-        var b = a
-        var m = n
-        while m > 0 {
-            myDebugPrint(b, m, res)
-            if m & 1 == 1 {
-                res = res * b % mod
-            }
-            b = b * b % mod
-            m >>= 1
+        if n == 0 {
+            return 1
+        } else if n % 2 == 1 {
+            // odd
+            return a * modPow(a: a, n: n - 1, mod: mod)
+        } else {
+            // even
+            return modPow(a: a * a % mod, n: n / 2, mod: mod)
         }
-        return res
     }
     
-    print(modPow(a: m, n: n*k, mod: 998244353))
+    
+    var e = modPow(a: k % (mod - 1), n: n, mod: mod - 1)
+    if e == 0 {
+        e = e + mod - 1
+    }
+    
+    myDebugPrint(e)
+    
+    print(modPow(a: m % mod, n: e, mod: mod))
     
     // ===============
     // actual code end
