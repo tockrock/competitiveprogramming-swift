@@ -83,47 +83,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
     }
     
-    func preorder(id: Int) -> [Int] {
-        var ret = [Int]()
-        if let l = nodes[id].l {
-            ret += preorder(id: l)
-        }
-        if let r = nodes[id].r {
-            ret += preorder(id: r)
-        }
-        
+    func preorder(id: Int?) -> [Int] {
+        guard let id = id else { return [] }
+        var ret = preorder(id: nodes[id].l)
+        ret += preorder(id: nodes[id].r)
         return [id] + ret
     }
+
     print("Preorder")
     print(preorder(id: root).outputSpaced())
     
-    func inorder(id: Int) -> [Int] {
-        var ret = [Int]()
-        if let l = nodes[id].l {
-            ret += inorder(id: l)
-        }
-        
+    func inorder(id: Int?) -> [Int] {
+        guard let id = id else { return [] }
+        var ret = inorder(id: nodes[id].l)
         ret += [id]
-        
-        if let r = nodes[id].r {
-            ret += inorder(id: r)
-        }
-        
+        ret += inorder(id: nodes[id].r)
         return ret
     }
     
     print("Inorder")
     print(inorder(id: root).outputSpaced())
     
-    func postorder(id: Int) -> [Int] {
-        var ret = [Int]()
-        if let l = nodes[id].l {
-            ret += postorder(id: l)
-        }
-        if let r = nodes[id].r {
-            ret += postorder(id: r)
-        }
-        
+    func postorder(id: Int?) -> [Int] {
+        guard let id = id else { return [] }
+        var ret =  postorder(id: nodes[id].l)
+        ret += postorder(id: nodes[id].r)
         return ret + [id]
     }
     
