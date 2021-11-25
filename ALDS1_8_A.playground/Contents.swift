@@ -80,84 +80,84 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    struct Node {
-        var p: Int? = nil
-        var l: Int? = nil
-        var r: Int? = nil
-    }
-    
-    var nodes = [Int:Node]()
-    
-    var rootId = -1
-    func insert(id: Int) {
-        nodes[id] = Node()
-
-        // return if this was the first node,
-        if nodes.count == 1 {
-            rootId = id
-            return
+    class Node {
+        let id: Int
+        var p: Node? = nil
+        var l: Node? = nil
+        var r: Node? = nil
+        
+        init(id: Int) {
+            self.id = id
         }
         
-        var x: Int? = rootId
-        var parentId = rootId
         
+    }
         
-        while x != nil {
-            parentId = x!
-            let parent = nodes[parentId]!
-            if id < parentId {
-                x = parent.l
+    var root = Node(id: -1)
+    func insert(id: Int) {
+        let current = Node.init(id: id)
+        
+        var parent = root
+        
+        while true {
+            if id < parent.id {
+                guard let l = parent.l else {
+                    parent.l = current
+                    break
+                }
+                parent = l
             } else {
-                x = parent.r
+                guard let r = parent.r else {
+                    parent.r = current
+                    break
+                }
+                parent = r
             }
         }
-        
-        nodes[id]!.p = parentId
-        
-        if id < parentId {
-            nodes[parentId]!.l = id
-        } else {
-            nodes[parentId]!.r = id
-        }
-        
+        current.p = parent
     }
     
-    func inorder(id: Int) -> [Int] {
+    func inorder(node: Node) -> [Int] {
         var ret = [Int]()
-        if let l = nodes[id]!.l {
-            ret += inorder(id: l)
+        if let l = node.l {
+            ret += inorder(node: l)
         }
-        ret += [id]
-        if let r = nodes[id]!.r {
-            ret += inorder(id: r)
+        ret += [node.id]
+        if let r = node.r {
+            ret += inorder(node: r)
         }
         return ret
     }
     
-    func preorder(id: Int) -> [Int] {
+    func preorder(node: Node) -> [Int] {
         var ret = [Int]()
-        if let l = nodes[id]!.l {
-            ret += preorder(id: l)
+        if let l = node.l {
+            ret += preorder(node: l)
         }
-        if let r = nodes[id]!.r {
-            ret += preorder(id: r)
+        if let r = node.r {
+            ret += preorder(node: r)
         }
         
-        return [id] + ret
+        return [node.id] + ret
     }
     
     func printCurrentState() {
-        print(inorder(id: rootId).outputWithSpace())
-        print(preorder(id: rootId).outputWithSpace())
+        print(inorder(node: root).outputWithSpace())
+        print(preorder(node: root).outputWithSpace())
     }
     
     let n = readInt()
     
-    for _ in 0..<n {
+    for i in 0..<n {
         let input = readStrings()
         switch input[0] {
         case "insert":
-            insert(id: Int(input[1])!)
+            let id = Int(input[1])!
+            if i == 0 {
+                root = Node(id: id)
+            } else {
+                insert(id: id)
+            }
         case "print":
             printCurrentState()
         default:
