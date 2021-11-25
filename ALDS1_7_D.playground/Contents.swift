@@ -57,7 +57,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
     
     var position = 0
-    func rebuild(l: Int, r: Int) -> [Int] {
+    func reconstruct(l: Int, r: Int) -> [Int] {
         var ret = [Int]()
 
         if l >= r {
@@ -69,14 +69,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 
         let m = inorder.firstIndex(of: root)!
         
-        ret += rebuild(l: l, r: m)
-        ret += rebuild(l: m+1, r: r)
+        ret += reconstruct(l: l, r: m)
+        ret += reconstruct(l: m+1, r: r)
         
         return ret + [root]
         
     }
     
-    print(rebuild(l: 0, r: n).outputWithSpace())
+    print(reconstruct(l: 0, r: n).outputWithSpace())
     
     
     // ===============
