@@ -12,8 +12,19 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            8
+            insert 30
+            insert 88
+            insert 12
+            insert 1
+            insert 20
+            insert 17
+            insert 25
+            print
             """,
         expected: """
+            1 12 17 20 25 30 88
+            30 12 1 20 17 25 88
             """)),
 ]
 
@@ -38,7 +49,90 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Node {
+        var p: Int? = nil
+        var l: Int? = nil
+        var r: Int? = nil
+    }
+    
+    var nodes = [Int:Node]()
+    
+    var rootId = -1
+    func insert(id: Int) {
+        nodes[id] = Node()
+
+        // return if this was the first node,
+        if nodes.count == 1 {
+            rootId = id
+            return
+        }
+        
+        var x: Int? = rootId
+        var parentId = rootId
+        
+        
+        while x != nil {
+            parentId = x!
+            let parent = nodes[parentId]!
+            if id < parentId {
+                x = parent.l
+            } else {
+                x = parent.r
+            }
+        }
+        
+        nodes[id]!.p = parentId
+        
+        if id < parentId {
+            nodes[parentId]!.l = id
+        } else {
+            nodes[parentId]!.r = id
+        }
+        
+    }
+    
+    func inorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id]!.l {
+            ret += inorder(id: l)
+        }
+        ret += [id]
+        if let r = nodes[id]!.r {
+            ret += inorder(id: r)
+        }
+        return ret
+    }
+    
+    func preorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id]!.l {
+            ret += preorder(id: l)
+        }
+        if let r = nodes[id]!.r {
+            ret += preorder(id: r)
+        }
+        
+        return [id] + ret
+    }
+    
+    func printCurrentState() {
+        print(inorder(id: rootId).outputWithSpace())
+        print(preorder(id: rootId).outputWithSpace())
+    }
+    
+    let n = readInt()
+    
+    for _ in 0..<n {
+        let input = readStrings()
+        switch input[0] {
+        case "insert":
+            insert(id: Int(input[1])!)
+        case "print":
+            printCurrentState()
+        default:
+            print("unexpectedinput")
+        }
+    }
     
     // ===============
     // actual code end
