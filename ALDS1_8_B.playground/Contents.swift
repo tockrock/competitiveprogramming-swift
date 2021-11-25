@@ -53,7 +53,99 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Node {
+        var p: Int? = nil
+        var l: Int? = nil
+        var r: Int? = nil
+    }
+    
+    var nodes = [Int:Node]()
+    var rootId = -1
+    
+    func insert(id: Int) {
+        nodes[id] = Node()
+        if rootId == -1 {
+            rootId = id
+            return
+        }
+        
+        var x: Int? = rootId
+        var parentId = -1
+        while x != nil {
+            parentId = x!
+            if id < parentId {
+                x = nodes[parentId]!.l
+            } else {
+                x = nodes[parentId]!.r
+            }
+        }
+        
+        nodes[id]!.p = parentId
+        
+        if id < parentId {
+            nodes[parentId]!.l = id
+        } else {
+            nodes[parentId]!.r = id
+        }
+    }
+    
+    func inorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id]!.l {
+            ret += inorder(id: l)
+        }
+        ret.append(id)
+        if let r = nodes[id]!.r {
+            ret += inorder(id: r)
+        }
+        return ret
+    }
+    
+    func preorder(id: Int) -> [Int] {
+        var ret = [id]
+        if let l = nodes[id]!.l {
+            ret += preorder(id: l)
+        }
+        if let r = nodes[id]!.r {
+            ret += preorder(id: r)
+        }
+        return ret
+    }
+    
+    func printState() {
+        print(" " + inorder(id: rootId).outputWithSpace())
+        print(" " + preorder(id: rootId).outputWithSpace())
+    }
+    
+    func find(id: Int) -> Bool {
+        var x: Int = rootId
+        while true {
+            if id == x { return true }
+            if id < x {
+                guard let l = nodes[x]!.l else { return false }
+                x = l
+            } else {
+                guard let r = nodes[x]!.r else { return false }
+                x = r
+            }
+        }
+    }
+    
+    let n = readInt()
+    
+    for _ in 0..<n {
+        let input = readStrings()
+        switch(input[0]) {
+        case "insert":
+            insert(id: Int(input[1])!)
+        case "find":
+            print(find(id: Int(input[1])!) ? "yes" : "no")
+        case "print":
+            printState()
+        default:
+            myDebugPrint("unexpected input \(input[0])")
+        }
+    }
     
     // ===============
     // actual code end
