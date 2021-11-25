@@ -12,8 +12,12 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            5
+            1 2 3 4 5
+            3 2 4 1 5
             """,
         expected: """
+            3 4 2 5 1
             """)),
 ]
 
@@ -37,8 +41,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+        
+    let n = readInt()
+    let preorder = readInts()
+    let inorder = readInts()
+        
     
-    print("foo")
+    var position = 0
+    func rebuild(l: Int, r: Int) -> [Int] {
+        var ret = [Int]()
+
+        if l >= r {
+            return ret
+        }
+        
+        let root = preorder[position]
+        position += 1
+
+        let m = inorder.firstIndex(of: root)!
+        
+        ret += rebuild(l: l, r: m)
+        ret += rebuild(l: m+1, r: r)
+        
+        return ret + [root]
+        
+    }
+    
+    print(rebuild(l: 0, r: n).outputWithSpace())
+    
     
     // ===============
     // actual code end
@@ -91,4 +121,13 @@ func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
     }
     if n != 1 { primeList.append((n, 1)) }
     return primeList
+}
+extension Array {
+    func outputWithSpace() -> String {
+        return String(
+            self.reduce("") {
+                $0 + "\($1) "
+            }.dropLast(1)
+        )
+    }
 }
