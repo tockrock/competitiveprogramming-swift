@@ -26,6 +26,37 @@ let examples: [(String, Example)] = [
             1 12 17 20 25 30 88
             30 12 1 20 17 25 88
             """)),
+    ("2", Example(
+        input: """
+            17
+            insert 35
+            insert 80
+            insert 42
+            print
+            insert 3
+            insert 86
+            insert 99
+            print
+            insert 70
+            insert 14
+            insert 21
+            insert 1
+            print
+            insert 56
+            insert 81
+            insert 7
+            print
+            """,
+        expected: """
+            35 42 80
+            35 80 42
+            3 35 42 80 86 99
+            35 3 80 42 86 99
+            1 3 14 21 35 42 70 80 86 99
+            35 3 1 14 21 80 42 70 86 99
+            1 3 7 14 21 35 42 56 70 80 81 86 99
+            35 3 1 14 7 21 80 42 70 56 86 81 99
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
