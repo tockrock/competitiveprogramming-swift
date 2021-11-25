@@ -54,7 +54,81 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Node {
+        var p: Int? = nil
+        var l: Int? = nil
+        var r: Int? = nil
+    }
+    let n = readInt()
+    var nodes = [Node](repeating: Node(), count: n)
+    
+    for _ in 0..<n {
+        let (id, left, right) = readThreeInts()
+        
+        if left > -1 {
+            nodes[id].l = left
+            nodes[left].p = id
+        }
+        if right > -1 {
+            nodes[id].r = right
+            nodes[right].p = id
+        }
+    }
+    
+    var root = -1
+    for i in 0..<n {
+        if nodes[i].p == nil {
+            root = i
+            break
+        }
+    }
+    
+    func preorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id].l {
+            ret += preorder(id: l)
+        }
+        if let r = nodes[id].r {
+            ret += preorder(id: r)
+        }
+        
+        return [id] + ret
+    }
+    print("Preorder")
+    print(preorder(id: root).outputSpaced())
+    
+    func inorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id].l {
+            ret += inorder(id: l)
+        }
+        
+        ret += [id]
+        
+        if let r = nodes[id].r {
+            ret += inorder(id: r)
+        }
+        
+        return ret
+    }
+    
+    print("Inorder")
+    print(inorder(id: root).outputSpaced())
+    
+    func postorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id].l {
+            ret += postorder(id: l)
+        }
+        if let r = nodes[id].r {
+            ret += postorder(id: r)
+        }
+        
+        return ret + [id]
+    }
+    
+    print("Postorder")
+    print(postorder(id: root).outputSpaced())
     
     // ===============
     // actual code end
@@ -107,4 +181,9 @@ func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
     }
     if n != 1 { primeList.append((n, 1)) }
     return primeList
+}
+extension Array {
+    func outputSpaced() -> String {
+        return String(self.reduce("", {$0 + "\($1) "}).dropLast(1))
+    }
 }
