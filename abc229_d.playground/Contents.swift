@@ -74,34 +74,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    // reimplementation using the editorial
+    // https://atcoder.jp/contests/abc229/editorial/2956
+    
     let S = readChars()
     let K = readInt()
     
     let length = S.count
     var longest = 0
     
-    var i = 0
-    var j = 0
-    var rest = K
-
-    while i + longest < length {
-        j = max(i, j)
-        
-        while j < length && (S[j] == "X" || rest > 0) {
-            if S[j] == "." {
-                rest -= 1
-            }
-            j += 1
-        }
-        longest = max(longest, j - i)
-        myDebugPrint(i, j, rest, S[i..<j], longest, rest)
+    var cumulative = [0]
+    
+    for i in 0..<length  {
         if S[i] == "." {
-            rest = min(K, rest + 1)
+            cumulative.append(cumulative[i] + 1)
+        } else {
+            cumulative.append(cumulative[i])
         }
-
-        i += 1
     }
-    print(min(length, longest))
+    
+    var r = 0
+    
+    for l in 0..<length {
+        while r < length && cumulative[r+1]-cumulative[l] <= K {
+            r = r+1
+        }
+        longest = max(longest, r-l)
+    }
+    
+    print(longest)
     
     // ===============
     // actual code end
