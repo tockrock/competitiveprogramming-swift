@@ -26,6 +26,31 @@ let examples: [(String, Example)] = [
         expected: """
             4
             """)),
+    ("3", Example(
+        input: """
+            XX...XXX
+            2
+            """,
+        expected: """
+            5
+            """)),
+    ("4", Example(
+        input: """
+            ........
+            0
+            """,
+        expected: """
+            0
+            """)),
+    ("5", Example(
+        input: """
+            ........
+            2
+            """,
+        expected: """
+            2
+            """)),
+
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -52,42 +77,39 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let S = readChars()
     let K = readInt()
     
-    var largest = 0
-    var nextBlock: Int? = 0
+    let length = S.count
+    var longest = 0
     
-    while true {
-        guard let x = nextBlock else {
-            break
+    var i = 0
+
+    while i < length && i + longest <= length + K{
+        if S[i] == "." {
+            i += 1
+            continue
         }
-        nextBlock = nil
-        var start = x
-        while S[start] == "." {
-            start += 1
-            if start == S.count {
-                break
-            }
-        }
-        var count = 0
-        var use = 0
-        for i in start..<S.count {
-            if S[i] == "." {
-                use += 1
-                if nextBlock == nil {
-                    nextBlock = i
+        var rest = K
+        
+        var j = i
+        
+        while j < length {
+            if S[j] == "." {
+                rest -= 1
+                if rest < 0 {
+                    rest = 0
+                    break
                 }
             }
-            if use > K {
-                break
-            }
-            count += 1
+            j += 1
         }
-        
-        count += K - use
-        largest = max(largest, count)
-        
+
+        longest = max(longest, j - i + rest)
+        myDebugPrint(i, j, rest, S[i..<j], longest)
+
+        i += 1
     }
+    longest = max(longest, K)
     
-    print(largest)
+    print(min(length, longest))
     
     // ===============
     // actual code end
