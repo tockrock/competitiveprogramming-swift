@@ -12,7 +12,7 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            XX...X.X.X.
+            XX...X.X.X...........
             2
             """,
         expected: """
@@ -81,34 +81,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var longest = 0
     
     var i = 0
+    var j = 0
+    var rest = K
 
-    while i < length && i + longest <= length + K{
-        if S[i] == "." {
-            i += 1
-            continue
-        }
-        var rest = K
+    while i + longest < length {
+        j = max(i, j)
         
-        var j = i
-        
-        while j < length {
+        while j < length && (S[j] == "X" || rest > 0) {
             if S[j] == "." {
                 rest -= 1
-                if rest < 0 {
-                    rest = 0
-                    break
-                }
             }
             j += 1
         }
-
-        longest = max(longest, j - i + rest)
-        myDebugPrint(i, j, rest, S[i..<j], longest)
+        longest = max(longest, j - i)
+        myDebugPrint(i, j, rest, S[i..<j], longest, rest)
+        if S[i] == "." {
+            rest = min(K, rest + 1)
+        }
 
         i += 1
     }
-    longest = max(longest, K)
-    
     print(min(length, longest))
     
     // ===============
