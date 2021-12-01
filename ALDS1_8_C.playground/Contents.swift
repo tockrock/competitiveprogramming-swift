@@ -46,6 +46,28 @@ let examples: [(String, Example)] = [
              1 2 8 22
              8 2 1 22
             """)),
+    ("2", Example(
+        input: """
+            12
+            insert 8
+            insert 2
+            insert 1
+            insert 6
+            insert 7
+            insert 4
+            insert 5
+            insert 3
+            print
+            delete 3
+            delete 2
+            print
+            """,
+        expected: """
+             1 2 3 4 5 6 7 8
+             8 2 1 6 4 3 5 7
+             1 4 5 6 7 8
+             8 4 1 6 5 7
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -157,48 +179,79 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return next
     }
     
+    func swapPosition(parentId: Int) {
+        myDebugPrint("Swapping \(parentId)...")
+        guard let parentNode = nodes[parentId] else {
+            myDebugPrint("Node \(parentId) doesn't exist")
+            return
+        }
+        guard parentNode.l == nil || parentNode.r == nil else {
+            myDebugPrint("Node \(parentId) have too many childs")
+            return
+        }
+
+        let childId = parentNode.r != nil ? parentNode.r : parentNode.l
+        let grandParentId = parentNode.p
+        
+        if let childId = childId {
+            nodes[childId]!.p = grandParentId
+        }
+        
+        if let grandParentId = grandParentId {
+            if nodes[grandParentId]!.l == parentId {
+                nodes[grandParentId]!.l = childId
+            } else {
+                nodes[grandParentId]!.r = childId
+            }
+        }
+    }
+
     func delete(id: Int) {
+        myDebugPrint("Deleting \(id)...")
+
         guard let node = nodes[id] else {
             myDebugPrint("Node \(id) doesn't exist")
             return
         }
-        guard let p = node.p else {
-            myDebugPrint("Node \(id) is a root node")
-            return
-        }
-        guard nodes[p]!.l == id || nodes[p]!.r == id else {
-            myDebugPrint("There was an issue with the parent node pairing (parent: \(p), node: \(id))")
-            return
-        }
         
-        
-        var newChild: Int? = nil
-        if let l = node.l {
-            newChild = l
-        } else if let r = node.r {
-            newChild = r
-        }
-        
-        myDebugPrint("newchild: \(String(describing: newChild))")
-        
-        if nodes[p]!.l == id {
-            nodes[p]!.l = newChild
+        if node.r != nil && node.l != nil {
+            let currentOrder = inorder(id: rootId)
+            myDebugPrint(currentOrder)
+            let position = currentOrder.firstIndex(of: id)!
+            
+            let nextId = currentOrder[position + 1]
+            swapPosition(parentId: nextId)
+            
+            nodes[nextId]!.p = node.p
+            nodes[nextId]!.l = node.l
+            nodes[nextId]!.r = node.r
+            
+            if let l = node.l {
+                nodes[l]!.p = nextId
+            }
+            if let r = node.r {
+                nodes[r]!.p = nextId
+            }
+            if let p = node.p {
+                if nodes[p]!.l == id {
+                    nodes[p]!.l = nextId
+                } else {
+                    nodes[p]!.r = nextId
+                }
+            }
+            
         } else {
-            nodes[p]!.r = newChild
+            swapPosition(parentId: id)
         }
         
-        if let newChild = newChild {
-            nodes[newChild]!.p = p
-        }
-        
-        myDebugPrint(nodes.sorted(by: {$0.key < $1.key}))
         nodes.removeValue(forKey: id)
-        myDebugPrint(nodes.sorted(by: {$0.key < $1.key}))
     }
+    
     
     let n = readInt()
     for _ in 0..<n {
         let command = readStrings()
+        myDebugPrint(command)
         
         switch(command[0]) {
         case "insert":
@@ -213,6 +266,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             printState()
         case "delete":
             delete(id: Int(command[1])!)
+            myDebugPrint(nodes.sorted(by: {$0.key < $1.key}))
        default:
             myDebugPrint("Invalid command \(command[0])")
         }
