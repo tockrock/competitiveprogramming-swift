@@ -12,8 +12,39 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            18
+            insert 8
+            insert 2
+            insert 3
+            insert 7
+            insert 22
+            insert 1
+            find 1
+            find 2
+            find 3
+            find 4
+            find 5
+            find 6
+            find 7
+            find 8
+            print
+            delete 3
+            delete 7
+            print
             """,
         expected: """
+            yes
+            yes
+            yes
+            no
+            no
+            no
+            yes
+            yes
+             1 2 3 7 8 22
+             8 2 1 3 7 22
+             1 2 8 22
+             8 2 1 22
             """)),
 ]
 
@@ -38,7 +69,155 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Node: CustomStringConvertible {
+        var description: String {
+            return "(p: \(String(describing: p)), l: \(String(describing: l)), r: \(String(describing: r)))"
+        }
+        
+        var p: Int? = nil
+        var l: Int? = nil
+        var r: Int? = nil
+        
+    }
+    
+    var nodes = [Int:Node]()
+    var rootId = -1
+    
+    func insert(id: Int) {
+        nodes[id] = Node()
+        
+        if rootId == -1 {
+            rootId = id
+            return
+        }
+        
+        var x: Int? = rootId
+        var parentId = rootId
+        while x != nil {
+            parentId = x!
+            if id < parentId {
+                guard let l = nodes[parentId]!.l else { break }
+                x = l
+            } else {
+                guard let r = nodes[parentId]!.r else { break }
+                x = r
+            }
+        }
+        
+        nodes[id]!.p = parentId
+        
+        if id < parentId {
+            nodes[parentId]!.l = id
+        } else {
+            nodes[parentId]!.r = id
+        }
+    }
+    
+    func inorder(id: Int) -> [Int] {
+        var ret = [Int]()
+        if let l = nodes[id]!.l {
+            ret += inorder(id: l)
+        }
+        ret.append(id)
+        if let r = nodes[id]!.r {
+            ret += inorder(id: r)
+        }
+        return ret
+    }
+    
+    func preorder(id: Int) -> [Int] {
+        var ret = [id]
+        if let l = nodes[id]!.l {
+            ret += preorder(id: l)
+        }
+        if let r = nodes[id]!.r {
+            ret += preorder(id: r)
+        }
+        return ret
+    }
+    
+    func printState() {
+        print(" " + inorder(id: rootId).outputWithSpace())
+        print(" " + preorder(id: rootId).outputWithSpace())
+    }
+    
+    func find(id: Int) -> Int? {
+        var next: Int? = rootId
+        
+        while let x = next {
+            if id == x {
+                return next
+            }
+            if id < x {
+                next = nodes[x]!.l
+            } else {
+                next = nodes[x]!.r
+            }
+        }
+        return next
+    }
+    
+    func delete(id: Int) {
+        guard let node = nodes[id] else {
+            myDebugPrint("Node \(id) doesn't exist")
+            return
+        }
+        guard let p = node.p else {
+            myDebugPrint("Node \(id) is a root node")
+            return
+        }
+        guard nodes[p]!.l == id || nodes[p]!.r == id else {
+            myDebugPrint("There was an issue with the parent node pairing (parent: \(p), node: \(id))")
+            return
+        }
+        
+        
+        var newChild: Int? = nil
+        if let l = node.l {
+            newChild = l
+        } else if let r = node.r {
+            newChild = r
+        }
+        
+        myDebugPrint("newchild: \(String(describing: newChild))")
+        
+        if nodes[p]!.l == id {
+            nodes[p]!.l = newChild
+        } else {
+            nodes[p]!.r = newChild
+        }
+        
+        if let newChild = newChild {
+            nodes[newChild]!.p = p
+        }
+        
+        myDebugPrint(nodes.sorted(by: {$0.key < $1.key}))
+        nodes.removeValue(forKey: id)
+        myDebugPrint(nodes.sorted(by: {$0.key < $1.key}))
+    }
+    
+    let n = readInt()
+    for _ in 0..<n {
+        let command = readStrings()
+        
+        switch(command[0]) {
+        case "insert":
+            insert(id: Int(command[1])!)
+        case "find":
+            if find(id: Int(command[1])!) != nil {
+                print("yes")
+            } else {
+                print("no")
+            }
+        case "print":
+            printState()
+        case "delete":
+            delete(id: Int(command[1])!)
+       default:
+            myDebugPrint("Invalid command \(command[0])")
+        }
+    }
+    
     
     // ===============
     // actual code end
