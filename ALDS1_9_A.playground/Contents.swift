@@ -44,46 +44,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-    
-    struct Node {
-        let key: Int
-        var parent: Int? = nil
-        var l: Int? = nil
-        var r: Int? = nil
-    }
-    
+
     let n = readInt()
-    let input = readInts()
+    let input = [-1] + readInts() // use one as origin
+
+    func parent(_ i: Int) -> Int { return i / 2 }
+    func left(_ i: Int) -> Int { return 2 * i }
+    func right(_ i: Int) -> Int { return 2 * i + 1 }
     
-    var parentNode = 0
-    var nodes = [Node]()
-    
-    nodes.append(Node(key: input[0]))
-    for i in 1..<n {
-        let key = input[i]
-        nodes.append(Node(key: key, parent: nodes[parentNode].key))
-        if nodes[parentNode].l == nil {
-            nodes[parentNode].l = key
-        } else {
-            nodes[parentNode].r = key
-            parentNode += 1
+    for i in 1...n {
+        var answer = "node \(i): key = \(input[i]), "
+        let parent = parent(i)
+        if parent > 0 {
+            answer += "parent key = \(input[parent]), "
         }
-    }
-    
-    for i in 0..<n {
-        var answer = "node \(i + 1): key = \(nodes[i].key), "
-        if let parent = nodes[i].parent {
-            answer += "parent key = \(parent), "
+        let left = left(i)
+        if left <= n {
+            answer += "left key = \(input[left]), "
         }
-        if let left = nodes[i].l {
-            answer += "left key = \(left), "
-        }
-        if let right = nodes[i].r {
-            answer += "right key = \(right), "
+        let right = right(i)
+        if right <= n {
+            answer += "right key = \(input[right]), "
         }
         
         print(answer.trimmingCharacters(in: .whitespaces))
     }
+    
     
     // ===============
     // actual code end
