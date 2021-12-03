@@ -48,7 +48,7 @@ let examples: [(String, Example)] = [
             """)),
     ("2", Example(
         input: """
-            12
+            14
             insert 8
             insert 2
             insert 1
@@ -61,12 +61,35 @@ let examples: [(String, Example)] = [
             delete 3
             delete 2
             print
+            delete 8
+            print
             """,
         expected: """
              1 2 3 4 5 6 7 8
              8 2 1 6 4 3 5 7
              1 4 5 6 7 8
              8 4 1 6 5 7
+             1 4 5 6 7
+             4 1 6 5 7
+            """)),
+    ("3", Example(
+        input: """
+            9
+            insert 8
+            insert 12
+            insert 13
+            insert 10
+            insert 11
+            print
+            insert 7
+            delete 8
+            print
+            """,
+        expected: """
+             8 10 11 12 13
+             8 12 10 11 13
+             7 10 11 12 13
+             10 7 12 11 13
             """)),
 ]
 
@@ -99,7 +122,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var p: Int? = nil
         var l: Int? = nil
         var r: Int? = nil
-        
     }
     
     var nodes = [Int:Node]()
@@ -179,33 +201,65 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         return next
     }
     
-    func swapPosition(parentId: Int) {
-        myDebugPrint("Swapping \(parentId)...")
-        guard let parentNode = nodes[parentId] else {
-            myDebugPrint("Node \(parentId) doesn't exist")
-            return
+    func minimum(id: Int) -> Int {
+        var ret = id
+        while let l = nodes[ret]!.l {
+            ret = l
         }
-        guard parentNode.l == nil || parentNode.r == nil else {
-            myDebugPrint("Node \(parentId) have too many childs")
-            return
-        }
-
-        let childId = parentNode.r != nil ? parentNode.r : parentNode.l
-        let grandParentId = parentNode.p
-        
-        if let childId = childId {
-            nodes[childId]!.p = grandParentId
+        return ret
+    }
+    
+    func successor(id: Int) -> Int? {
+        if let r = nodes[id]!.r {
+            return minimum(id: r)
         }
         
-        if let grandParentId = grandParentId {
-            if nodes[grandParentId]!.l == parentId {
-                nodes[grandParentId]!.l = childId
-            } else {
-                nodes[grandParentId]!.r = childId
+        var x = id
+        var y = nodes[id]!.p
+        
+        while let p = y {
+            guard x == nodes[p]!.r else {
+                break
             }
+            x = p
+            y = nodes[p]!.p
+        }
+        return y
+        
+    }
+    
+    func swapChild(for parent: Int?, insteadOf old: Int, with new: Int?) {
+        guard let parent = parent else {
+            rootId = new ?? -1
+            return
+        }
+        
+        if nodes[parent]!.l == old {
+            nodes[parent]!.l = new
+        } else {
+            nodes[parent]!.r = new
         }
     }
 
+    
+    func promoteChild(of id: Int) {
+        guard let node = nodes[id] else {
+            myDebugPrint("Node \(id) doesn't exist")
+            return
+        }
+        
+        let child = node.l != nil ? node.l : node.r
+        
+        let grandParent = node.p
+        
+        swapChild(for: grandParent, insteadOf: id, with: child)
+        
+        if let child = child {
+            nodes[child]!.p = grandParent
+        }
+    }
+    
+    
     func delete(id: Int) {
         myDebugPrint("Deleting \(id)...")
 
@@ -213,36 +267,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             myDebugPrint("Node \(id) doesn't exist")
             return
         }
-        
-        if node.r != nil && node.l != nil {
-            let currentOrder = inorder(id: rootId)
-            myDebugPrint(currentOrder)
-            let position = currentOrder.firstIndex(of: id)!
-            
-            let nextId = currentOrder[position + 1]
-            swapPosition(parentId: nextId)
-            
-            nodes[nextId]!.p = node.p
-            nodes[nextId]!.l = node.l
-            nodes[nextId]!.r = node.r
-            
-            if let l = node.l {
-                nodes[l]!.p = nextId
-            }
-            if let r = node.r {
-                nodes[r]!.p = nextId
-            }
-            if let p = node.p {
-                if nodes[p]!.l == id {
-                    nodes[p]!.l = nextId
-                } else {
-                    nodes[p]!.r = nextId
-                }
-            }
-            
-        } else {
-            swapPosition(parentId: id)
+
+        guard let l = node.l, let r = node.r else {
+            promoteChild(of: id)
+            nodes.removeValue(forKey: id)
+            return
         }
+        
+        guard let successor = successor(id: id) else {
+            myDebugPrint("something wrong happened when trying to find the successor of \(id)")
+            return
+        }
+        
+        promoteChild(of: successor)
+        nodes[successor]!.p = node.p
+        nodes[successor]!.l = l
+        nodes[successor]!.r = r
+        
+        swapChild(for: node.p, insteadOf: id, with: successor)
         
         nodes.removeValue(forKey: id)
     }
