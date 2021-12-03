@@ -47,20 +47,42 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     struct Node {
         let key: Int
-        let l: Int? = nil
-        let r: Int? = nil
+        var parent: Int? = nil
+        var l: Int? = nil
+        var r: Int? = nil
     }
     
     let n = readInt()
     let input = readInts()
     
-    var next = 0
+    var parentNode = 0
     var nodes = [Node]()
     
     nodes.append(Node(key: input[0]))
     for i in 1..<n {
         let key = input[i]
-        nodes.append(contentsOf: <#T##Sequence#>)
+        nodes.append(Node(key: key, parent: nodes[parentNode].key))
+        if nodes[parentNode].l == nil {
+            nodes[parentNode].l = key
+        } else {
+            nodes[parentNode].r = key
+            parentNode += 1
+        }
+    }
+    
+    for i in 0..<n {
+        var answer = "node \(i + 1): key = \(nodes[i].key), "
+        if let parent = nodes[i].parent {
+            answer += "parent key = \(parent), "
+        }
+        if let left = nodes[i].l {
+            answer += "left key = \(left), "
+        }
+        if let right = nodes[i].r {
+            answer += "right key = \(right), "
+        }
+        
+        print(answer.trimmingCharacters(in: .whitespaces))
     }
     
     // ===============
