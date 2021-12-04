@@ -1,4 +1,5 @@
 // Book: ALDS1_9_B: Maximum Heap
+// https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_9_B&lang=jp
 // 2021-12-04 08:40:18
 
 import Foundation
@@ -17,6 +18,19 @@ let examples: [(String, Example)] = [
             """,
         expected: """
              16 14 10 8 7 9 3 2 4 1
+            """)),
+    ("2", Example(
+        input: """
+            12
+            5 86 37 12 25 32 11 7 1 2 4 19
+            """,
+        expected: """
+            foo
+            """)),
+    ("", Example(
+        input: """
+            """,
+        expected: """
             """)),
 ]
 
@@ -41,7 +55,44 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    var A = [-1] + readInts()
+    
+    func left(_ i: Int) -> Int { return i * 2 }
+    func right(_ i: Int) -> Int { return i * 2 + 1 }
+    
+    func maxHeapify(A: inout [Int], _ i: Int) {
+        let l = left(i)
+        let r = right(i)
+        
+        var largest = i
+        
+        if l <= n && A[l] > A[i] {
+            largest = l
+        }
+        if r <= n && A[r] > A[largest] {
+            largest = r
+        }
+        
+        if largest != i {
+            let temp = A[i]
+            A[i] = A[largest]
+            A[largest] = temp
+            myDebugPrint(largest, A)
+            maxHeapify(A: &A, largest)
+        }
+    }
+    
+    func buildMaxHeap(A: inout [Int] ) {
+        for i in 1...n/2 {
+            let next = n/2 - i + 1
+            myDebugPrint(next)
+            maxHeapify(A: &A, next)
+        }
+    }
+    
+    buildMaxHeap(A: &A)
+    print(" " + Array(A[1...]).outputWithSpace())
     
     // ===============
     // actual code end
