@@ -54,7 +54,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let T = String.init(repeating: "oxx", count: 100000)
+    let s = readString()
+    print(T.contains(s) ? "Yes" : "No")
     
     // ===============
     // actual code end
