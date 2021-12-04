@@ -12,18 +12,31 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            42
             """,
         expected: """
+            AGC043
             """)),
     ("2", Example(
         input: """
+            19
             """,
         expected: """
+            AGC019
             """)),
     ("3", Example(
         input: """
+            1
             """,
         expected: """
+            AGC001
+            """)),
+    ("4", Example(
+        input: """
+            50
+            """,
+        expected: """
+            AGC051
             """)),
 ]
 
@@ -48,7 +61,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    var n = readInt()
+    if n > 41 {
+        n += 1
+    }
+    
+    print(String(format: "AGC%03d", n))
     
     // ===============
     // actual code end
