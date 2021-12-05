@@ -71,9 +71,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let R = input[2]
     let S = input[3]
     
-    
-    print("foo")
-    
+    let line1 = Range(max(1-A, 1-B)...min(N-A, N-B))
+    let line2 = Range(max(1-A, B-N)...min(N-A, B-1))
+        
+    for i in P...Q {
+        var line = [String].init(repeating: ".", count: S-R+1)
+        let k = i-A
+        if line1.contains(k) && Range(R...S).contains(B+k) {
+            line[B+k-R] = "#"
+        }
+        if line2.contains(k) && Range(R...S).contains(B-k) {
+            line[B-k-R] = "#"
+        }
+        print(line.reduce("", {$0 + $1}))
+    }
+
     // ===============
     // actual code end
     // ===============
