@@ -53,13 +53,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         guard number > 1 else {
             return 1
         }
-        var i = 1
-        while i < number {
-            A.append(A[i] + A[i-1])
-            i += 1
+        for i in 2...number {
+            A.append(A[i-1] + A[i-2])
         }
         myDebugPrint(A)
-        return A[i]
+        return A[A.count-1]
     }
     
     let input = readInt()
