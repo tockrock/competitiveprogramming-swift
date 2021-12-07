@@ -17,6 +17,13 @@ let examples: [(String, Example)] = [
         expected: """
             3
             """)),
+    ("2", Example(
+        input: """
+            10
+            """,
+        expected: """
+            89
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -40,7 +47,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func fibonacci(number: Int) -> Int {
+        var A = [1, 1]
+        
+        guard number > 1 else {
+            return 1
+        }
+        var i = 1
+        while i < number {
+            A.append(A[i] + A[i-1])
+            i += 1
+        }
+        myDebugPrint(A)
+        return A[i]
+    }
+    
+    let input = readInt()
+    print(fibonacci(number: input))
     
     // ===============
     // actual code end
