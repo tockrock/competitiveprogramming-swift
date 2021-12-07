@@ -50,8 +50,74 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+    let MAX = 2000000
+    var A = [Int](repeating: -1, count: MAX+1)
+    var count = 0
+
+    func maxHeapify(_ i: Int) {
+        let l = 2 * i
+        let r = 2 * i + 1
+        
+        var largest = i
+        if l <= count && A[l] > A[i] {
+            largest = l
+        }
+        if r <= count && A[r] > A[largest] {
+            largest = r
+        }
+        
+        if largest != i {
+            let temp = A[i]
+            A[i] = A[largest]
+            A[largest] = temp
+            maxHeapify(largest)
+        }
+    }
     
-    print("foo")
+    func extract() -> Int {
+        guard count > 0 else {
+            return Int.min
+        }
+        let maxV = A[1]
+        A[1] = A[count]
+        count -= 1
+        maxHeapify(1)
+        return maxV
+    }
+    
+    func increaseKey(index: Int, key: Int) {
+        var i = index
+        guard key >= A[i] else {
+            return
+        }
+        A[i] = key
+        while i > 1 && A[i/2] < A[i] {
+            let temp = A[i/2]
+            A[i/2] = A[i]
+            A[i] = temp
+            i = i / 2
+        }
+        
+    }
+    
+    func insert(key: Int) {
+        count += 1
+        A[count] = Int.min
+        increaseKey(index: count, key: key)
+    }
+    
+    overall: while true {
+        let input = readStrings()
+        switch(input[0]) {
+        case "end":
+            break overall
+        case "insert":
+            insert(key: Int(input[1])!)
+        default:
+            print(extract())
+        }
+        
+    }
     
     // ===============
     // actual code end
