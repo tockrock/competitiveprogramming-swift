@@ -47,17 +47,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    var f = [1, 1]
+    
     func fibonacci(number: Int) -> Int {
-        var A = [1, 1]
-        
-        guard number > 1 else {
-            return 1
+        if number < f.count {
+            return f[number]
         }
-        for i in 2...number {
-            A.append(A[i-1] + A[i-2])
-        }
-        myDebugPrint(A)
-        return A[A.count-1]
+        let total = fibonacci(number: number-1) + fibonacci(number: number-2)
+        f.append(total)
+        return total
     }
     
     let input = readInt()
