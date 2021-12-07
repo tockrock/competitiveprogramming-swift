@@ -48,7 +48,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    func lcs(x: [Character], y: [Character]) -> Int {
+        let m = x.count
+        let n = y.count
+        var c = [[Int]](repeating: [Int](repeating: 0, count: n+1), count: m+1)
+        
+        for i in 1...m {
+            for j in 1...n {
+                if x[i-1] == y[j-1] {
+                    c[i][j] = c[i-1][j-1] + 1
+                } else if c[i-1][j] >= c[i][j-1] {
+                    c[i][j] = c[i-1][j]
+                } else {
+                    c[i][j] = c[i][j-1]
+                }
+            }
+            myDebugPrint(c[i])
+        }
+        return c[m][n]
+        
+    }
+    
+    for _ in 0..<n {
+        let chars1 = readChars()
+        let chars2 = readChars()
+        print(lcs(x: chars1, y: chars2))
+    }
     
     // ===============
     // actual code end
