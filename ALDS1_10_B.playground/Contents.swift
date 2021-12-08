@@ -45,24 +45,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-    let N = 100
     let n = readInt()
-    
-    var m = [[Int]](repeating: [Int](repeating: 0, count: N+1), count: N+1)
     
     var p = readInts()
     for _ in 2...n {
         let (_, next) = readTwoInts()
         p.append(next)
     }
-    
+
+    var m = [[Int]](repeating: [Int](repeating: 0, count: n+1), count: n+1)
+
     for l in 2...n {
         for i in 1...(n-l+1) {
-            let j = i  + l - 1
-            m[i][j] = (1 << 21)
+            let j = i + l - 1
+            m[i][j] = Int.max
+            for k in i...j-1 {
+                let numbForK = m[i][k] + m[k + 1][j] + p[i-1] * p[k] * p[j]
+                m[i][j] = min(m[i][j], numbForK)
+                myDebugPrint(i, j, numbForK)
+            }
             
         }
     }
+    
+    myDebugPrint(p)
+    for line in m {
+        myDebugPrint(line)
+    }
+    print(m[1][n])
     
     // ===============
     // actual code end
