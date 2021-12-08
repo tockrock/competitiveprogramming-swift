@@ -1,4 +1,5 @@
 // Book: ALDS1_11_A: Graph
+// https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_A&lang=jp
 // 2021-12-09 08:27:01
 
 import Foundation
@@ -47,7 +48,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var graph = [[Int]](repeating: [Int](repeating: 0, count: n), count: n)
+    
+    for i in 0..<n {
+        let input = readInts()
+        if input[1] > 0  {
+            for j in input[2..<input[1]+2]{
+                graph[i][j-1] = 1
+            }
+        }
+
+        print(graph[i].outputWithSpace())
+    }
     
     // ===============
     // actual code end
