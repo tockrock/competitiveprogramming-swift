@@ -89,14 +89,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var searchResults = [Int:searchResult]()
     
     func depthFirstSearch(i: Int) {
-        if searchResults[i] == nil {
-            searchResults[i] = searchResult(startTime: ts)
-            ts += 1
-        }
-                
-        guard searchResults[i]!.endTime == nil else {
+        guard searchResults[i] == nil else {
             return
         }
+        
+        searchResults[i] = searchResult(startTime: ts)
+        ts += 1
         
         for j in 0..<n {
             guard graph[i-1][j] == 1 else {
@@ -105,7 +103,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             depthFirstSearch(i: j+1)
         }
         
-        searchResults[i]?.endTime = ts
+        searchResults[i]!.endTime = ts
         ts += 1
     }
     
