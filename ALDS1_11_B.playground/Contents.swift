@@ -107,7 +107,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         ts += 1
     }
     
-    depthFirstSearch(i: 1)
+    for i in 1...n {
+        depthFirstSearch(i: i)
+    }
     
     for sr in searchResults.sorted(by: { $0.key < $1.key }) {
         print(sr.key, sr.value.startTime, sr.value.endTime!)
