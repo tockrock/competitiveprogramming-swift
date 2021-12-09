@@ -83,7 +83,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var ts = 1
     struct searchResult {
         var startTime: Int
-        var endTime: Int? = nil
+        var endTime: Int = 0
     }
     
     var searchResults = [Int:searchResult]()
@@ -109,12 +109,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     for i in 1...n {
         depthFirstSearch(i: i)
+        guard let sr = searchResults[i] else {
+            myDebugPrint("Something has gone wrong for \(i)")
+            continue
+        }
+        print(i, sr.startTime, sr.endTime)
     }
-    
-    for sr in searchResults.sorted(by: { $0.key < $1.key }) {
-        print(sr.key, sr.value.startTime, sr.value.endTime!)
-    }
-    
     
     // ===============
     // actual code end
