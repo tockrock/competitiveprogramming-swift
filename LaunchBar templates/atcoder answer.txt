@@ -1,0 +1,39 @@
+import Foundation
+
+<clipboard>
+
+// =============
+// Helpers Below
+// =============
+
+let DEBUG = false
+func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+func readString () -> String { readLine()! }
+func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
+func readStrings () -> [String] { readSubsequence().map({String($0)}) }
+func readChars () -> [Character] {readString().map({$0})}
+func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
+func readInt() -> Int { Int(readString())! }
+func readTwoInts() -> (Int, Int) {
+    let ints = readInts()
+    return (ints[0], ints[1])
+}
+func readThreeInts() -> (Int, Int, Int) {
+    let ints = readInts()
+    return (ints[0], ints[1], ints[2])
+}
+func gcd(_ a: Int, _ b: Int) -> Int {
+    if b == 0 { return a }
+    return gcd(b, a%b)
+}
+func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
+    var n = numb, i = 2, primeList = [(Int, Int)]()
+    while i * i <= numb && i <= n {
+        var count = 0
+        while n % i == 0 { n /= i; count += 1 }
+        if count > 0 { primeList.append((i, count)) }
+        i += 1
+    }
+    if n != 1 { primeList.append((n, 1)) }
+    return primeList
+}
