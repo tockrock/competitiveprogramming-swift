@@ -27,7 +27,7 @@ let examples: [(String, Example)] = [
             """)),
     ("2", Example(
         input: """
-            7
+            8
             1 3 2 3 5
             2 3 1 3 4
             3 3 4 6 7
@@ -35,6 +35,7 @@ let examples: [(String, Example)] = [
             5 2 1 3
             6 2 3 7
             7 3 3 4 6
+            8 0
             """,
         expected: """
             1 0
@@ -44,6 +45,7 @@ let examples: [(String, Example)] = [
             5 1
             6 2
             7 2
+            8 -1
             """)),
 ]
 
@@ -88,7 +90,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     var queue = [0]
     
-    while !queue.isEmpty || distance.contains(nil) {
+    while !queue.isEmpty {
         let v = queue[0]
         for i in 0..<n {
             guard graph[v][i] == 1 else { continue }
@@ -100,6 +102,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     for i in 0..<n {
+        myDebugPrint(i+1, distance[i] ?? -1)
         print(i+1, distance[i] ?? -1)
     }
     
