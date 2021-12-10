@@ -65,36 +65,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         graph[s].append(t)
         graph[t].append(s)
     }
-    
-    myDebugPrint(graph)
-    
-    func breathFirstSearch(start: Int, goal: Int) -> Bool {
-        var accessible = [Bool](repeating: false, count: n)
         
+    var groupID = [Int?](repeating: nil, count: n)
+    var currentGroupID = 0
+    
+    func breathFirstSearch(start: Int, gID: Int) {
         var stack = graph[start]
-        
-        myDebugPrint(stack)
         
         while !stack.isEmpty {
             let v = stack.removeFirst()
-            if v == goal {
-                return true
-            }
-            guard accessible[v] == false else {
+            guard groupID[v] == nil else {
                 continue
             }
-
-            accessible[v] = true
+            groupID[v] = gID
             stack += graph[v]
         }
+    }
+    
+    for i in 0..<n {
+        guard groupID[i] == nil else {
+            continue
+        }
         
-        return false
+        breathFirstSearch(start: i, gID: currentGroupID)
+        currentGroupID += 1
     }
     
     let q = readInt()
     for _ in 0..<q {
         let (s, t) = readTwoInts()
-        print(breathFirstSearch(start: s, goal: t) ? "yes" : "no")
+        print(groupID[s] == groupID[t] ? "yes" : "no")
     }
     
     
