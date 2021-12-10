@@ -33,6 +33,27 @@ let examples: [(String, Example)] = [
             yes
             no
             """)),
+    ("2", Example(
+        input: """
+            7 8
+            0 1
+            0 2
+            0 3
+            2 2
+            3 4
+            4 3
+            3 5
+            4 4
+            3
+            6 3
+            0 5
+            6 6
+            """,
+        expected: """
+            no
+            yes
+            yes
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
