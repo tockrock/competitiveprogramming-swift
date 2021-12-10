@@ -56,7 +56,47 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, m) = readTwoInts()
+    
+    var graph = [[Int]](repeating: [Int](), count: n)
+    
+    for _ in 0..<m {
+        let (s, t) = readTwoInts()
+        graph[s].append(t)
+        graph[t].append(s)
+    }
+    
+    myDebugPrint(graph)
+    
+    func breathFirstSearch(start: Int, goal: Int) -> Bool {
+        var accessible = [Bool](repeating: false, count: n)
+        
+        var stack = graph[start]
+        
+        myDebugPrint(stack)
+        
+        while !stack.isEmpty {
+            let v = stack.removeFirst()
+            if v == goal {
+                return true
+            }
+            guard accessible[v] == false else {
+                continue
+            }
+
+            accessible[v] = true
+            stack += graph[v]
+        }
+        
+        return false
+    }
+    
+    let q = readInt()
+    for _ in 0..<q {
+        let (s, t) = readTwoInts()
+        print(breathFirstSearch(start: s, goal: t) ? "yes" : "no")
+    }
+    
     
     // ===============
     // actual code end
