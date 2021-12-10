@@ -68,37 +68,28 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
     var groupID = [Int?](repeating: nil, count: n)
     
-    func breathFirstSearch(start: Int, gID: Int) {
-        var stack = graph[start]
+    func breathFirstSearch(start: Int) {
+        var stack = [start]
         
         while !stack.isEmpty {
             let v = stack.removeFirst()
             guard groupID[v] == nil else {
                 continue
             }
-            groupID[v] = gID
+            groupID[v] = start
             stack += graph[v]
         }
     }
-    
-    var currentGroupID = 0
-
-    for i in 0..<n {
-        guard groupID[i] == nil else {
-            continue
-        }
         
-        breathFirstSearch(start: i, gID: currentGroupID)
-        currentGroupID += 1
-    }
-    
     let q = readInt()
     for _ in 0..<q {
         let (s, t) = readTwoInts()
+        if groupID[s] == nil && groupID[t] == nil {
+            breathFirstSearch(start: s)
+        }
         print(groupID[s] == groupID[t] ? "yes" : "no")
     }
-    
-    
+        
     // ===============
     // actual code end
     // ===============
