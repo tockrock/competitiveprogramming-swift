@@ -67,7 +67,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
         
     var groupID = [Int?](repeating: nil, count: n)
-    var currentGroupID = 0
     
     func breathFirstSearch(start: Int, gID: Int) {
         var stack = graph[start]
@@ -82,6 +81,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
     }
     
+    var currentGroupID = 0
+
     for i in 0..<n {
         guard groupID[i] == nil else {
             continue
