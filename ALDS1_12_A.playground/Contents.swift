@@ -23,6 +23,20 @@ let examples: [(String, Example)] = [
         expected: """
             5
             """)),
+    ("2", Example(
+        input: """
+            7
+            -1 10 3 -1 18 11 -1
+            10 -1 5 1 -1 -1 -1
+            3 5 -1 2 -1 7 5
+            -1 1 2 -1 -1 -1 2
+            18 -1 -1 -1 -1 1 -1
+            11 -1 -1 -1 1 -1 2
+            -1 -1 -1 2 -1 2 -1
+            """,
+        expected: """
+            11
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -64,7 +78,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         while true {
             // determine the cheapest point that's connectable
             mincost = Int.max
-            for i in 0..<n where color[i] == false && d[i] < mincost {
+            for i in 0..<n where !color[i] && d[i] < mincost {
                 mincost = d[i]
                 u = i
             }
@@ -77,7 +91,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             color[u] = true
             
             // Find if the new point would reduce the cost to another undecided point
-            for v in 0..<n where color[v] == false && graph[u][v] < d[v] {               
+            for v in 0..<n where !color[v] && graph[u][v] < d[v] {
                 d[v] = graph[u][v]
             }
         }
