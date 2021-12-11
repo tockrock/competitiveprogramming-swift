@@ -54,7 +54,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readString()
+    
+    if Int(n)! % 100 == 0 {
+        print(Int(n)!/100)
+    } else {
+        print(Double(n)!/100)
+    }
     
     // ===============
     // actual code end
