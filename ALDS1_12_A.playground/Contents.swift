@@ -64,13 +64,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         while true {
             // determine the cheapest point that's connectable
             mincost = Int.max
-            for i in 0..<n {
-                guard color[i] == false else {
-                    continue
-                }
-                guard d[i] < mincost else {
-                    continue
-                }
+            for i in 0..<n where color[i] == false && d[i] < mincost {
                 mincost = d[i]
                 u = i
             }
@@ -83,14 +77,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             color[u] = true
             
             // Find if the new point would reduce the cost to another undecided point
-            for v in 0..<n {
-                guard color[v] == false else {
-                    continue
-                }
-                guard graph[u][v] < d[v] else {
-                    continue
-                }
-                
+            for v in 0..<n where color[v] == false && graph[u][v] < d[v] {               
                 d[v] = graph[u][v]
             }
         }
