@@ -65,7 +65,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var voteFor = [String:Int]()
+    
+    for _ in 0..<n {
+        let name = readString()
+        voteFor[name, default: 0] += 1
+    }
+    
+    print(voteFor.sorted(by: { $0.value > $1.value })[0].key)
     
     // ===============
     // actual code end
