@@ -29,6 +29,16 @@ let examples: [(String, Example)] = [
         expected: """
             No
             """)),
+    ("3", Example(
+        input: """
+            4 3
+            1 4
+            2 4
+            1 2
+            """,
+        expected: """
+            No
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -52,7 +62,62 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, m) = readTwoInts()
+    
+    var graph = [[Int]](repeating: [Int](), count: n+1)
+    
+    for _ in 0..<m {
+        let (a, b) = readTwoInts()
+        graph[a].append(b)
+        graph[b].append(a)
+    }
+    
+    var doable = true
+    
+    var grouped = [Bool](repeating: false, count: n+1)
+    overall: for i in 1...n where graph[i].count > 0 {
+        guard !grouped[i] else {
+            continue
+        }
+        
+        guard graph[i].count < 3 else {
+            doable = false
+            break
+        }
+        
+        guard graph[i].count == 1 else {
+            continue
+        }
+        
+        grouped[i] = true
+        var u = graph[i][0]
+        
+        while true {
+            grouped[u] = true
+            
+            let friends = graph[u]
+            
+            if friends.count == 1 {
+                break
+            }
+            
+            let newMember = friends.filter { grouped[$0] == false }
+            
+            if newMember.isEmpty {
+                doable = false
+                break overall
+            }
+            
+            u = newMember[0]
+        }
+    }
+    
+    for i in 1...n where graph[i].count > 0 && grouped[i] == false {
+        doable = false
+        break
+    }
+
+    print(doable ? "Yes" : "No")
     
     // ===============
     // actual code end
