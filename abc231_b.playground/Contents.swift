@@ -74,7 +74,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         voteFor[name, default: 0] += 1
     }
     
-    print(voteFor.sorted(by: { $0.value > $1.value })[0].key)
+    print(voteFor.max(by: {$0.value < $1.value})!.key)
     
     // ===============
     // actual code end
