@@ -50,41 +50,60 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    struct Path: CustomStringConvertible {
-        let to: Int
-        let distance: Int
+    enum State: String, CustomStringConvertible {
+        case decided
+        case connected
+        case untouched
         
         var description: String {
-            return "(to: \(to), distance: \(distance))"
+            return self.rawValue
         }
     }
     
+    let MAXDISTANCE = 100_000
+        
     let n = readInt()
     
-    var minDistance = [0] + [Int](repeating: Int.max, count: n-1)
+    var distance = [Int](repeating: Int.max, count: n)
+    var states = [State](repeating: .untouched, count: n)
     
-    var graph = [[Path]](repeating: [Path](), count: n)
+    var graph = [[Int]](repeating: [Int](repeating: MAXDISTANCE, count: n), count: n)
     
     for i in 0..<n {
         let input = readInts()
         assert(i == input[0])
         
         for j in 0..<input[1] {
-            graph[i].append(Path(to: input[j*2 + 2], distance: input[j*2 + 3]))
+            graph[i][input[j*2 + 2]] = input[j*2 + 3]
         }
     }
     
     func shortestPath(start: Int) {
-        var stack = [start]
+        distance[start] = 0
+        states[start] = .connected
+        var current = start
         
-        while !stack.isEmpty {
-            let current = stack.removeFirst()
-            for p in graph[current] {
-                let newDistance = minDistance[current] + p.distance
-                if newDistance < minDistance[p.to] {
-                    minDistance[p.to] = newDistance
-                    stack.append(p.to)
+        while true {
+            var minCost = Int.max
+
+            for i in 0..<n where states[i] == .connected {
+                if distance[i] < minCost {
+                    current = i
+                    minCost = distance[current]
                 }
+            }
+            
+            guard minCost < Int.max else { break }
+            
+            states[current] = .decided
+            
+            for next in 0..<n where states[next] != .decided {
+                let newDistance = distance[current] + graph[current][next]
+                if newDistance < distance[next] {
+                    distance[next] = newDistance
+                    states[next] = .connected
+                }
+                
             }
         }
         
@@ -93,7 +112,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     shortestPath(start: 0)
     
     for i in 0..<n {
-        print(i, minDistance[i])
+        print(i, distance[i])
     }
     
     // ===============
