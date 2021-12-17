@@ -112,7 +112,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     shortestPath(start: 0)
     
     for i in 0..<n {
-        print(i, distance[i])
+        print(i, distance[i] == MAXDISTANCE ? -1 : distance[i])
     }
     
     // ===============
