@@ -64,7 +64,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
     let n = readInt()
     
-    var distance = [Int](repeating: Int.max, count: n)
+    var distance = [Int?](repeating: nil, count: n)
     var states = [State](repeating: .untouched, count: n)
     
     var graph = [[Int]](repeating: [Int](repeating: MAXDISTANCE, count: n), count: n)
@@ -87,9 +87,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             var minCost = MAXDISTANCE
 
             for i in 0..<n where states[i] == .connected {
-                if distance[i] < minCost {
+                let d = distance[i]!
+                if d < minCost {
                     current = i
-                    minCost = distance[current]
+                    minCost = d
                 }
             }
             
@@ -98,8 +99,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             states[current] = .decided
             
             for next in 0..<n where states[next] != .decided {
-                let newDistance = distance[current] + graph[current][next]
-                if newDistance < distance[next] {
+                let newDistance = distance[current]! + graph[current][next]
+                if distance[next] == nil || newDistance < distance[next]! {
                     distance[next] = newDistance
                     states[next] = .connected
                 }
@@ -112,7 +113,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     shortestPath(start: 0)
     
     for i in 0..<n {
-        print(i, distance[i] == MAXDISTANCE ? -1 : distance[i])
+        print(i, distance[i] ?? -1)
     }
     
     // ===============
