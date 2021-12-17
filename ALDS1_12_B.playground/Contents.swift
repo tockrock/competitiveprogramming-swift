@@ -50,6 +50,52 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    struct Path: CustomStringConvertible {
+        let to: Int
+        let distance: Int
+        
+        var description: String {
+            return "(to: \(to), distance: \(distance))"
+        }
+    }
+    
+    let n = readInt()
+    
+    var minDistance = [0] + [Int](repeating: Int.max, count: n-1)
+    
+    var graph = [[Path]](repeating: [Path](), count: n)
+    
+    for i in 0..<n {
+        let input = readInts()
+        assert(i == input[0])
+        
+        for j in 0..<input[1] {
+            graph[i].append(Path(to: input[j*2 + 2], distance: input[j*2 + 3]))
+        }
+    }
+    
+    func shortestPath(start: Int) {
+        var stack = [start]
+        
+        while !stack.isEmpty {
+            let current = stack.removeFirst()
+            for p in graph[current] {
+                let newDistance = minDistance[current] + p.distance
+                if newDistance < minDistance[p.to] {
+                    minDistance[p.to] = newDistance
+                    stack.append(p.to)
+                }
+            }
+        }
+        
+    }
+    
+    shortestPath(start: 0)
+    
+    for i in 0..<n {
+        print(i, minDistance[i])
+    }
+    
     // ===============
     // actual code end
     // ===============
