@@ -60,7 +60,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
     }
     
-    let MAXDISTANCE = 100_000
+    let MAXDISTANCE = 100_001
         
     let n = readInt()
     
@@ -84,7 +84,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var current = start
         
         while true {
-            var minCost = Int.max
+            var minCost = MAXDISTANCE
 
             for i in 0..<n where states[i] == .connected {
                 if distance[i] < minCost {
@@ -93,7 +93,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
                 }
             }
             
-            guard minCost < Int.max else { break }
+            guard minCost < MAXDISTANCE else { break }
             
             states[current] = .decided
             
