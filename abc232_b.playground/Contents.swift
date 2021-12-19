@@ -66,23 +66,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+    let DoubleALPHABET = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
     let input1 = readChars()
     let input2 = readChars()
-    var diff: Set = [Int]()
     
     let length = input1.count
     
-    func getDiffOf(_ i: Int) -> Int {
-        return ALPHABET.firstIndex(of: input2[i])! + 26 - ALPHABET.firstIndex(of: input1[i]))
+    func getDistanceFor(_ i: Int) -> String.IndexDistance {
+        let first = DoubleALPHABET.firstIndex(of: input1[i])!
+        let second = DoubleALPHABET.lastIndex(of: input2[i])!
+        return DoubleALPHABET.distance(from: first, to: second)
     }
     
-    let base = getDiffOf(0)
+    let base = getDistanceFor(0)
     
     var valid = true
     
-    for i in 1..<length {
-        if base == getDiffOf(i) {
+    for i in 0..<length {
+        if base == getDistanceFor(i) {
             continue
         }
         valid = false

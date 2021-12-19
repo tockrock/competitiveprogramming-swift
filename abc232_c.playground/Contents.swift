@@ -1,8 +1,7 @@
-// https://atcoder.jp/contests/abc232/tasks/abc232_b
-// 2021-12-19 21:05:10
+// https://atcoder.jp/contests/abc232/tasks/abc232_c
+// 2021-12-19 21:53:13
 
 import Foundation
-import Darwin
 let DEBUG = true
 
 struct Example {
@@ -13,35 +12,18 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            abc
-            ijk
             """,
         expected: """
-            Yes
             """)),
     ("2", Example(
         input: """
-            z
-            a
             """,
         expected: """
-            Yes
             """)),
     ("3", Example(
         input: """
-            ppq
-            qqp
             """,
         expected: """
-            No
-            """)),
-    ("4", Example(
-        input: """
-            atcoder
-            atcoder
-            """,
-        expected: """
-            Yes
             """)),
 ]
 
@@ -66,30 +48,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-    let input1 = readChars()
-    let input2 = readChars()
-    var diff: Set = [Int]()
-    
-    let length = input1.count
-    
-    func getDiffOf(_ i: Int) -> Int {
-        return ALPHABET.firstIndex(of: input2[i])! + 26 - ALPHABET.firstIndex(of: input1[i]))
-    }
-    
-    let base = getDiffOf(0)
-    
-    var valid = true
-    
-    for i in 1..<length {
-        if base == getDiffOf(i) {
-            continue
-        }
-        valid = false
-        break
-    }
-    
-    print(valid ? "Yes" : "No")
+    print("foo")
     
     // ===============
     // actual code end
