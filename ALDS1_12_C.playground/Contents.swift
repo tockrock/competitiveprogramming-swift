@@ -49,8 +49,56 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+    struct Path: Equatable {
+        let to: Int
+        let d: Int
+    }
     
-    print("foo")
+    let n = readInt()
+    
+    var graph = [[Path]](repeating: [Path](), count: n)
+    
+    for i in 0..<n {
+        let input = readInts()
+        for j in 1...input[1]{
+            graph[i].append(Path(to: input[j*2], d: input[j*2+1]))
+        }
+    }
+    
+    var d = [Int](repeating: Int.max, count: n)
+
+    func dijkstra(s: Int) {
+        var undecided = [Bool](repeating: true, count: n)
+        
+        d[s] = 0
+        
+        var stack = [Path(to: s, d: 0)]
+        
+        while !stack.isEmpty {
+            stack = stack.sorted(by: {$0.d < $1.d})
+            let current = stack.removeFirst()
+            
+            undecided[current.to] = false
+            
+            for next in graph[current.to] where undecided[next.to] {
+                let newDistance = d[current.to] + next.d
+                guard newDistance < d[next.to] else {
+                    continue
+                }
+                
+                d[next.to] = newDistance
+                stack.append(Path(to: next.to, d: newDistance))
+
+            }
+        }
+
+    }
+    
+    dijkstra(s: 0)
+    
+    for i in 0..<n {
+        print(i, d[i] == Int.max ? -1 : d[i])
+    }
     
     // ===============
     // actual code end
