@@ -27,6 +27,26 @@ let examples: [(String, Example)] = [
             3 1
             4 3
             """)),
+    ("2", Example(
+        input: """
+            7
+            0 3 1 6 2 12 3 7
+            1 0
+            2 1 2 8
+            3 2 4 3 5 53
+            4 2 3 1 5 0
+            5 0
+            6 0
+            """,
+        expected: """
+            0 0
+            1 6
+            2 12
+            3 7
+            4 10
+            5 10
+            6 -1
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -60,8 +80,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     for i in 0..<n {
         let input = readInts()
-        for j in 1...input[1]{
-            graph[i].append(Path(to: input[j*2], d: input[j*2+1]))
+        for j in 0..<input[1]{
+            let k = j + 1
+            graph[i].append(Path(to: input[k*2], d: input[k*2+1]))
         }
     }
     
