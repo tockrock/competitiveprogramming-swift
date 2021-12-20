@@ -43,6 +43,14 @@ let examples: [(String, Example)] = [
         expected: """
             Yes
             """)),
+    ("5", Example(
+        input: """
+            az
+            gf
+            """,
+        expected: """
+            Yes
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -66,23 +74,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let DoubleALPHABET = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+    // referenced: https://atcoder.jp/contests/abc232/submissions/27994948
     let input1 = readChars()
     let input2 = readChars()
     
     let length = input1.count
     
-    func getDistanceFor(_ i: Int) -> String.IndexDistance {
-        let first = DoubleALPHABET.firstIndex(of: input1[i])!
-        let second = DoubleALPHABET.lastIndex(of: input2[i])!
-        return DoubleALPHABET.distance(from: first, to: second)
+    func getDistanceFor(_ i: Int) -> Int {
+        let diff = Int(input2[i].asciiValue! + 26 - input1[i].asciiValue!)
+        // The `mod(26)` is required to support case where it only partially wraps
+        return diff % 26
     }
     
     let base = getDistanceFor(0)
     
     var valid = true
     
-    for i in 0..<length {
+    for i in 1..<length {
         if base == getDistanceFor(i) {
             continue
         }
