@@ -103,3 +103,20 @@ func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
     if n != 1 { primeList.append((n, 1)) }
     return primeList
 }
+// reference https://ioritsutsui.com/permutation-full-enumeration/
+func permutation<T>(_ args: [T]) -> [[T]] {
+    guard args.count > 1 else { return [args] }
+    func rotate(_ arr: [T]) -> [T] { return arr.dropFirst() + [arr.first!] }
+    
+    var rotatedValue = args
+    var result = [[T]]()
+    for _ in 0..<args.count {
+        let head = rotatedValue.first!
+        let tails = Array(rotatedValue.dropFirst())
+        for arr in permutation(tails) {
+            result.append([head] + arr)
+        }
+        rotatedValue = rotate(rotatedValue)
+    }
+    return result
+}
