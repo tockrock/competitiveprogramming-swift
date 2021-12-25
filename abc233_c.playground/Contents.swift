@@ -62,7 +62,46 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (n, x) = readTwoInts()
+    var L = [[Int]]()
+    for _ in 0..<n {
+        let line = readInts()
+        L.append(Array(line[1...]))
+    }
+    
+    var dp = [[Int: Int]](repeating: [Int : Int](), count: n)
+    
+    func solveLine(i: Int, remain: Int) -> Int {
+        var ans = 0
+        for j in L[i] {
+            ans += solveCell(i: i, numb: j, remain: remain)
+        }
+        return ans
+    }
+    
+    func solveCell(i: Int, numb: Int, remain: Int) -> Int {
+        if let prev = dp[i][numb] {
+            return prev
+        }
+        guard remain % numb == 0 else {
+            return 0
+        }
+        let next = remain / numb
+        
+        if i == n - 1 {
+            if next == 1 {
+                return 1
+            }
+            return 0
+        }
+        
+        let solution = solveLine(i: i+1, remain: next)
+        dp[i][numb] = solution
+        return solution
+        
+    }
+    
+    print(solveLine(i: 0, remain: x))
     
     // ===============
     // actual code end
