@@ -12,18 +12,24 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
+            80 94
             """,
         expected: """
+            2
             """)),
     ("2", Example(
         input: """
+            1000 63
             """,
         expected: """
+            0
             """)),
     ("3", Example(
         input: """
+            270 750
             """,
         expected: """
+            48
             """)),
 ]
 
@@ -48,7 +54,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (x, y) = readTwoInts()
+    let count = Int(ceil(Double(y-x)/10))
+    
+    print( count>0 ? count : 0)
+    
     
     // ===============
     // actual code end
