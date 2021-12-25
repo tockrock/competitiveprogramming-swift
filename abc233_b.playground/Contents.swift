@@ -57,7 +57,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (l, r) = readTwoInts()
+    let str = readChars()
+    let modL = l - 1
+    
+    let output: [Character] = str[..<modL] + str[modL..<r].reversed() + str[r...]
+    
+    print(output.reduce("", {$0 + String($1)}))
     
     // ===============
     // actual code end
