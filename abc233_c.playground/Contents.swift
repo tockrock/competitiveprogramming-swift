@@ -39,6 +39,17 @@ let examples: [(String, Example)] = [
         expected: """
             0
             """)),
+    ("2-1", Example(
+        input: """
+            4 200
+            3 10 10 10
+            3 10 10 10
+            5 2 2 2 2 2
+            6 1 1 1 1 1 2
+            """,
+        expected: """
+            225
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -84,14 +95,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             return prev
         }
         guard remain % numb == 0 else {
+            dp[i][numb] = 0
             return 0
         }
         let next = remain / numb
         
         if i == n - 1 {
             if next == 1 {
+                dp[i][numb] = 1
                 return 1
             }
+            dp[i][numb] = 0
             return 0
         }
         
