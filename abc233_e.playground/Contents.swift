@@ -1,5 +1,5 @@
-// https://atcoder.jp/contests/abc233/tasks/abc233_d
-// 2021-12-25 22:14:48
+// https://atcoder.jp/contests/abc233/tasks/abc233_e
+// 2021-12-25 22:41:58
 
 import Foundation
 let DEBUG = true
@@ -12,28 +12,25 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            6 5
-            8 -3 5 7 0 -4
+            1225
             """,
         expected: """
-            3
+            1360
             """)),
     ("2", Example(
         input: """
-            2 -1000000000000000
-            1000000000 -1000000000
+            99999
             """,
         expected: """
-            0
+            111105
             """)),
     ("3", Example(
         input: """
-            7 0
-            5 2 -2 2 -2
+            314159265358979323846264338327950288419716939937510
             """,
         expected: """
+            349065850398865915384738153697722542688574377708317
             """)),
-    
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -57,33 +54,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let (n, k) = readTwoInts()
-    let A = readInts()
+    let ints = readChars().map { Int(String($0))! }
     
+    let count = ints.count
+    
+    var temp = 0
+    var stack = []
     var ans = 0
-    
-    var dp = [Int?](repeating: nil, count: n)
-    
-    var l = n-1
-    while l > -1 {
-        var current = 0
-        
-        var r = l
-        while r < n {
-            current += A[r]
-            if current == k {
-                if dp[r] == nil {
-                    dp[r] = 1
-                }
-                ans += 1
-            }
-            r += 1
-        }
-        
-        l += 1
+    for i in 0..<count {
+        temp += ints[i]
+        ans += temp * Int(pow(10, Double(count - i)))
     }
     
     print(ans)
+    
+    
+    
     
     // ===============
     // actual code end
