@@ -26,14 +26,6 @@ let examples: [(String, Example)] = [
         expected: """
             0
             """)),
-    ("3", Example(
-        input: """
-            7 0
-            5 2 -2 2 -2
-            """,
-        expected: """
-            """)),
-    
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
