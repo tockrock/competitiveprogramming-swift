@@ -61,7 +61,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var ans = 0
 
     for r in 1...n {
+        // calculates the s[l-1] up until r - 1
         mp[s[r-1], default:0] += 1
+        // if s[r]-k matches existing s[l-1], returns the count
         ans += mp[s[r]-k, default:0]
     }
     
