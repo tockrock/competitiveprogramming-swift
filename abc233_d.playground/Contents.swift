@@ -50,29 +50,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     let (n, k) = readTwoInts()
-    let A = readInts()
+    let a = readInts()
     
+    var s = [0]
+    for i in 0..<n {
+        s.append(s[i] + a[i])
+    }
+    
+    var mp = [Int: Int]()
     var ans = 0
-    
-    var dp = [Int?](repeating: nil, count: n)
-    
-    var l = n-1
-    while l > -1 {
-        var current = 0
-        
-        var r = l
-        while r < n {
-            current += A[r]
-            if current == k {
-                if dp[r] == nil {
-                    dp[r] = 1
-                }
-                ans += 1
-            }
-            r += 1
-        }
-        
-        l += 1
+
+    for r in 1...n {
+        mp[s[r-1], default:0] += 1
+        ans += mp[s[r]-k, default:0]
     }
     
     print(ans)
