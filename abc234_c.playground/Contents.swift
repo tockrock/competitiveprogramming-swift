@@ -54,7 +54,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let k = readInt()
+    
+    let binary = String(k, radix: 2)
+    
+    var ans = ""
+    for b in binary {
+        if b == "1" {
+            ans += "2"
+        } else {
+            ans += "0"
+        }
+    }
+    print(ans)
     
     // ===============
     // actual code end
