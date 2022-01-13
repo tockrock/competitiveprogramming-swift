@@ -62,8 +62,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (n, k) = readTwoInts()
     let p = readInts()
     
-    var list = p[..<k].sorted(by: <)
-    print(list[0])
+    var list = p[..<k].sorted(by: >)
+    print(list[k-1])
     
     func insert(_ i: Int, to arr: inout [Int]) {
         
@@ -71,7 +71,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
         while !slice.isEmpty {
             let middle = slice.index(slice.startIndex, offsetBy: slice.count / 2)
-            if i < slice[middle] {
+            if i > slice[middle] {
                 slice = slice[..<middle]
             } else {
                 slice = slice[slice.index(after: middle)...]
@@ -79,12 +79,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             
         }
         arr.insert(i, at: slice.startIndex)
-        arr.removeFirst()
+        arr.removeLast()
     }
     
     for i in k..<n {
         insert(p[i], to: &list)
-        print(list[0])
+        print(list[k-1])
     }
     
     // ===============
