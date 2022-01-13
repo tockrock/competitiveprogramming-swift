@@ -56,35 +56,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    
-    // slice method taken from https://stackoverflow.com/a/55395494
+    // referenced: https://atcoder.jp/contests/abc234/submissions/28399788
     
     let (n, k) = readTwoInts()
     let p = readInts()
     
-    var list = p[..<k].sorted(by: >)
-    print(list[k-1])
+    var list = [Bool](repeating: false, count: n + 1)
+    p[0..<k].forEach{ list[$0] = true }
     
-    func insert(_ i: Int, to arr: inout [Int]) {
-        
-        var slice = arr[...]
-        
-        while !slice.isEmpty {
-            let middle = slice.index(slice.startIndex, offsetBy: slice.count / 2)
-            if i > slice[middle] {
-                slice = slice[..<middle]
-            } else {
-                slice = slice[slice.index(after: middle)...]
-            }
-            
-        }
-        arr.insert(i, at: slice.startIndex)
-        arr.removeLast()
-    }
+    var x = p[0..<k].min()!
+    print(x)
     
     for i in k..<n {
-        insert(p[i], to: &list)
-        print(list[k-1])
+        // bigger number is added and the k-th number will change
+        if x < p[i] {
+            list[p[i]] = true
+            
+            // find the next number that's available
+            repeat {
+                x += 1
+            } while !list[x]
+        }
+        
+        print(x)
     }
     
     // ===============
