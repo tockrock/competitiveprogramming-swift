@@ -56,29 +56,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // referenced: https://atcoder.jp/contests/abc234/submissions/28399788
+    // referenced: https://atcoder.jp/contests/abc234/submissions/28401212
     
-    let (n, k) = readTwoInts()
+    let (_, k) = readTwoInts()
     let p = readInts()
     
-    var list = [Bool](repeating: false, count: n + 1)
-    p[0..<k].forEach{ list[$0] = true }
+    var queue = PriorityQueue<Int>(orderBy: <)
+    p[..<k].forEach { queue.push($0) }
     
-    var x = p[0..<k].min()!
-    print(x)
-    
-    for i in k..<n {
-        // bigger number is added and the k-th number will change
-        if x < p[i] {
-            list[p[i]] = true
-            
-            // find the next number that's available
-            repeat {
-                x += 1
-            } while !list[x]
+    print(queue.heap[0])
+    for e in p[k...] {
+        if e > queue.heap[0] {
+            queue.pop()
+            queue.push(e)
         }
+        print(queue.heap[0])
         
-        print(x)
     }
     
     // ===============
@@ -150,4 +143,31 @@ func permutation<T>(_ args: [T]) -> [[T]] {
         rotatedValue = rotate(rotatedValue)
     }
     return result
+}
+
+// referenced: https://atcoder.jp/contests/abc234/submissions/28401212
+struct PriorityQueue<E> {
+    var heap:[E]=[];let order:(E,E)->Bool
+    var isEmpty:Bool{heap.isEmpty};var count:Int{heap.count}
+    init(_ es:[E]=[], orderBy order:@escaping (E,E)->Bool) {
+        self.order = order;push(contentsOf:es)}
+    mutating func push(_ e:E) {
+        var pos=count;heap.append(e)
+        while pos>0{
+            let parent = (pos - 1) / 2
+            if !order(heap[parent], heap[pos]) {heap.swapAt(pos,parent)}
+            pos = parent}}
+    mutating func push(contentsOf es:[E]) {
+        es.forEach {push($0)}}
+    @discardableResult mutating func pop() -> E? {
+        if count<2 {return heap.popLast()}
+        heap.swapAt(0, count-1)
+        let result = heap.popLast();var pos=0
+        while pos*2+1<count {
+            var next=pos*2+1
+            if next+1<count && order(heap[next+1],heap[next]) {
+                next+=1}
+            guard !order(heap[pos],heap[next]) else {break}
+            heap.swapAt(pos, next);pos=next}
+        return result}
 }
