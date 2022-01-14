@@ -33,6 +33,16 @@ let examples: [(String, Example)] = [
             7
             7
             """)),
+    ("3", Example(
+        input: """
+            3 1
+            1 2 3
+            """,
+        expected: """
+            1
+            2
+            3
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -61,9 +71,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (_, k) = readTwoInts()
     let p = readInts()
     
-    var queue = PriorityQueue<Int>(orderBy: <)
-    p[..<k].forEach { queue.push($0) }
-    
+    var queue = PriorityQueue<Int>(p[..<k])
+
     print(queue.heap[0])
     for e in p[k...] {
         if e > queue.heap[0] {
@@ -71,7 +80,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             queue.push(e)
         }
         print(queue.heap[0])
-        
     }
     
     // ===============
@@ -146,7 +154,7 @@ func permutation<T>(_ args: [T]) -> [[T]] {
 }
 
 // referenced: https://atcoder.jp/contests/abc234/submissions/28401212
-struct PriorityQueue<E> {
+struct PriorityQueue1<E> {
     var heap:[E]=[];let order:(E,E)->Bool
     var isEmpty:Bool{heap.isEmpty};var count:Int{heap.count}
     init(_ es:[E]=[], orderBy order:@escaping (E,E)->Bool) {
@@ -171,3 +179,49 @@ struct PriorityQueue<E> {
             heap.swapAt(pos, next);pos=next}
         return result}
 }
+
+// based on: https://github.com/davecom/SwiftPriorityQueue/blob/7b4aa89d9740779f6123929c3e9e7e6b86b83671/Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift
+struct PriorityQueue<T: Comparable> {
+    var heap = [T](); let order: (T, T) -> Bool
+    init(_ startingValues: ArraySlice<T> = [], order: @escaping (T, T) -> Bool) {
+        self.order = order; push(startingValues) }
+    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
+        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
+    init(_ startingValues: [T], order: @escaping (T, T) -> Bool) {
+        self.init(startingValues[...], order: order)}
+    init(_ startingValues: [T], smallerFirst: Bool = true) {
+        self.init(startingValues[...], smallerFirst: smallerFirst)}
+    var count: Int { heap.count }; var isEmpty: Bool { heap.isEmpty }
+    private mutating func sink(_ index: Int) {
+        var index = index
+        while 2 * index + 1 < count {
+            var j = 2 * index + 1
+            if j < (count - 1) && !order(heap[j], heap[j+1]) { j += 1 }
+            guard !order(heap[index], heap[j]) else { break }
+            heap.swapAt(index, j); index = j } }
+    private mutating func swim(_ index: Int) {
+        var index = index
+        while index > 0 && !order(heap[(index - 1) / 2], heap[index]) {
+            heap.swapAt((index - 1) / 2, index)
+            index = (index - 1) / 2 } }
+    mutating func push(_ element: T) { heap.append(element); swim(count - 1) }
+    mutating func push(_ elements: ArraySlice<T>) { elements.forEach { push($0) } }
+    mutating func push(_ elements: [T]) { push(elements[...]) }
+    mutating func pop() -> T? {
+        guard !isEmpty else { return nil }
+        heap.swapAt(0, count - 1)
+        let first = heap.removeLast()
+        sink(0); return first } }
+extension PriorityQueue: IteratorProtocol {
+    mutating func next() -> T? { return pop() }}
+extension PriorityQueue: Sequence {
+    func makeIterator() -> PriorityQueue<T> { return self }}
+extension PriorityQueue: Collection {
+    var startIndex: Int { return heap.startIndex }
+    var endIndex: Int { return heap.endIndex }
+    subscript(i: Int) -> T { return heap[i] }
+    func index(after i: Int) -> Int { return heap.index(after: i) }}
+extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
+    var description: String { return heap.description }
+    var debugDescription: String { return heap.debugDescription }}
+
