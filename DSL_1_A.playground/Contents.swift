@@ -60,7 +60,33 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func unite(_ x: Int, _ y: Int) {
+        return
+    }
+    func same(_ x: Int, _ y: Int) {
+        print("0")
+    }
+    
+    let (n, q) = readTwoInts()
+    
+    var sets = [[Int]]()
+    for i in 0..<n {
+        sets.append([i])
+    }
+    
+    for _ in 0..<q {
+        let (com, x, y) = readThreeInts()
+        
+        switch com {
+        case 0:
+            unite(x, y)
+        case 1:
+            same(x, y)
+        default:
+            myDebugPrint("Something wrong with input. com: \(com)")
+        }
+    }
+    
     
     // ===============
     // actual code end
