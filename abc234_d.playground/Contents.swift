@@ -196,13 +196,13 @@ struct PriorityQueue<T: Comparable> {
         var index = index
         while 2 * index + 1 < count {
             var j = 2 * index + 1
-            if j < (count - 1) && !order(heap[j], heap[j+1]) { j += 1 }
-            guard !order(heap[index], heap[j]) else { break }
-            heap.swapAt(index, j); index = j } }
+            if j < (count - 1) && order(heap[j+1], heap[j]) { j += 1 }
+            guard order(heap[j], heap[index] ) else { break }
+            heap.swapAt(j, index); index = j } }
     private mutating func swim(_ index: Int) {
         var index = index
-        while index > 0 && !order(heap[(index - 1) / 2], heap[index]) {
-            heap.swapAt((index - 1) / 2, index)
+        while index > 0 && order(heap[index], heap[(index - 1) / 2]) {
+            heap.swapAt(index, (index - 1) / 2)
             index = (index - 1) / 2 } }
     mutating func push(_ element: T) { heap.append(element); swim(count - 1) }
     mutating func push(_ elements: ArraySlice<T>) { elements.forEach { push($0) } }
