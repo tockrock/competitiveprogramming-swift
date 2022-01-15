@@ -174,3 +174,14 @@ struct DisjointSet {
         } else {
             p[a] = b
             if rank[a] == rank[b] { rank[b] += 1 } }}}
+
+// Only for the Book
+extension Array {
+    func outputWithSpace() -> String {
+        return String(
+            self.reduce("") {
+                $0 + "\($1) "
+            }.dropLast(1)
+        )
+    }
+}
