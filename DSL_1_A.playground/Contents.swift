@@ -60,45 +60,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    struct DisjointSet {
-        private var rank: [Int]
-        private var p: [Int]
-        
-        init(_ size: Int) {
-            rank = [Int]()
-            p = [Int]()
-            for x in 0..<size {
-                p.append(x)
-                rank.append(0)
-            }
-        }
-
-        mutating func same(_ x: Int, _ y: Int) -> Bool {
-            return findSet(x) == findSet(y)
-        }
-        
-        mutating func unite(_ x: Int, _ y: Int) {
-            link(findSet(x), findSet(y))
-        }
-        
-        private mutating func findSet(_ x: Int) -> Int {
-            if x != p[x] {
-                p[x] = findSet(p[x])
-            }
-            return p[x]
-        }
-        
-        private mutating func link(_ x: Int, _ y: Int) {
-            if rank[x] > rank[y] {
-                p[y] = x
-            } else {
-                p[x] = y
-                if rank[x] == rank[y] {
-                    rank[y] += 1
-                }
-            }
-        }
-    }
         
     let (n, q) = readTwoInts()
     
@@ -233,3 +194,20 @@ extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String { return heap.description }
     var debugDescription: String { return heap.debugDescription }}
 
+// Based on: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_A&lang=jp
+struct DisjointSet {
+    private var rank: [Int]; private var p: [Int]
+    init(_ size: Int) {
+        rank = [Int](); p = [Int]()
+        for x in 0..<size { p.append(x); rank.append(0) }}
+    mutating func same(_ x: Int, _ y: Int) -> Bool { return findSet(x) == findSet(y) }
+    mutating func unite(_ x: Int, _ y: Int) { link(x, y) }
+    private mutating func findSet(_ x: Int) -> Int {
+        if x != p[x] { p[x] = findSet(p[x]) }
+        return p[x] }
+    private mutating func link(_ x: Int, _ y: Int) {
+        let a = findSet(x), b = findSet(y)
+        if rank[a] > rank[b] { p[b] = a
+        } else {
+            p[a] = b
+            if rank[a] == rank[b] { rank[b] += 1 } }}}
