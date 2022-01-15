@@ -60,33 +60,62 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    func unite(_ x: Int, _ y: Int) {
-        return
+    struct DisjointSet {
+        private var rank: [Int]
+        private var p: [Int]
+        
+        init(_ size: Int) {
+            rank = [Int]()
+            p = [Int]()
+            for x in 0..<size {
+                p.append(x)
+                rank.append(0)
+            }
+        }
+
+        mutating func same(_ x: Int, _ y: Int) -> Bool {
+            return findSet(x) == findSet(y)
+        }
+        
+        mutating func unite(_ x: Int, _ y: Int) {
+            link(findSet(x), findSet(y))
+        }
+        
+        private mutating func findSet(_ x: Int) -> Int {
+            if x != p[x] {
+                p[x] = findSet(p[x])
+            }
+            return p[x]
+        }
+        
+        private mutating func link(_ x: Int, _ y: Int) {
+            if rank[x] > rank[y] {
+                p[y] = x
+            } else {
+                p[x] = y
+                if rank[x] == rank[y] {
+                    rank[y] += 1
+                }
+            }
+        }
     }
-    func same(_ x: Int, _ y: Int) {
-        print("0")
-    }
-    
+        
     let (n, q) = readTwoInts()
     
-    var sets = [[Int]]()
-    for i in 0..<n {
-        sets.append([i])
-    }
-    
+    var ds = DisjointSet(n)
+        
     for _ in 0..<q {
         let (com, x, y) = readThreeInts()
         
         switch com {
         case 0:
-            unite(x, y)
+            ds.unite(x, y)
         case 1:
-            same(x, y)
+            print(ds.same(x, y) ? 1 : 0)
         default:
             myDebugPrint("Something wrong with input. com: \(com)")
         }
     }
-    
     
     // ===============
     // actual code end
