@@ -68,49 +68,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let largeEnough = Int.max - 10
+    // based on: https://atcoder.jp/contests/abc235/submissions/28546537
     let (a, n) = readTwoInts()
     var attempts = [Int: Int]()
     
     func tryNumber(_ x: Int) -> Int {
-        myDebugPrint(x)
         if let cost = attempts[x] { return cost }
-        if x == 1 { return 0 }
-        var smallest = largeEnough
+        if x == n { return 0 }
+        attempts[x] = .max // necessary to avoid loop
+        let multi = String(x * a).count <= String(n).count ? tryNumber(x * a) : Int.max
+        let rot = x >= 10 && x % 10 != 0 ? tryNumber(rotString(x)) : Int.max
+        let result = min(multi, rot)
+        attempts[x] = result == .max ? result : result + 1
         
-        var xString = String(x)
-        let charCount = xString.count
-        
-        var rot = [Int]()
-                
-        for _ in 0..<charCount {
-            let last = String(xString.removeLast())
-            xString = last + xString
-            
-            guard last != "0" else {
-                rot = []
-                continue
-            }
-            let new = Int(xString)!
-            rot.append(new)
-        }
-        
-        rot.reverse()
-        for i in 0..<rot.count {
-            let attempt = rot[i]
-            
-            if attempt % a == 0{
-                attempts[attempt] = tryNumber(attempt / a) + 1
-            }
-            
-            guard let cost = attempts[attempt] else { continue }
-            smallest = min(smallest, cost + i)
-        }
-        return smallest
+        return attempts[x]!
     }
     
-    let cost = tryNumber(n)
-    if cost < largeEnough {
+    func rotString(_ x: Int) -> Int {
+        var s = String(x)
+        let last = String(s.removeLast())
+        return Int(last + s)!
+    }
+    
+    
+    let cost = tryNumber(1)
+    if cost < Int.max {
         print(cost)
     } else {
         print(-1)
