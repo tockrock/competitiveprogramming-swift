@@ -111,6 +111,16 @@ func permutation<T>(_ args: [T]) -> [[T]] {
     }
     return result
 }
+// based on: https://atcoder.jp/contests/abc235/submissions/28562251
+struct Queue<T> {
+    private var data = [T](), pos=0
+    var isEmpty:Bool{ data.count==pos }
+    var front:T?{isEmpty ? nil : data[pos]}
+    mutating func push(_ t:T) { data.append(t) }
+    mutating func push(_ ts:[T]) { data.append(contentsOf: ts) }
+    mutating func pop()->T?{
+        if isEmpty { return nil }
+        pos += 1; return data[pos-1] }}
 
 // based on: https://github.com/davecom/SwiftPriorityQueue/blob/7b4aa89d9740779f6123929c3e9e7e6b86b83671/Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift
 struct PriorityQueue<T: Comparable> {
