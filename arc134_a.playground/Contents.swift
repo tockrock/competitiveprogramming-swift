@@ -34,6 +34,14 @@ let examples: [(String, Example)] = [
         expected: """
             199999992
             """)),
+    ("4", Example(
+        input: """
+            1 12 6
+            0
+            """,
+        expected: """
+            11
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
@@ -64,18 +72,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var count = 0
     
     func required(_ l: Int, _ edge: Int, _ w: Int) -> Int {
-        return Int(ceil(Double(l-edge)/Double(w)))
+        if edge < l {
+            return Int(ceil(Double(l-edge)/Double(w)))
+        }
+        return 0
     }
     
     for next in a {
-        if edge < next {
-            count += required(next, edge, w)
-        }
+        count += required(next, edge, w)
         edge = next + w
     }
-    if edge < l {
-        count += required(l, edge, w)
-    }
+    count += required(l, edge, w)
     
     print(count)
     
