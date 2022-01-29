@@ -57,29 +57,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let (n, l, w) = readThreeInts()
+    let (_, l, w) = readThreeInts()
     let a = readInts()
     
     var edge = 0
-    var next = 0
     var count = 0
     
     func required(_ l: Int, _ edge: Int, _ w: Int) -> Int {
         return Int(ceil(Double(l-edge)/Double(w)))
     }
     
-    while edge < l {
-        if next == n {
-            count += required(l, edge, w)
-            break
+    for next in a {
+        if edge < next {
+            count += required(next, edge, w)
         }
-        
-        if edge < a[next] {
-            count += required(a[next], edge, w)
-        }
-        
-        edge = a[next] + w
-        next += 1
+        edge = next + w
+    }
+    if edge < l {
+        count += required(l, edge, w)
     }
     
     print(count)
