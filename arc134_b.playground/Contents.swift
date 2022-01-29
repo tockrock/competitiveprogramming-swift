@@ -69,15 +69,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var l = 0
     var s = readChars()
     
-    while l < r {
-        let min = s[l..<r].min()!
-        if s[l] == min {
+    let alpha = "abcdefghijklmnopqrstuvwxyz".map {$0}
+    var a = 0
+    
+    while l < r && a < 26 {
+        if s[l] == alpha[a] {
             l += 1
             continue
         }
-        r = s[l..<r].lastIndex(of: min)!
-        s.swapAt(l, r)
+        guard let last = s[l..<r].lastIndex(of: alpha[a]) else {
+            a += 1
+            continue
+        }
+        s.swapAt(l, last)
         l += 1
+        r = last
     }
     
     print(s.reduce("", {$0 + String($1)}))
