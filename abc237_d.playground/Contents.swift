@@ -49,7 +49,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    let S = readChars()
+
+    func inorder(_ i: Int) -> [Int] {
+        guard i < N else {
+            return [i]
+        }
+        if S[i] == "L" {
+            return inorder(i+1) + [i]
+        } else {
+            return [i] + inorder(i+1)
+        }
+    }
+    
+    print(inorder(0).map({String($0)}).joined(separator: " "))
+    
     
     // ===============
     // actual code end
