@@ -68,35 +68,44 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // based on: https://atcoder.jp/contests/abc235/submissions/28546537
     let (a, n) = readTwoInts()
-    var attempts = [Int: Int]()
     
-    func tryNumber(_ x: Int) -> Int {
-        if let cost = attempts[x] { return cost }
-        if x == n { return 0 }
-        attempts[x] = .max // necessary to avoid loop
-        let multi = String(x * a).count <= String(n).count ? tryNumber(x * a) : Int.max
-        let rot = x >= 10 && x % 10 != 0 ? tryNumber(rotString(x)) : Int.max
-        let result = min(multi, rot)
-        attempts[x] = result == .max ? result : result + 1
+    var dp = [Int: Int]()
+    
+    func next(_ i: Int) -> Int {
+        if i == n {
+            return 0
+        }
+        if String(i).count > String(n).count {
+            return Int.max
+        }
+        if let previous = dp[i] {
+            return previous
+        }
         
-        return attempts[x]!
+        var smallest = Int.max
+        dp[i] = smallest
+        
+        let deeper = next(i * a)
+        if deeper < Int.max {
+            smallest = deeper + 1
+        }
+        
+        if i > 10 && i % 10 != 0 {
+            var s = String(i)
+            let last = String(s.removeLast())
+            let rot = next(Int(last+s)!)
+            if rot < Int.max {
+                smallest = min(smallest, rot + 1)
+            }
+        }
+        
+        dp[i] = smallest
+        return smallest
     }
     
-    func rotString(_ x: Int) -> Int {
-        var s = String(x)
-        let last = String(s.removeLast())
-        return Int(last + s)!
-    }
-    
-    
-    let cost = tryNumber(1)
-    if cost < Int.max {
-        print(cost)
-    } else {
-        print(-1)
-    }
+    let ans = next(1)
+    print(ans == Int.max ? -1 : ans)
     
     // ===============
     // actual code end
