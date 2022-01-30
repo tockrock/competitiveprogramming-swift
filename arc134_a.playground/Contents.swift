@@ -73,7 +73,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     func required(_ l: Int, _ edge: Int, _ w: Int) -> Int {
         if edge < l {
-            return Int(ceil(Double(l-edge)/Double(w)))
+            return (l - edge + w - 1) / w
         }
         return 0
     }
