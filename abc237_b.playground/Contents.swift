@@ -56,7 +56,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (H, W) = readTwoInts()
+    var A = [[String]]()
+    for _ in 1...H {
+        A.append(readStrings())
+    }
+    
+    for i in 0..<W {
+        var line = ""
+        for j in 0..<H {
+            line += A[j][i] + " "
+        }
+        line.removeLast()
+        print(line)
+    }
     
     // ===============
     // actual code end
