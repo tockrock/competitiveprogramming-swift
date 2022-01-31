@@ -51,19 +51,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let N = readInt()
     let S = readChars()
+    
+    var ans = [Int]()
 
-    func inorder(_ i: Int) -> [Int] {
+    func inorder(_ i: Int) {
         guard i < N else {
-            return [i]
+            ans.append(i)
+            return
         }
+
         if S[i] == "L" {
-            return inorder(i+1) + [i]
-        } else {
-            return [i] + inorder(i+1)
+            inorder(i+1)
+        }
+        ans.append(i)
+        if S[i] == "R" {
+            inorder(i+1)
         }
     }
+    inorder(0)
     
-    print(inorder(0).map({String($0)}).joined(separator: " "))
+    print(ans.map({String($0)}).joined(separator: " "))
     
     
     // ===============
