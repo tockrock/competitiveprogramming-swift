@@ -65,16 +65,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let S = readStrings()
     let T = readStrings()
     
-    var stations = [String: Bool]()
     for s in S {
-        stations[s] = false
-    }
-    for t in T {
-        stations[t] = true
-    }
-    
-    for s in S {
-        print(stations[s]! ? "Yes" : "No")
+        print(T.contains(s) ? "Yes" : "No")
     }
     
     // ===============
