@@ -68,22 +68,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let n = readString()
+    let n = readInt()
     let limit = 1<<31
-    
-    func checkLimit(_ n: String) -> Bool {
-        guard let n = Int(n) else {
-            return false
-        }
         
-        if -limit <= n && n < limit {
-            return true
-        }
-        
-        return false
-    }
-    
-    print(checkLimit(n) ? "Yes" : "No")
+    print(-limit <= n && n < limit ? "Yes" : "No")
     
     // ===============
     // actual code end
