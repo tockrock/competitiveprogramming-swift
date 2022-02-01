@@ -63,7 +63,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let (_, _) = readTwoInts()
     let S = readStrings()
-    let T = readStrings()
+    let T = Set(readStrings())
     
     for s in S {
         print(T.contains(s) ? "Yes" : "No")
