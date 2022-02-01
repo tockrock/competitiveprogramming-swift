@@ -81,16 +81,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     let n = readInt()
-    var A = [[Int]]()
-    A.append([0])
-    let comb = Array(1...2*n)
+    var A = [[0]]
+    let base_comb = Array((1...2*n).reversed())
     
     for i in 1..<2*n {
         A.append([Int](repeating: 0, count: i+1) + readInts())
     }
     
     func findHappynessFor(_ comb: [Int], _ decided: [Int]) -> Int {
-        if comb.isEmpty {
+        guard !comb.isEmpty else {
             var ans = 0
             for i in 0..<decided.count/2 {
                 ans ^= A[decided[2*i]][decided[2*i + 1]]
@@ -98,19 +97,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             return ans
         }
         var largest = 0
-        let smallest_element = comb[0]
-        let count = comb.count
-        for i in 1..<count {
+        var comb = comb
+        let smallest_element = comb.removeLast()
+        for i in 0..<comb.count {
             var remains = comb
-            remains.remove(at: i)
-            remains.remove(at: 0)
-            let ans = findHappynessFor(remains, decided + [smallest_element, comb[i]])
+            let next = remains.remove(at: i)
+            let ans = findHappynessFor(remains, decided + [smallest_element, next])
             largest = max(largest, ans)
         }
         return largest
     }
     
-    print(findHappynessFor(comb, []))
+    print(findHappynessFor(base_comb, []))
     
     // ===============
     // actual code end
