@@ -34,27 +34,6 @@ let examples: [(String, Example)] = [
             """)),
 ]
 
-class Route {
-    let from: Int
-    let to: Int
-    let realCost: Int
-    var cost: Int = 0
-    
-    init(from: Int, to: Int, realCost: Int) {
-        self.from = from
-        self.to = to
-        self.realCost = realCost
-    }
-}
-extension Route: Comparable {
-    static func < (lhs: Route, rhs: Route) -> Bool {
-        return lhs.cost < rhs.cost
-    }
-    
-    static func == (lhs: Route, rhs: Route) -> Bool {
-        return lhs.cost == rhs.cost
-    }
-}
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // these needs to be in run() to get the overwritten readLine()
@@ -77,46 +56,38 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
+    // referenced totomo1217: https://atcoder.jp/contests/abc237/submissions/28952401
     let (n, m) = readTwoInts()
     let H = [0] + readInts()
-    var maxCost = 0
-    var routes: [[Route]] = .init(repeating: [], count: n + 1)
-    func addRoute(_ from: Int, _ to: Int) -> Route {
-        let cost = H[from] - H[to]
-        if cost < 0 {
-            return Route(from: from, to: to, realCost: cost * 2)
+
+    var routes = [Int: [(to: Int, happiness: Int)]]()
+    func addRoute(_ from: Int, _ to: Int) -> (Int, Int) {
+        let happiness = H[from] - H[to]
+        if happiness < 0 {
+            return (to, happiness * 2)
         }
-        maxCost = max(cost, maxCost)
-        return Route(from: from, to: to, realCost: cost)
+        return (to, happiness)
     }
     for _ in 1...m {
         let (u, v) = readTwoInts()
-        routes[u].append(addRoute(u, v))
-        routes[v].append(addRoute(v, u))
+        routes[u, default: []].append(addRoute(u, v))
+        routes[v, default: []].append(addRoute(v, u))
     }
     
-    func getCalculatedCost(_ route: Route) -> Int {
-        return maxCost - route.realCost
-    }
-    routes.joined().forEach {
-        $0.cost = maxCost - $0.realCost
-    }
+    var que: ArraySlice<(to: Int, happiness: Int)> = [(1, 0)]
+    var happiness = [Int](repeating: Int.min, count: n+1)
     
-    var que = PriorityQueue<Route>(routes[1])
-    var happyness = [0, 0] + [Int](repeating: Int.min, count: n-1)
-    while !que.isEmpty {
-        let route = que.pop()!
-        let newCost = happyness[route.from] + route.realCost
-        myDebugPrint(newCost)
-        guard happyness[route.to] < newCost else {
+    while let route = que.popFirst() {
+        guard route.happiness > happiness[route.to] else {
             continue
         }
-        myDebugPrint("from: \(route.from), to: \(route.to), realCost: \(route.realCost)")
-        happyness[route.to] = newCost
-        que.push(routes[route.to])
+        happiness[route.to] = route.happiness
+        for next in routes[route.to, default: []] {
+            que.append((next.to, route.happiness + next.happiness))
+        }
     }
     
-    print(happyness.max()!)
+    print(happiness.max()!)
 
     // ===============
     // actual code end
