@@ -55,34 +55,43 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // referenced totomo1217: https://atcoder.jp/contests/abc237/submissions/28995669
+    // Attempt to value happiness
     let (n, m) = readTwoInts()
     let H = [0] + readInts()
+    
+    let baseHappiness = Int.max - 10_000_000
 
-    var routes: [[(to: Int, cost: Int)]] = .init(repeating: [], count: n + 1)
-    func addRoute(_ from: Int, _ to: Int) -> (to: Int, cost: Int) {
-        return (to: to, cost: max(0, H[to] - H[from]))
+    var routes: [[(to: Int, happiness: Int)]] = .init(repeating: [], count: n + 1)
+    func addRoute(_ from: Int, _ to: Int) -> (to: Int, happiness: Int) {
+        let happiness = H[from] - H[to]
+        if happiness < 0 {
+            return (to: to, happiness: happiness * 2)
+        }
+        return (to: to, happiness: happiness)
     }
+
     for _ in 1...m {
         let (u, v) = readTwoInts()
         routes[u].append(addRoute(u, v))
         routes[v].append(addRoute(v, u))
     }
-    var ans = 0
-    var queue = PriorityQueue<(to: Int, cost: Int)>([(to: 1, cost:0)], order:{$0.cost <= $1.cost})
-    var cost = [Int](repeating: .max, count: n+1)
+    var queue = PriorityQueue<(to: Int, happiness: Int)>(
+        [(to: 1, happiness: 0)], order:{
+            let base = min($0.happiness, $1.happiness)
+            return $0.happiness - base + baseHappiness >= $1.happiness - base + baseHappiness
+        })
+    var happiness = [Int](repeating: .min, count: n+1)
     while let route = queue.pop() {
-        guard route.cost < cost[route.to] else {
+        guard route.happiness > happiness[route.to] else {
             continue
         }
-        cost[route.to] = route.cost
-        ans = max(ans, H[1] - route.cost - H[route.to])
+        happiness[route.to] = route.happiness
         for newRoute in routes[route.to] {
-            queue.push((newRoute.to, newRoute.cost + route.cost))
+            queue.push((newRoute.to, newRoute.happiness + route.happiness))
         }
     }
     
-    print(ans)
+    print(happiness.max()!)
 
     // ===============
     // actual code end
