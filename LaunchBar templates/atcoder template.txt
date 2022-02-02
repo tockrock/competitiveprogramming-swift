@@ -132,16 +132,12 @@ struct Queue<T> {
         pos += 1; return data[pos-1] }}
 
 // based on: https://github.com/davecom/SwiftPriorityQueue/blob/7b4aa89d9740779f6123929c3e9e7e6b86b83671/Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift
-struct PriorityQueue<T: Comparable> {
+struct PriorityQueue<T> {
     var heap = [T](); let order: (T, T) -> Bool
     init(_ startingValues: ArraySlice<T> = [], order: @escaping (T, T) -> Bool) {
         self.order = order; push(startingValues) }
-    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
-        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
     init(_ startingValues: [T], order: @escaping (T, T) -> Bool) {
         self.init(startingValues[...], order: order)}
-    init(_ startingValues: [T], smallerFirst: Bool = true) {
-        self.init(startingValues[...], smallerFirst: smallerFirst)}
     var count: Int { heap.count }; var isEmpty: Bool { heap.isEmpty }
     private mutating func sink(_ index: Int) {
         var index = index
@@ -163,6 +159,11 @@ struct PriorityQueue<T: Comparable> {
         heap.swapAt(0, count - 1)
         let first = heap.removeLast()
         sink(0); return first } }
+extension PriorityQueue where T: Comparable {
+    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
+        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
+    init(_ startingValues: [T], smallerFirst: Bool = true) {
+        self.init(startingValues[...], smallerFirst: smallerFirst)} }
 extension PriorityQueue: IteratorProtocol {
     mutating func next() -> T? { return pop() }}
 extension PriorityQueue: Sequence {
