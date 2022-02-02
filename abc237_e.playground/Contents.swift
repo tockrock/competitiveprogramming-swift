@@ -71,19 +71,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var ans = 0
     var queue = PriorityQueue<(to: Int, cost: Int)>([(to: 1, cost:0)], order:{$0.cost <= $1.cost})
     var cost = [Int](repeating: .max, count: n+1)
-    cost[1] = 0
     while let route = queue.pop() {
-        guard route.cost == cost[route.to] else {
+        guard route.cost < cost[route.to] else {
             continue
         }
+        cost[route.to] = route.cost
         ans = max(ans, H[1] - route.cost - H[route.to])
         for newRoute in routes[route.to] {
-            let newCost = newRoute.cost + route.cost
-            guard newCost < cost[newRoute.to] else {
-                continue
-            }
-            cost[newRoute.to] = newCost
-            queue.push((newRoute.to, newCost))
+            queue.push((newRoute.to, newRoute.cost + route.cost))
         }
     }
     
