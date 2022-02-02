@@ -34,28 +34,6 @@ let examples: [(String, Example)] = [
             """)),
 ]
 
-class Route {
-    let from: Int
-    let to: Int
-    let realCost: Int
-    var cost: Int = 0
-    
-    init(from: Int, to: Int, realCost: Int) {
-        self.from = from
-        self.to = to
-        self.realCost = realCost
-    }
-}
-extension Route: Comparable {
-    static func < (lhs: Route, rhs: Route) -> Bool {
-        return lhs.cost < rhs.cost
-    }
-    
-    static func == (lhs: Route, rhs: Route) -> Bool {
-        return lhs.cost == rhs.cost
-    }
-}
-
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // these needs to be in run() to get the overwritten readLine()
     func readString () -> String { readLine()! }
@@ -76,47 +54,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-
+    
+    // referenced totomo1217: https://atcoder.jp/contests/abc237/submissions/28995669
     let (n, m) = readTwoInts()
     let H = [0] + readInts()
-    var maxCost = 0
-    var routes: [[Route]] = .init(repeating: [], count: n + 1)
-    func addRoute(_ from: Int, _ to: Int) -> Route {
-        let cost = H[from] - H[to]
-        if cost < 0 {
-            return Route(from: from, to: to, realCost: cost * 2)
-        }
-        maxCost = max(cost, maxCost)
-        return Route(from: from, to: to, realCost: cost)
+
+    var routes: [[(to: Int, cost: Int)]] = .init(repeating: [], count: n + 1)
+    func addRoute(_ from: Int, _ to: Int) -> (to: Int, cost: Int) {
+        return (to: to, cost: max(0, H[to] - H[from]))
     }
     for _ in 1...m {
         let (u, v) = readTwoInts()
         routes[u].append(addRoute(u, v))
         routes[v].append(addRoute(v, u))
     }
-    
-    func getCalculatedCost(_ route: Route) -> Int {
-        return maxCost - route.realCost
-    }
-    routes.joined().forEach {
-        $0.cost = maxCost - $0.realCost
-    }
-    
-    var que = PriorityQueue<Route>(routes[1])
-    var happyness = [0, 0] + [Int](repeating: Int.min, count: n-1)
-    while !que.isEmpty {
-        let route = que.pop()!
-        let newCost = happyness[route.from] + route.realCost
-        myDebugPrint(newCost)
-        guard happyness[route.to] < newCost else {
+    var ans = 0
+    var queue = PriorityQueue<(to: Int, cost: Int)>([(to: 1, cost:0)], order:{$0.cost <= $1.cost})
+    var cost = [Int](repeating: .max, count: n+1)
+    cost[1] = 0
+    while let route = queue.pop() {
+        guard route.cost == cost[route.to] else {
             continue
         }
-        myDebugPrint("from: \(route.from), to: \(route.to), realCost: \(route.realCost)")
-        happyness[route.to] = newCost
-        que.push(routes[route.to])
+        ans = max(ans, H[1] - route.cost - H[route.to])
+        for newRoute in routes[route.to] {
+            let newCost = newRoute.cost + route.cost
+            guard newCost < cost[newRoute.to] else {
+                continue
+            }
+            cost[newRoute.to] = newCost
+            queue.push((newRoute.to, newCost))
+        }
     }
     
-    print(happyness.max()!)
+    print(ans)
 
     // ===============
     // actual code end
@@ -200,16 +171,12 @@ struct Queue<T> {
         pos += 1; return data[pos-1] }}
 
 // based on: https://github.com/davecom/SwiftPriorityQueue/blob/7b4aa89d9740779f6123929c3e9e7e6b86b83671/Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift
-struct PriorityQueue<T: Comparable> {
+struct PriorityQueue<T> {
     var heap = [T](); let order: (T, T) -> Bool
     init(_ startingValues: ArraySlice<T> = [], order: @escaping (T, T) -> Bool) {
         self.order = order; push(startingValues) }
-    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
-        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
     init(_ startingValues: [T], order: @escaping (T, T) -> Bool) {
         self.init(startingValues[...], order: order)}
-    init(_ startingValues: [T], smallerFirst: Bool = true) {
-        self.init(startingValues[...], smallerFirst: smallerFirst)}
     var count: Int { heap.count }; var isEmpty: Bool { heap.isEmpty }
     private mutating func sink(_ index: Int) {
         var index = index
@@ -231,6 +198,11 @@ struct PriorityQueue<T: Comparable> {
         heap.swapAt(0, count - 1)
         let first = heap.removeLast()
         sink(0); return first } }
+extension PriorityQueue where T: Comparable {
+    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
+        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
+    init(_ startingValues: [T], smallerFirst: Bool = true) {
+        self.init(startingValues[...], smallerFirst: smallerFirst)} }
 extension PriorityQueue: IteratorProtocol {
     mutating func next() -> T? { return pop() }}
 extension PriorityQueue: Sequence {
