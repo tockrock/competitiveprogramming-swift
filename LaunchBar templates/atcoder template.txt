@@ -79,7 +79,7 @@ func main(label: String, example: Example) {
     }
     run(
         readLine: { String(inputLines.removeFirst()) },
-        print: { outputLines.append($0.map {"\($0)"}.joined(separator: " ")) }
+        print: { outputLines.append($0.joinedAsString(separator: " ")) }
     )
 }
 
@@ -87,7 +87,7 @@ for example in examples {
     main(label: example.0, example: example.1)
 }
 
-func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.map({"\($0)"}).joined(separator: " ")) } }
+func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.joinedAsString(separator: " ")) } }
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)
@@ -194,3 +194,21 @@ struct DisjointSet {
         } else {
             p[a] = b
             if rank[a] == rank[b] { rank[b] += 1 } }}}
+
+extension Array {
+    /// Returns a new string by concatenating the elements of the sequence,
+    /// adding the given separator between each element.
+    ///
+    /// The following example shows how an array of strings can be joined to a
+    /// single, comma-separated string:
+    ///
+    ///     let numbers = [1, 4, 2, 6]
+    ///     let list = numbers.joinedAsString(separator: ", ")
+    ///     print(list)
+    ///     // Prints "1, 4, 2, 6"
+    ///
+    /// - Parameter separator: A string to insert between each of the elements
+    ///   in this sequence. The default separator is an empty string.
+    /// - Returns:  A single, concatenated string.
+    func joinedAsString(separator: String = "") -> String {
+        self.map {"\($0)"}.joined(separator: separator) } }
