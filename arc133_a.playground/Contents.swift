@@ -58,21 +58,17 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    let n = readInt()
+    let _ = readInt()
     let A = readInts()
     
-    var remove = A[0]
-    for i in 0..<n {
-        guard i + 1 < n else {
-            remove = A[i]
+    var prev = 0
+    for i in A {
+        guard prev <= i else {
             break
         }
-        if A[i] > A[i + 1] {
-            remove = A[i]
-            break
-        }
+        prev = i
     }
-    print(A.filter {$0 != remove}.joinedAsString(separator: " "))
+    print(A.filter {$0 != prev}.joinedAsString(separator: " "))
     
     // ===============
     // actual code end
