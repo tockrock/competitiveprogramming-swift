@@ -58,35 +58,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // referenced totomo1217: https://atcoder.jp/contests/abc237/submissions/28995669
     let (n, m) = readTwoInts()
     let H = [0] + readInts()
-    
-    let baseCost = 10_000_000
-    
+        
     var routes: [[(to: Int, cost: Int)]] = .init(repeating: [], count: n + 1)
     func addRoute(_ from: Int, _ to: Int) -> (to: Int, cost: Int) {
-        let cost = H[to] - H[from]
-        if cost > 0 {
-            return (to, cost * 2)
-        }
-        return (to, cost)
+        return (to, max(0,H[to] - H[from]))
     }
     for _ in 1...m {
         let (u, v) = readTwoInts()
         routes[u].append(addRoute(u, v))
         routes[v].append(addRoute(v, u))
     }
-    var queue = PriorityQueue<(to: Int, cost: Int)>([(to: 1, cost:0)], order:{$0.cost + baseCost <= $1.cost + baseCost})
+    var ans = 0
+    var queue = PriorityQueue<(to: Int, cost: Int)>([(to: 1, cost:0)], order:{$0.cost <= $1.cost})
     var cost = [Int](repeating: .max, count: n+1)
     while let route = queue.pop() {
         guard route.cost < cost[route.to] else {
             continue
         }
         cost[route.to] = route.cost
+        ans = max(ans, H[1] - route.cost - H[route.to])
         for newRoute in routes[route.to] {
             queue.push((newRoute.to, newRoute.cost + route.cost))
         }
     }
     
-    print(-cost.min()!)
+    print(ans)
 
     // ===============
     // actual code end
