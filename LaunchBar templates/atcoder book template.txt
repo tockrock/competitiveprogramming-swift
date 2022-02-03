@@ -190,7 +190,7 @@ extension Array {
     /// Returns a new string by concatenating the elements of the sequence,
     /// adding the given separator between each element.
     ///
-    /// The following example shows how an array of strings can be joined to a
+    /// The following example shows how an array of Ints can be joined to a
     /// single, comma-separated string:
     ///
     ///     let numbers = [1, 4, 2, 6]
