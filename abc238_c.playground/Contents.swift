@@ -54,7 +54,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var ans  = 0
+    
+    for i in 1...n {
+        if i < 10 {
+            ans += i
+            continue
+        }
+        let digit = String(i).count
+        let base = Int(pow(10.0, Double(digit - 1))) - 1
+        ans += i - base
+        ans %= 998244353
+    }
+    
+    print(ans)
     
     // ===============
     // actual code end
