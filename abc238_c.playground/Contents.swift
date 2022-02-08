@@ -54,22 +54,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    
+    // referenced semisagi: https://atcoder.jp/contests/abc238/submissions/29071515
+    
+    let mod = 998244353
+    
     let n = readInt()
+    var ans = 0, l = 1, r: Int, numbCount: Int
     
-    var ans  = 0
-    
-    for i in 1...n {
-        if i < 10 {
-            ans += i
-            continue
-        }
-        let digit = String(i).count
-        let base = Int(pow(10.0, Double(digit - 1))) - 1
-        ans += i - base
-        ans %= 998244353
+    while l <= n {
+        // l <= n < 1_000_000_000_000_000_000 < Int.max
+        r = min(l * 10, n + 1)
+        numbCount = (r - l) % mod // (100 - 1) - (10 - 1) == 100 - 10
+        ans += (numbCount * (numbCount+1) / 2) % mod
+        l = r // Stops at n + 1
     }
     
-    print(ans)
+    print(ans % mod)
+
     
     // ===============
     // actual code end
