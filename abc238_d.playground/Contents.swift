@@ -57,7 +57,46 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    print("foo")
+    // referenced: the official explanation video
+    
+    struct Pair: Hashable {
+        let a: Int
+        let s: Int
+    }
+    
+    let t = readInt()
+    
+    var dp = [Pair: Bool]()
+    
+    func f(a: Int, s: Int) -> Bool {
+        guard s != 0 else { return a == 0 }
+        let pair = Pair(a: a, s: s)
+        if let previous = dp[pair] {
+            return previous
+        }
+        for x in 0...1 {
+            for y in 0...1 {
+                guard x&y == a&1 else { continue }
+                let subtacted = s - x - y
+                guard subtacted >= 0 else { continue }
+                guard subtacted%2 == 0 else { continue }
+                guard f(a: a>>1, s: (subtacted)>>1) else { continue }
+                dp[pair] = true
+                return true
+            }
+        }
+        dp[pair] = false
+        return false
+    }
+    
+    func solve() {
+        let (a, s) = readTwoInts()
+        print(f(a: a, s: s) ? "Yes" : "No")
+    }
+    
+    for _ in 0..<t {
+        solve()
+    }
     
     // ===============
     // actual code end
