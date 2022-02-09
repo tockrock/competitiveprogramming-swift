@@ -96,7 +96,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     for _ in 0..<t {
         let (a, s) = readTwoInts()
-        print(f(a: a, s: s) ? "Yes" : "No")
+//        print(f(a: a, s: s) ? "Yes" : "No")
+        let b = s - a << 1 // xor
+        print(b >= 0 && a&b == 0 ? "Yes" : "No")
     }
     
     // ===============
