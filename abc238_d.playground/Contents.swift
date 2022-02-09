@@ -64,38 +64,39 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let s: Int
     }
     
-    let t = readInt()
-    
     var dp = [Pair: Bool]()
     
     func f(a: Int, s: Int) -> Bool {
-        guard s != 0 else { return a == 0 }
+        if s == 0 { return a == 0 }
         let pair = Pair(a: a, s: s)
-        if let previous = dp[pair] {
-            return previous
-        }
-        for x in 0...1 {
-            for y in 0...1 {
-                guard x&y == a&1 else { continue }
-                let subtacted = s - x - y
-                guard subtacted >= 0 else { continue }
-                guard subtacted%2 == 0 else { continue }
-                guard f(a: a>>1, s: (subtacted)>>1) else { continue }
-                dp[pair] = true
-                return true
-            }
+        if let previous = dp[pair] { return previous }
+        for (x, y) in [(0, 0), (0, 1), (1, 1)] {
+            // requirements for this digit
+            // if first digit of `a` is 1, then both x & y needs to be 1
+            // if the first digits of `a` is zero, at least one of x & y needs to be 0
+            guard a&1 == x&y else { continue }
+            // subtract the x & y from s to work on the remaining digits
+            let subtracted = s - x - y
+            guard subtracted >= 0 else { continue }
+            // the first digit of the subtracted value needs to be zero
+            guard subtracted&1 == 0 else { continue }
+            
+            // condition for this digits is met
+            // check for the next digits
+            guard f(a: a>>1, s: subtracted>>1) else { continue }
+            
+            dp[pair] = true
+            return true
         }
         dp[pair] = false
         return false
     }
     
-    func solve() {
-        let (a, s) = readTwoInts()
-        print(f(a: a, s: s) ? "Yes" : "No")
-    }
+    let t = readInt()
     
     for _ in 0..<t {
-        solve()
+        let (a, s) = readTwoInts()
+        print(f(a: a, s: s) ? "Yes" : "No")
     }
     
     // ===============
