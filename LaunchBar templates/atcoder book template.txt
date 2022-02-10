@@ -185,6 +185,9 @@ struct DisjointSet {
         } else {
             p[a] = b
             if rank[a] == rank[b] { rank[b] += 1 } }}}
+extension Bool {
+    /// Returns String "Yes" or "No"  depending on the bool value
+    var yN: String { self ? "Yes" : "No" } }
 
 extension Array {
     /// Returns a new string by concatenating the elements of the sequence,

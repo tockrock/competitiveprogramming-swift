@@ -12,7 +12,7 @@ func readString () -> String { readLine()! }
 func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
 func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readChars () -> [Character] {readString().map({$0})}
-func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} }
+func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once Atcoder is updated to 5.5
 func readInt() -> Int { Int(readString())! }
 func readTwoInts() -> (Int, Int) {
     let ints = readInts()
@@ -128,6 +128,10 @@ struct DisjointSet {
         } else {
             p[a] = b
             if rank[a] == rank[b] { rank[b] += 1 } }}}
+
+extension Bool {
+    /// Returns String "Yes" or "No"  depending on the bool value
+    var yN: String { self ? "Yes" : "No" } }
 
 extension Array {
     /// Returns a new string by concatenating the elements of the sequence,
