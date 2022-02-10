@@ -12,7 +12,7 @@ func readString () -> String { readLine()! }
 func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
 func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readChars () -> [Character] {readString().map({$0})}
-func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
+func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} }
 func readInt() -> Int { Int(readString())! }
 func readTwoInts() -> (Int, Int) {
     let ints = readInts()
