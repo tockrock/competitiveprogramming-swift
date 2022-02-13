@@ -14,14 +14,6 @@ func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readChars () -> [Character] {readString().map({$0})}
 func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once Atcoder is updated to 5.5
 func readInt() -> Int { Int(readString())! }
-func readTwoInts() -> (Int, Int) {
-    let ints = readInts()
-    return (ints[0], ints[1])
-}
-func readThreeInts() -> (Int, Int, Int) {
-    let ints = readInts()
-    return (ints[0], ints[1], ints[2])
-}
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)
@@ -134,6 +126,10 @@ extension Bool {
     var yN: String { self ? "Yes" : "No" } }
 
 extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) { (self[0], self[1],
+                                                           self[2], self[3]) }
     /// Returns a new string by concatenating the elements of the sequence,
     /// adding the given separator between each element.
     ///
