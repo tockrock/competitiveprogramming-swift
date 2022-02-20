@@ -9,25 +9,29 @@ func main() {
     // =====================
     
     let (n, x) = readInts().tupled()
-    var diff = [Int]()
     var smallest = 0
     var largest = 0
+    var pq = PriorityQueue<Int>.init([], smallerFirst: false)
+    
     for _ in 0..<n {
         let (a, b) = readInts().tupled()
         smallest += min(a, b)
         largest += max(a, b)
-        diff.append(abs(a - b))
+        pq.push(abs(a - b))
     }
     
-    guard smallest <= x && x <= largest else {
+    if x == smallest || x == largest {
+        print(true.yN)
+        return
+    }
+    
+    guard smallest < x && x < largest else {
         print(false.yN)
         return
     }
     
     let target = x - smallest
-    
-    diff.sort(by: >)
-    
+        
     func approach(i: Int, target: Int) -> Bool {
         if target == 0 {
             return true
@@ -35,10 +39,15 @@ func main() {
         if target < 0 {
             return false
         }
-        if i == n {
+        guard let this = pq.pop() else {
             return false
         }
-        if approach(i: i+1, target: target - diff[i]) {
+        
+        if (n - i) * this < target {
+            return false
+        }
+        
+        if approach(i: i+1, target: target - this) {
             return true
         }
         return approach(i: i+1, target: target)
