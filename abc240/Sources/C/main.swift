@@ -26,6 +26,8 @@ func main() {
     
     let target = x - smallest
     
+    diff.sort(by: >)
+    
     func approach(i: Int, target: Int) -> Bool {
         if target == 0 {
             return true
