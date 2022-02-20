@@ -1,0 +1,51 @@
+import XCTest
+import TestLibrary
+
+let cases: [TestCase] = [
+(#filePath, #line,
+"""
+3
+2 1
+3 1
+""", """
+1 2
+2 2
+1 1
+"""),
+(#filePath, #line,
+"""
+5
+3 4
+5 4
+1 2
+1 4
+""", """
+1 3
+3 3
+2 2
+1 2
+1 1
+"""),
+(#filePath, #line,
+"""
+5
+4 5
+3 2
+5 2
+3 1
+""", """
+1 1
+1 1
+1 1
+1 1
+1 1
+"""),
+]
+
+final class ETests: XCTestCase, TimeLimit {
+    let timeLimit: TimeInterval = 2.0
+
+    func testExample() throws {
+        try cases.forEach(solve)
+    }
+}
