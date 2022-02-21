@@ -10,32 +10,41 @@ func main() {
     
     let (x1, y1, x2, y2) = readInts().tupled()
     
-    func powInt(_ base: Int, _ index: Int) -> Int {
-        return Int(pow(Double(base), Double(index)))
-    }
-
     func calc(x: Int, y: Int) -> Bool {
-        return 5 == powInt(x2 - (x1 + x), 2) + powInt(y2 - (y1 + y), 2)
+        let xT = x1 + x, yT = y1 + y
+        guard let xDiffSquared = pow(x2 - xT, 2) else { return false }
+        guard let yDiffSquared = pow(y2 - yT, 2) else { return false }
+        return 5 == xDiffSquared + yDiffSquared
     }
+    
+    var ans = false
 
     for (x, y) in [(1, 2), (2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1), (-2, 1), (-1, 2)] {
-        
         if calc(x: x, y: y) {
-            print(true.yN)
-            return
+            ans = true
+            break
         }
     }
     
-    print(false.yN)
+    print(ans.yN)
     
     // ===============
     // actual code end
     // ===============
     
-    
 }
 
 main()
+
+/// Power of Ints
+/// - Parameters:
+///   - base: Base number to be powered
+///   - index: The exponent
+/// - Returns: Ints of the exponential number. `nil` if the result is beyond Int.
+func pow(_ base: Int, _ index: Int) -> Int? {
+    let result = pow(Double(base), Double(index))
+    guard result <= Double(Int.max) && result >= Double(Int.min) else { return nil }
+    return Int(result) }
 
 func readString () -> String { readLine()! }
 func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
