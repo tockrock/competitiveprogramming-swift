@@ -8,44 +8,28 @@ func main() {
     // actual code goes here
     // =====================
     
+    
+    // referenced: https://atcoder.jp/contests/abc240/submissions/29518104
+    
     let (n, x) = readInts().tupled()
-    var smallest = 0
-    var largest = 0
-    var pq = PriorityQueue<Int>.init([], smallerFirst: false)
+    var base: Set = [0]
     
     for _ in 0..<n {
-        let (a, b) = readInts().tupled()
-        smallest += min(a, b)
-        largest += max(a, b)
-        pq.push(abs(a - b))
-    }
+        let input = readInts()
+        var next = Set<Int>()
         
-    guard smallest <= x && x <= largest else {
-        print(false.yN)
-        return
-    }
-    
-    let target = x - smallest
-        
-    func approach(target: Int) -> Bool {
-        if target == 0 {
-            return true
-        }
-        if target < 0 {
-            return false
-        }
-        guard let this = pq.pop() else {
-            return false
+        for pos in base {
+            guard pos < x else { continue }
+            
+            for i in input {
+                next.insert(pos + i)
+            }
         }
         
-        if approach(target: target - this) {
-            return true
-        }
-        return approach(target: target)
+        base = next
     }
     
-    print("target: \(target), smallest: \(smallest), largest: \(largest), pq: \(pq)")
-    print(approach(target: target).yN)
+    print(base.contains(x).yN)
     
     // ===============
     // actual code end
