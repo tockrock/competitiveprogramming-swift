@@ -9,27 +9,28 @@ func main() {
     // =====================
     
     
-    // referenced: https://atcoder.jp/contests/abc240/submissions/29518104
+    // referenced: https://atcoder.jp/contests/abc240/submissions/29510814
     
     let (n, x) = readInts().tupled()
-    var base: Set = [0]
+    let clean = [Bool](repeating: false, count: x + 1)
+    var base = clean
+    base[0] = true
     
     for _ in 0..<n {
         let input = readInts()
-        var next = Set<Int>()
+        var next = clean
         
-        for pos in base {
-            guard pos < x else { continue }
-            
+        for pos in 0...x where base[pos] {
             for i in input {
-                next.insert(pos + i)
+                guard i + pos <= x else { continue }
+                next[i + pos] = true
             }
         }
         
         base = next
     }
     
-    print(base.contains(x).yN)
+    print(base[x].yN)
     
     // ===============
     // actual code end
