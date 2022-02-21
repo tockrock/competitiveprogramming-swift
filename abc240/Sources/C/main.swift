@@ -19,20 +19,15 @@ func main() {
         largest += max(a, b)
         pq.push(abs(a - b))
     }
-    
-    if x == smallest || x == largest {
-        print(true.yN)
-        return
-    }
-    
-    guard smallest < x && x < largest else {
+        
+    guard smallest <= x && x <= largest else {
         print(false.yN)
         return
     }
     
     let target = x - smallest
         
-    func approach(i: Int, target: Int) -> Bool {
+    func approach(target: Int) -> Bool {
         if target == 0 {
             return true
         }
@@ -43,17 +38,14 @@ func main() {
             return false
         }
         
-        if (n - i) * this < target {
-            return false
-        }
-        
-        if approach(i: i+1, target: target - this) {
+        if approach(target: target - this) {
             return true
         }
-        return approach(i: i+1, target: target)
+        return approach(target: target)
     }
     
-    print(approach(i: 0, target: target).yN)
+    print("target: \(target), smallest: \(smallest), largest: \(largest), pq: \(pq)")
+    print(approach(target: target).yN)
     
     // ===============
     // actual code end
