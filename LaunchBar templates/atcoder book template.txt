@@ -83,39 +83,40 @@ func /- (lhs: Int, rhs: Int) -> Int {
     if rhs < 0 { return -lhs /- -rhs }
     return lhs >= 0 ? lhs / rhs : (lhs - rhs + 1) / rhs }
 
-func gcd(_ a: Int, _ b: Int) -> Int {
-    if b == 0 { return a }
-    return gcd(b, a%b)
-}
-func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
-    var n = numb, i = 2, primeList = [(Int, Int)]()
-    while i * i <= numb && i <= n {
-        var count = 0
-        while n % i == 0 { n /= i; count += 1 }
-        if count > 0 { primeList.append((i, count)) }
-        i += 1
-    }
-    if n != 1 { primeList.append((n, 1)) }
-    return primeList
-}
+// ==========
+// Extentions
+// ==========
 
-// reference https://ioritsutsui.com/permutation-full-enumeration/
-func permutation<T>(_ args: [T]) -> [[T]] {
-    guard args.count > 1 else { return [args] }
-    func rotate(_ arr: [T]) -> [T] { return arr.dropFirst() + [arr.first!] }
-    
-    var rotatedValue = args
-    var result = [[T]]()
-    for _ in 0..<args.count {
-        let head = rotatedValue.first!
-        let tails = Array(rotatedValue.dropFirst())
-        for arr in permutation(tails) {
-            result.append([head] + arr)
-        }
-        rotatedValue = rotate(rotatedValue)
-    }
-    return result
-}
+extension Bool {
+    /// Returns String "Yes" or "No"  depending on the bool value
+    var yN: String { self ? "Yes" : "No" } }
+
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) { (self[0], self[1],
+                                                           self[2], self[3]) }
+    /// Returns a new string by concatenating the elements of the sequence,
+    /// adding the given separator between each element.
+    ///
+    /// The following example shows how an array of Ints can be joined to a
+    /// single, comma-separated string:
+    ///
+    ///     let numbers = [1, 4, 2, 6]
+    ///     let list = numbers.joinedAsString(separator: ", ")
+    ///     print(list)
+    ///     // Prints "1, 4, 2, 6"
+    ///
+    /// - Parameter separator: A string to insert between each of the elements
+    ///   in this sequence. The default separator is an empty string.
+    /// - Returns:  A single, concatenated string.
+    func joinedAsString(separator: String = "") -> String {
+        self.map {"\($0)"}.joined(separator: separator) } }
+
+// ===============
+// Data Structures
+// ===============
+
 // based on: https://atcoder.jp/contests/abc235/submissions/28562251
 struct Queue<T> {
     private var data = [T](), pos=0
@@ -190,28 +191,40 @@ struct DisjointSet {
         } else {
             p[a] = b
             if rank[a] == rank[b] { rank[b] += 1 } }}}
-extension Bool {
-    /// Returns String "Yes" or "No"  depending on the bool value
-    var yN: String { self ? "Yes" : "No" } }
 
-extension Array {
-    func tupled() -> (Element, Element) { (self[0], self[1]) }
-    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
-    func tupled() -> (Element, Element, Element, Element) { (self[0], self[1],
-                                                           self[2], self[3]) }
-    /// Returns a new string by concatenating the elements of the sequence,
-    /// adding the given separator between each element.
-    ///
-    /// The following example shows how an array of Ints can be joined to a
-    /// single, comma-separated string:
-    ///
-    ///     let numbers = [1, 4, 2, 6]
-    ///     let list = numbers.joinedAsString(separator: ", ")
-    ///     print(list)
-    ///     // Prints "1, 4, 2, 6"
-    ///
-    /// - Parameter separator: A string to insert between each of the elements
-    ///   in this sequence. The default separator is an empty string.
-    /// - Returns:  A single, concatenated string.
-    func joinedAsString(separator: String = "") -> String {
-        self.map {"\($0)"}.joined(separator: separator) } }
+// =========
+// Functions
+// =========
+
+func gcd(_ a: Int, _ b: Int) -> Int {
+    if b == 0 { return a }
+    return gcd(b, a%b)
+}
+func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
+    var n = numb, i = 2, primeList = [(Int, Int)]()
+    while i * i <= numb && i <= n {
+        var count = 0
+        while n % i == 0 { n /= i; count += 1 }
+        if count > 0 { primeList.append((i, count)) }
+        i += 1
+    }
+    if n != 1 { primeList.append((n, 1)) }
+    return primeList
+}
+// reference https://ioritsutsui.com/permutation-full-enumeration/
+func permutation<T>(_ args: [T]) -> [[T]] {
+    guard args.count > 1 else { return [args] }
+    func rotate(_ arr: [T]) -> [T] { return arr.dropFirst() + [arr.first!] }
+    
+    var rotatedValue = args
+    var result = [[T]]()
+    for _ in 0..<args.count {
+        let head = rotatedValue.first!
+        let tails = Array(rotatedValue.dropFirst())
+        for arr in permutation(tails) {
+            result.append([head] + arr)
+        }
+        rotatedValue = rotate(rotatedValue)
+    }
+    return result
+}
