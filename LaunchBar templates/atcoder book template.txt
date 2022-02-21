@@ -70,6 +70,19 @@ for example in examples {
     main(label: example.0, example: example.1)
 }
 func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.joinedAsString(separator: " ")) } }
+
+// =========
+// Operators
+// =========
+
+infix operator /-: MultiplicationPrecedence // FloorDiv
+
+/// FloorDiv
+/// - Returns: Division result floored towards negative infinity
+func /- (lhs: Int, rhs: Int) -> Int {
+    if rhs < 0 { return -lhs /- -rhs }
+    return lhs >= 0 ? lhs / rhs : (lhs - rhs + 1) / rhs }
+
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)

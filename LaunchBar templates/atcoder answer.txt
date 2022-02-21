@@ -14,6 +14,19 @@ func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readChars () -> [Character] {readString().map({$0})}
 func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once Atcoder is updated to 5.5
 func readInt() -> Int { Int(readString())! }
+
+// =========
+// Operators
+// =========
+
+infix operator /-: MultiplicationPrecedence // FloorDiv
+
+/// FloorDiv
+/// - Returns: Division result floored towards negative infinity
+func /- (lhs: Int, rhs: Int) -> Int {
+    if rhs < 0 { return -lhs /- -rhs }
+    return lhs >= 0 ? lhs / rhs : (lhs - rhs + 1) / rhs }
+
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)

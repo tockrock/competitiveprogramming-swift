@@ -84,6 +84,19 @@ func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)
 }
+
+// =========
+// Operators
+// =========
+
+infix operator /-: MultiplicationPrecedence // FloorDiv
+
+/// FloorDiv
+/// - Returns: Division result floored towards negative infinity
+func /- (lhs: Int, rhs: Int) -> Int {
+    if rhs < 0 { return -lhs /- -rhs }
+    return lhs >= 0 ? lhs / rhs : (lhs - rhs + 1) / rhs }
+
 func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
     var n = numb, i = 2, primeList = [(Int, Int)]()
     while i * i <= numb && i <= n {
