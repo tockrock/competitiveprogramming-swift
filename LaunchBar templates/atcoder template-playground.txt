@@ -206,6 +206,16 @@ struct DisjointSet {
 // Functions
 // =========
 
+/// Power of Ints
+/// - Parameters:
+///   - base: Base number to be powered
+///   - index: The exponent
+/// - Returns: Ints of the exponential number. `nil` if the result is beyond Int.
+func pow(_ base: Int, _ index: Int) -> Int? {
+    let result = pow(Double(base), Double(index))
+    guard result <= Double(Int.max) && result >= Double(Int.min) else { return nil }
+    return Int(result) }
+
 func gcd(_ a: Int, _ b: Int) -> Int {
     if b == 0 { return a }
     return gcd(b, a%b)
