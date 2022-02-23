@@ -164,8 +164,8 @@ struct PriorityQueue<T> {
     mutating func pop() -> T? {
         guard !isEmpty else { return nil }
         heap.swapAt(0, count - 1)
-        let first = heap.removeLast()
-        sink(0); return first } }
+        defer { sink(0) }
+        return heap.removeLast() } }
 extension PriorityQueue where T: Comparable {
     init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
         self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
@@ -210,7 +210,7 @@ struct DisjointSet {
 /// - Parameters:
 ///   - base: Base number to be powered
 ///   - index: The exponent
-/// - Returns: Ints of the exponential number. `nil` if the result is beyond Int.
+/// - Returns: Int of the exponential number. `nil` if the result is beyond Int.
 func pow(_ base: Int, _ index: Int) -> Int? {
     let result = pow(Double(base), Double(index))
     guard result <= Double(Int.max) && result >= Double(Int.min) else { return nil }
