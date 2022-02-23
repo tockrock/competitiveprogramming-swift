@@ -11,7 +11,6 @@ func main() {
     let (n, q) = readInts().tupled()
     let Xs = readInts()
     var graph = [[Int]](repeating: [], count: n+1)
-    var searched = [Bool](repeating: false, count: n+1)
     var larger = [[Int]](repeating: [], count: n+1)
     
     for _ in 1..<n {
@@ -21,17 +20,15 @@ func main() {
     }
         
     func generateList(_ i: Int) {
-        searched[i] = true
-        var list = [Xs[i-1]]
-        for next in graph[i] where !searched[next] {
+        larger[i] = [Xs[i-1]]
+        for next in graph[i] where larger[next].isEmpty {
             generateList(next)
-            list.append(contentsOf: larger[next])
-            list.sort(by: >)
-            if list.count > 20 {
-                list = Array(list[0..<20])
+            larger[i].append(contentsOf: larger[next])
+            larger[i].sort(by: >)
+            if larger[i].count > 20 {
+                larger[i] = Array(larger[i][0..<20])
             }
         }
-        larger[i] = list
     }
     generateList(1)
         
