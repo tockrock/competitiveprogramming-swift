@@ -22,15 +22,16 @@ func main() {
         
     func generateList(_ i: Int) {
         searched[i] = true
-        var list = PriorityQueue.init([Xs[i-1]], smallerFirst: false)
+        var list = [Xs[i-1]]
         for next in graph[i] where !searched[next] {
             generateList(next)
-            list.push(larger[next])
+            list.append(contentsOf: larger[next])
+            list.sort(by: >)
+            if list.count > 20 {
+                list = Array(list[0..<20])
+            }
         }
-        for _ in 0..<20 {
-            guard let next = list.pop() else { break }
-            larger[i].append(next)
-        }
+        larger[i] = list
     }
     generateList(1)
         
