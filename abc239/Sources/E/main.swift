@@ -19,58 +19,25 @@ func main() {
         graph[a].append(b)
         graph[b].append(a)
     }
-    
-    func mergeSort(a: [Int], b: [Int]) -> [Int] {
-        var i = 0
-        var j = 0
-        var result = [Int]()
         
-        let aCount = a.count
-        let bCount = b.count
-        
-        while i + j < 20 {
-            guard i < aCount else {
-                let r = min(20-i, bCount)
-                result.append(contentsOf: b[j..<r])
-                break
-            }
-            guard j < bCount else {
-                let r = min(20-j, aCount)
-                result.append(contentsOf: a[i..<r])
-                break
-            }
-            if a[i] > b[j] {
-                result.append(a[i])
-                i += 1
-            } else {
-                result.append(b[j])
-                j += 1
-            }
-        }
-        return result
-    }
-    
-    func merge(_ i: Int) -> [Int] {
+    func generateList(_ i: Int) {
         searched[i] = true
-        var result = [Xs[i-1]]
-        for next in graph[i] {
-            if searched[next] {
-                continue
-            }
-            result = mergeSort(a: result, b: merge(next))
+        var list = PriorityQueue.init([Xs[i-1]], smallerFirst: false)
+        for next in graph[i] where !searched[next] {
+            generateList(next)
+            list.push(larger[next])
         }
-        larger[i] = result
-        return result
+        for _ in 0..<20 {
+            guard let next = list.pop() else { break }
+            larger[i].append(next)
+        }
     }
-    let _ = merge(1)
+    generateList(1)
         
     for _ in 1...q {
         let (v, k) = readInts().tupled()
         print(larger[v][k-1])
     }
-    
-    
-    
     
     // ===============
     // actual code end
