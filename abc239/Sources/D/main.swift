@@ -8,27 +8,39 @@ func main() {
     // actual code goes here
     // =====================
     
-    
-    let primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31,
-              37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
-              79, 83, 89, 97, 101, 103, 107, 109, 113,
-              127, 131, 137, 139, 149, 151, 157, 163,
-              167, 173, 179, 181, 191, 193, 197, 199]
-    let (a, b, c, d) = readInts().tupled()
-    
-    var result = true
-    
-    t: for takahashi in a...b {
-        for prime in primes {
-            let target = prime - takahashi
-            if target >= c && target <= d {
-                continue t
+    func getPrimes(upto n: Int) -> [Bool] {
+        var isPrime = [Bool](repeating: true, count: n + 1)
+        isPrime[0] = false
+        isPrime[1] = false
+        
+        var x = 2
+        
+        while x * x <= n {
+            defer { x += 1 }
+            guard isPrime[x] else { continue }
+            
+            for y in stride(from: x + x, through: n, by: x) {
+                isPrime[y] = false
             }
         }
-        result = false
+        
+        return isPrime
     }
     
-    print(result ? "Aoki" : "Takahashi")
+    let (a, b, c, d) = readInts().tupled()
+    
+    var tWinnable = false
+    
+    let isPrime = getPrimes(upto: 200)
+
+    for takahashi in a...b {
+        if !(c...d).contains(where: { aoki in isPrime[aoki + takahashi]}) {
+            tWinnable = true
+            break
+        }
+    }
+    
+    print(tWinnable ? "Takahashi" : "Aoki")
     
     // ===============
     // actual code end
