@@ -9,37 +9,38 @@ func main() {
     // =====================
     
     let n = readInt()
-    let a = readInts()
+    let As = readInts()
     
     var r = 0
     
     var stack = [Int](repeating: 0, count: n)
     var count = [Int](repeating: 0, count: n)
         
-    for i in 0..<n {
-        let this = a[i]
-        if r == 0 || this == 1 {
-            stack[r] = this
-            count[r] = 1
+    for a in As {
+        defer {
             r += 1
             print(r)
+        }
+        
+        var nextCount = 1
+
+        if r == 0 || a == 1 {
+            stack[r] = a
+            count[r] = nextCount
             continue
         }
         
-        if this == stack[r-1] {
-            if this - count[r-1] == 1 {
-                r -= this - 1
-                print(r)
-                continue
-            }
-            count[r] = count[r - 1] + 1
-        } else {
-            count[r] = 1
+        if a == stack[r-1] {
+            nextCount = count[r-1] + 1
         }
-        stack[r] = this
-        r += 1
-        print(r)
         
+        guard a > nextCount else {
+            r -= nextCount
+            continue
+        }
+        
+        stack[r] = a
+        count[r] = nextCount
     }
     
     // ===============
