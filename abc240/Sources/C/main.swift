@@ -38,13 +38,10 @@ func main() {
             return false
         }
         
-        if approach(target: target - this) {
-            return true
-        }
-        return approach(target: target)
+        return approach(target: target - this) || approach(target: target)
     }
     
-    print("target: \(target), smallest: \(smallest), largest: \(largest), pq: \(pq)")
+//    print("target: \(target), smallest: \(smallest), largest: \(largest), pq: \(pq)")
     print(approach(target: target).yN)
     
     // ===============
