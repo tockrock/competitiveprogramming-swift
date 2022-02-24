@@ -8,7 +8,40 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let n = readInt()
+    
+    var graph = [[Int]](repeating: [], count: n)
+    for _ in 1..<n {
+        let (u, v) = readInts().tupled()
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
+    }
+    
+    var nextLeaf = 1
+    var L = [Int](repeating: Int.max, count: n)
+    var R = [Int](repeating: Int.min, count: n)
+    
+    func walk(to current: Int, from parent: Int?) {
+        for next in graph[current] where next != parent {
+            walk(to: next, from: current)
+            L[current] = min(L[current], L[next])
+            R[current] = max(R[current], R[next])
+        }
+        
+        // leaf node
+        if L[current] == Int.max {
+            L[current] = nextLeaf
+            R[current] = nextLeaf
+            // no leaf can be the same because of constraint
+            nextLeaf += 1
+        }
+    }
+    
+    walk(to: 0, from: nil)
+    
+    for i in 0..<n {
+        print(L[i], R[i])
+    }
     
     // ===============
     // actual code end
