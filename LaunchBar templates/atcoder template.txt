@@ -17,7 +17,7 @@ func readSubsequence () -> [String.SubSequence] { readString().split(separator: 
 func readChars () -> [Character] {readString().map({$0})}
 func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readInt() -> Int { Int(readString())! }
-func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once Atcoder is updated to 5.5
+func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once AtCoder is updated to 5.5
 
 // =========
 // Operators
