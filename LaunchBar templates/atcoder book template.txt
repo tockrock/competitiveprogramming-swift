@@ -36,7 +36,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // ===============
     // actual code end
     // ===============
-
 }
 
 func main(label: String, example: Example) {

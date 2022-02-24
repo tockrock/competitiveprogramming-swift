@@ -8,8 +8,6 @@ func main() {
     // ===============
     // actual code end
     // ===============
-
-
 }
 
 main()
