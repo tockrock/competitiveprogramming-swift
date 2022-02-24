@@ -20,7 +20,8 @@ func main() {
         let input = readInts()
         var next = clean
         
-        for pos in 0...x where base[pos] {
+        for pos in 0...x {
+            guard base[pos] else { continue }
             for i in input {
                 guard i + pos <= x else { continue }
                 next[i + pos] = true
