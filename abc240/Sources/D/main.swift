@@ -8,39 +8,35 @@ func main() {
     // actual code goes here
     // =====================
     
-    let n = readInt()
+    let _ = readLine()
     let As = readInts()
     
-    var r = 0
+    var stack = [(a: Int, count: Int)]()
     
-    var stack = [Int](repeating: 0, count: n)
-    var count = [Int](repeating: 0, count: n)
-        
     for a in As {
         defer {
-            r += 1
-            print(r)
+            print(stack.count)
         }
         
         var nextCount = 1
 
-        if r == 0 || a == 1 {
-            stack[r] = a
-            count[r] = nextCount
+        guard !stack.isEmpty else {
+            stack.append((a, nextCount))
             continue
         }
         
-        if a == stack[r-1] {
-            nextCount = count[r-1] + 1
+        let prev = stack.last!
+        
+        if a == prev.a {
+            nextCount = prev.count + 1
         }
         
-        guard a > nextCount else {
-            r -= nextCount
-            continue
+        stack.append((a, nextCount))
+        
+        if a == nextCount && a > 1 {
+            stack.removeLast(a)
         }
         
-        stack[r] = a
-        count[r] = nextCount
     }
     
     // ===============
