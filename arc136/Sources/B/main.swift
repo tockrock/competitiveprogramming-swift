@@ -35,52 +35,26 @@ func main() {
         let even = i % 2 == 0
                 
         if even {
-            if swap {
-                if oddCount[b] > 0 {
-                    oddCount[b] -= 1
-                    swap.toggle()
-                    continue
-                }
-                if evenCount[b] > 0 {
-                    evenCount[b] -= 1
-                    continue
-                }
-            } else {
-                if evenCount[b] > 0 {
-                    evenCount[b] -= 1
-                    continue
-                }
-                if oddCount[b] > 0 {
-                    oddCount[b] -= 1
-                    swap.toggle()
-                    continue
-                }
+            if evenCount[b] > 0 {
+                evenCount[b] -= 1
+                continue
+            }
+            if oddCount[b] > 0 {
+                oddCount[b] -= 1
+                swap.toggle()
+                continue
             }
             swap = true
             break
         } else {
-            if swap {
-                if evenCount[b] > 0 {
-                    evenCount[b] -= 1
-                    swap.toggle()
-                    continue
-                }
-
-                if oddCount[b] > 0 {
-                    oddCount[b] -= 1
-                    continue
-                }
-
-            } else {
-                if oddCount[b] > 0 {
-                    oddCount[b] -= 1
-                    continue
-                }
-                if evenCount[b] > 0 {
-                    evenCount[b] -= 1
-                    swap.toggle()
-                    continue
-                }
+            if oddCount[b] > 0 {
+                oddCount[b] -= 1
+                continue
+            }
+            if evenCount[b] > 0 {
+                evenCount[b] -= 1
+                swap.toggle()
+                continue
             }
             swap = true
             break
