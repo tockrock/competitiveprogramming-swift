@@ -11,42 +11,54 @@ func main() {
     let n = readInt()
     let A = readInts()
     let B = readInts()
-    var usable = [Bool](repeating: true, count: n)
+    
+    var evenCount = [Int](repeating: 0, count: 5001)
+    var oddCount = [Int](repeating: 0, count: 5001)
+    
+    for i in 0..<n {
+        let a = A[i]
+        
+        let even = i % 2 == 0
+        
+        if even {
+            evenCount[a] += 1
+        } else {
+            oddCount[a] += 1
+        }
+    }
         
     var swap = false
     
-    var i = 0
-    
-    overall: while i < n - 2 {
-        defer { i += 1 }
+    for i in 0..<n {
+        let b = B[i]
         
-        let target = B[i]
-        var j = 0
-        var jCount = 0
-        
-        defer {print(jCount, swap)}
-        
-        while j < n {
-            defer { j += 1 }
-            
-            guard usable[j] else { continue }
-            
-            jCount += 1
-            
-            guard target == A[j] else { continue }
-            
-            usable[j] = false
-            
-            // uses the next number
-            if jCount % 2 == 0 {
-                swap.toggle()
+        let even = i % 2 == 0
+                
+        if even {
+            if evenCount[b] > 0 {
+                evenCount[b] -= 1
+                continue
             }
-                        
-            continue overall
+            if oddCount[b] > 0 {
+                oddCount[b] -= 1
+                swap.toggle()
+                continue
+            }
+            swap = true
+            break
+        } else {
+            if oddCount[b] > 0 {
+                oddCount[b] -= 1
+                continue
+            }
+            if evenCount[b] > 0 {
+                evenCount[b] -= 1
+                swap.toggle()
+                continue
+            }
+            swap = true
+            break
         }
-        
-        swap = false
-        break
     }
     
     print((!swap).yN)
