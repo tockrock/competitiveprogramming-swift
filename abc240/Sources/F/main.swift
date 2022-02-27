@@ -11,18 +11,32 @@ func main() {
     func testCase() {
         let (n, _) = readInts().tupled()
         
-        var nextB = 0
-        var nextA = 0
+        var A = 0, B = 0
         var ans = Int.min
+        
         for _ in 0..<n {
             let (x, y) = readInts().tupled()
-            for _ in 0..<y {
-                nextB += x
-                nextA += nextB
-                ans = max(ans, nextA)
+            
+            func f(k: Int) -> Int {
+                return A + k * (k + 1) / 2 * x + k * B
             }
+
+            let fy = f(k: y)
+            ans = max(ans, f(k: 1))
+            ans = max(ans, fy)
+            
+            if x != 0 {
+                let axis = -(x + 2 * B) /- (2 * x)
+                for a in axis...axis+1 {
+                    if 1 <= a && a <= y {
+                        ans = max(ans, f(k: a))
+                    }
+                }
+            }
+            
+            B += x * y
+            A = fy
         }
-        
         print(ans)
         
     }
