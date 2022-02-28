@@ -8,60 +8,31 @@ func main() {
     // actual code goes here
     // =====================
     
-    let n = readInt()
-    let A = readInts()
-    let B = readInts()
-    
-    var evenCount = [Int](repeating: 0, count: 5001)
-    var oddCount = [Int](repeating: 0, count: 5001)
-    
-    for i in 0..<n {
-        let a = A[i]
+    func solve() -> Bool {
+        let _ = readLine()
+        let A = readInts()
+        let B = readInts()
         
-        let even = i % 2 == 0
+        guard A.sorted() == B.sorted() else { return false }
+        guard Set(A).count == A.count else { return true }
         
-        if even {
-            evenCount[a] += 1
-        } else {
-            oddCount[a] += 1
-        }
-    }
-        
-    var swap = false
-    
-    for i in 0..<n {
-        let b = B[i]
-        
-        let even = i % 2 == 0
-                
-        if even {
-            if evenCount[b] > 0 {
-                evenCount[b] -= 1
-                continue
-            }
-            if oddCount[b] > 0 {
-                oddCount[b] -= 1
-                swap.toggle()
-                continue
-            }
-            swap = true
-            break
-        } else {
-            if oddCount[b] > 0 {
-                oddCount[b] -= 1
-                continue
-            }
-            if evenCount[b] > 0 {
-                evenCount[b] -= 1
-                swap.toggle()
-                continue
-            }
-            swap = true
-            break
-        }
+        return inversion(A) % 2 == inversion(B) % 2
     }
     
-    print((!swap).yN)
+    func inversion(_ a: [Int]) -> Int {
+        var result = 0
+        
+        for i in 0..<a.count {
+            for j in 0..<i {
+                if a[j] > a[i] {
+                    result += 1
+                }
+            }
+        }
+        return result
+    }
+    
+    print(solve().yN)
 
     
     // ===============
