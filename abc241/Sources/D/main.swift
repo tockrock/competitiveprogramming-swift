@@ -8,7 +8,136 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    struct Node {
+        let p: Int
+        var l: Int = -1
+        var r: Int = -1
+        var count = 1
+    }
+    
+    var nodes = [Int: Node]()
+    
+    func addNode(i: Int) {
+        if nodes[i] != nil {
+            nodes[i]!.count += 1
+            return
+        }
+        
+        var next = root!
+        
+        while true {
+            if i > next {
+                if nodes[next]!.r != -1 {
+                    next = nodes[next]!.r
+                    continue
+                }
+                
+                nodes[next]!.r = i
+                nodes[i] = Node(p: next)
+                return
+            } else {
+                if nodes[next]!.l != -1 {
+                    next = nodes[next]!.l
+                    continue
+                }
+                nodes[next]!.l = i
+                nodes[i] = Node(p: next)
+                return
+            }
+        }
+    }
+    
+    func findSmaller(i: Int) -> Int {
+        guard let root = root else {
+            return -1
+        }
+        
+        var next = root
+        
+        while true {
+            guard let node = nodes[next] else { return -1 }
+            if node.r > 0 && node.r < i {
+                next = node.r
+                continue
+            }
+            if next < i {
+                return next
+            }
+            next = node.l
+        }
+    }
+    
+    func findLeft(i: Int, k: Int) -> Int {
+        var count = k
+        var next = findSmaller(i: i)
+        while true {
+            guard let node = nodes[next] else { return -1 }
+            
+            count -= node.count
+            
+            guard count > 0 else {
+                return next
+            }
+            next = findSmaller(i: next)
+        }
+    }
+    
+    func findLarger(i: Int) -> Int {
+        guard let root = root else { return -1 }
+        
+        var next = root
+        
+        while true {
+            guard let node = nodes[next] else { return -1 }
+            if node.l > i {
+                next = node.l
+                continue
+            }
+            if next > i {
+                return next
+            }
+            next = node.r
+        }
+    }
+    
+    func findRight(i: Int, k: Int) -> Int {
+        var count = k
+        var next = findLarger(i: i)
+        while true {
+            guard let node = nodes[next] else { return -1 }
+            
+            count -= node.count
+            
+            guard count > 0 else {
+                return next
+            }
+            next = findLarger(i: next)
+        }
+    }
+    
+    let Q = readInt()
+    
+    var root: Int? = nil
+    
+    for _ in 0..<Q {
+        let input = readInts()
+        
+        switch input[0] {
+        case 1:
+            if root == nil {
+                nodes[input[1]] = Node(p: -1)
+                root = input[1]
+                continue
+            }
+            addNode(i: input[1])
+        case 2:
+            print(findLeft(i: input[1], k: input[2]))
+        case 3:
+            print(findRight(i: input[1], k: input[2]))
+        default:
+            print("Error")
+        }
+    }
     
     // ===============
     // actual code end
@@ -191,3 +320,5 @@ func permutation<T>(_ args: [T]) -> [[T]] {
     }
     return result
 }
+
+
