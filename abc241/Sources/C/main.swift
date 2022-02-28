@@ -53,7 +53,10 @@ func main() {
                 }
                 
                 // to lower left
-                let limitLL = [N-i, j-0, 6].min()!
+                let limitLL = [N-i, j+1, 6].min()!
+                let limitUR = min(i, N-j)
+                
+                guard limitLL + limitUR > 5 else { continue }
                 
                 count = 0
                 for k in 0..<limitLL {
@@ -61,7 +64,6 @@ func main() {
                         count += 1
                     }
                 }
-                
                 if count > 3 {
                     return true
                 }
