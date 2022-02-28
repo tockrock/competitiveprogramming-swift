@@ -9,9 +9,9 @@ import Foundation
 let DEBUG = false
 func myDebugPrint (_ s: Any... ) { if DEBUG { Swift.print(s.joinedAsString(separator: " ")) } }
 func readString () -> String { readLine()! }
+func readChars () -> [Character] { Array(readString()) }
 func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
 func readStrings () -> [String] { readSubsequence().map({String($0)}) }
-func readChars () -> [Character] {readString().map({$0})}
 func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once AtCoder is updated to 5.5
 func readInt() -> Int { Int(readString())! }
 
