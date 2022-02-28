@@ -8,7 +8,72 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    func solve() -> Bool {
+        let N = readInt()
+        var S = [[Bool]]()
+        
+        for _ in 0..<N {
+            let line = readChars()
+            S.append(line.map({$0 == "#"}))
+        }
+        
+        for i in 0..<N {
+            for j in 0..<N {
+                guard S[i][j] else { continue }
+                
+                // horizontal
+                if S[i][j..<min(j+6, N)].filter({$0}).count > 3 {
+                    return true
+                }
+                
+                // vertical
+                var count = 0
+                for k in i..<min(i+6, N) {
+                    if S[k][j] {
+                        count += 1
+                    }
+                }
+                
+                if count > 3 {
+                    return true
+                }
+                
+                // to lower right
+                let limitLR = [N-i, N-j, 6].min()!
+                
+                count = 0
+                for k in 0..<limitLR {
+                    if S[i + k][j + k] {
+                        count += 1
+                    }
+                }
+                
+                if count > 3 {
+                    return true
+                }
+                
+                // to lower left
+                let limitLL = [N-i, j-0, 6].min()!
+                
+                count = 0
+                for k in 0..<limitLL {
+                    if S[i + k][j - k] {
+                        count += 1
+                    }
+                }
+                
+                if count > 3 {
+                    return true
+                }
+                
+            }
+        }
+        
+        return false
+    }
+    
+    print(solve().yN)
+    
     
     // ===============
     // actual code end
