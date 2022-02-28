@@ -8,7 +8,9 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let As = readInts()
+    
+    print(As[As[As[0]]])
     
     // ===============
     // actual code end
