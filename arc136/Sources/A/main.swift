@@ -8,35 +8,39 @@ func main() {
     // actual code goes here
     // =====================
     
-    let n = readInt()
-    let S = readChars()
+    let _ = readLine()
+    var S = readChars()
     
-    var i = 1
-    
-    var ans = [S[0]]
-    var ansCount = 1
-    
-    while i < n {
-        defer { i += 1 }
-        let this = S[i]
-        let prevPos = ansCount - 1
-        switch this {
-        case "A":
-            guard ans[prevPos] == "B" else { fallthrough }
-            ans.insert("A", at: prevPos)
-            ansCount += 1
-        case "B":
-            guard ans[prevPos] == "B" else { fallthrough }
-            ans[prevPos] = "A"
-            
-        default:
-            ans.append(S[i])
-            ansCount += 1
-        }
+    func convertA(S: [Character]) -> [Character] {
+        var result = [Character]()
         
+        for s in S {
+            if s == "A" {
+                result.append(contentsOf: ["B", "B"])
+            } else {
+                result.append(s)
+            }
+        }
+        return result
     }
     
-    print(ans.joinedAsString())
+    func convertBB(S: [Character]) -> [Character] {
+        var result = [Character]()
+        for s in S {
+            if s == "B" && result.last == "B" {
+                result.removeLast()
+                result.append("A")
+            } else {
+                result.append(s)
+            }
+        }
+        return result
+    }
+    
+    S = convertA(S: S)
+    S = convertBB(S: S)
+    
+    print(String(S))
     
     // ===============
     // actual code end
@@ -46,8 +50,8 @@ func main() {
 main()
 
 func readString () -> String { readLine()! }
+func readChars () -> [Character] { Array(readString()) }
 func readSubsequence () -> [String.SubSequence] { readString().split(separator: " ")}
-func readChars () -> [Character] {readString().map({$0})}
 func readStrings () -> [String] { readSubsequence().map({String($0)}) }
 func readInt() -> Int { Int(readString())! }
 func readInts() -> [Int] { readSubsequence().map{Int(String($0))!} } // TODO: remove the String conversion once AtCoder is updated to 5.5
