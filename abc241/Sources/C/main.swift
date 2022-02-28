@@ -40,16 +40,18 @@ func main() {
                 
                 // to lower right
                 let limitLR = [N-i, N-j, 6].min()!
-                
-                count = 0
-                for k in 0..<limitLR {
-                    if S[i + k][j + k] {
-                        count += 1
+                let limitUL = min(i, j)
+                if limitLR + limitUL > 5 {
+                    count = 0
+                    for k in 0..<limitLR {
+                        if S[i + k][j + k] {
+                            count += 1
+                        }
                     }
-                }
-                
-                if count > 3 {
-                    return true
+                    
+                    if count > 3 {
+                        return true
+                    }
                 }
                 
                 // to lower left
