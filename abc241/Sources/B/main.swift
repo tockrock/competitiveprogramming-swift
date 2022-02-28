@@ -8,7 +8,29 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    
+    func solve() -> Bool {
+        let _ = readLine()
+        
+        let As = readInts()
+        let Ms = readInts()
+        
+        var count = [Int: Int]()
+        
+        for a in As {
+            count[a, default: 0] += 1
+        }
+        for m in Ms {
+            guard count[m] != nil else { return false }
+            guard count[m]! > 0 else { return false }
+            count[m]! -= 1
+        }
+
+        return true
+    }
+    
+    print(solve().yN)
+    
     
     // ===============
     // actual code end
