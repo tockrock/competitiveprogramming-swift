@@ -41,6 +41,7 @@ func main() {
                 // to lower right
                 let limitLR = [N-i, N-j, 6].min()!
                 let limitUL = min(i, j)
+                
                 if limitLR + limitUL > 5 {
                     count = 0
                     for k in 0..<limitLR {
@@ -56,7 +57,7 @@ func main() {
                 
                 // to lower left
                 let limitLL = [N-i, j+1, 6].min()!
-                let limitUR = min(i, N-j)
+                let limitUR = min(i, N-j-1)
                 
                 guard limitLL + limitUR > 5 else { continue }
                 
