@@ -48,23 +48,22 @@ func main() {
     }
     
     func findSmaller(i: Int) -> Int {
-        guard let root = root else {
-            return -1
-        }
+        guard let root = root else { return -1 }
         
         var next = root
         
         while true {
-            guard let node = nodes[next] else { return -1 }
-            if node.r > 0 && node.r < i {
+            guard let node = nodes[next] else { break }
+            if 0 < node.r && node.r < i {
                 next = node.r
                 continue
             }
             if next < i {
-                return next
+                break
             }
             next = node.l
         }
+        return next
     }
     
     func findLeft(i: Int, k: Int) -> Int {
@@ -88,16 +87,17 @@ func main() {
         var next = root
         
         while true {
-            guard let node = nodes[next] else { return -1 }
-            if node.l > i {
+            guard let node = nodes[next] else { break }
+            if i < node.l {
                 next = node.l
                 continue
             }
-            if next > i {
-                return next
+            if i < next {
+                break
             }
             next = node.r
         }
+        return next
     }
     
     func findRight(i: Int, k: Int) -> Int {
