@@ -127,19 +127,18 @@ func main() {
     
     for _ in 0..<Q {
         let input = readInts()
-        
         switch input[0] {
         case 1:
-            if root == nil {
-                nodes[input[1]] = Node(p: -1)
+            guard root != nil else {
                 root = input[1]
+                nodes[root!] = Node(p: -1)
                 continue
             }
-            addNode(i: input[1])
+            addNode(x: input[1])
         case 2:
-            print(findLeft(i: input[1], k: input[2]))
+            print(findLeft(x: input[1], k: input[2]))
         case 3:
-            print(findRight(i: input[1], k: input[2]))
+            print(findRight(x: input[1], k: input[2]))
         default:
             print("Error")
         }
@@ -326,5 +325,3 @@ func permutation<T>(_ args: [T]) -> [[T]] {
     }
     return result
 }
-
-
