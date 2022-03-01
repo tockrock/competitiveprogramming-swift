@@ -65,22 +65,7 @@ func main() {
         }
         return next
     }
-    
-    func findLeft(i: Int, k: Int) -> Int {
-        var count = k
-        var next = findSmaller(i: i)
-        while true {
-            guard let node = nodes[next] else { return -1 }
-            
-            count -= node.count
-            
-            guard count > 0 else {
-                return next
-            }
-            next = findSmaller(i: next)
-        }
-    }
-    
+
     func findLarger(i: Int) -> Int {
         guard let root = root else { return -1 }
         
@@ -99,20 +84,41 @@ func main() {
         }
         return next
     }
-    
-    func findRight(i: Int, k: Int) -> Int {
-        var count = k
-        var next = findLarger(i: i)
-        while true {
-            guard let node = nodes[next] else { return -1 }
+
+    func findLeft(x i: Int, k count: Int) -> Int {
+        var count = count
+        var next = i
+        while next > 0 {
+            guard let node = nodes[next] else {
+                next = findSmaller(i: next)
+                continue
+            }
             
             count -= node.count
             
-            guard count > 0 else {
-                return next
+            guard count > 0 else { break }
+            
+            next = findSmaller(i: next)
+        }
+        return next
+    }
+        
+    func findRight(x i: Int, k count: Int) -> Int {
+        var count = count
+        var next = i
+        while next > 0 {
+            guard let node = nodes[next] else {
+                next = findLarger(i: next)
+                continue
             }
+            
+            count -= node.count
+            
+            guard count > 0 else { break }
+            
             next = findLarger(i: next)
         }
+        return next
     }
     
     let Q = readInt()
