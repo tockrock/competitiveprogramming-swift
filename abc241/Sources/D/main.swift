@@ -17,8 +17,8 @@ func main() {
     
     var nodes = [Int: Node]()
     
-    func addNode(i: Int) {
-        if nodes[i] != nil {
+    func addNode(x i: Int) {
+        guard nodes[i] == nil else {
             nodes[i]!.count += 1
             return
         }
@@ -27,22 +27,22 @@ func main() {
         
         while true {
             if i > next {
-                if nodes[next]!.r != -1 {
-                    next = nodes[next]!.r
-                    continue
+                guard nodes[next]!.r > 0 else {
+                    nodes[next]!.r = i
+                    nodes[i] = Node(p: next)
+                    return
                 }
                 
-                nodes[next]!.r = i
-                nodes[i] = Node(p: next)
-                return
+                next = nodes[next]!.r
+                
             } else {
-                if nodes[next]!.l != -1 {
-                    next = nodes[next]!.l
-                    continue
+                guard nodes[next]!.l > 0 else {
+                    nodes[next]!.l = i
+                    nodes[i] = Node(p: next)
+                    return
                 }
-                nodes[next]!.l = i
-                nodes[i] = Node(p: next)
-                return
+
+                next = nodes[next]!.l
             }
         }
     }
