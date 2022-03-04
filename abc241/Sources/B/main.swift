@@ -21,9 +21,8 @@ func main() {
             count[a, default: 0] += 1
         }
         for m in Ms {
-            guard count[m] != nil else { return false }
-            guard count[m]! > 0 else { return false }
-            count[m]! -= 1
+            count[m, default: 0] -= 1
+            guard count[m]! >= 0 else { return false }
         }
 
         return true

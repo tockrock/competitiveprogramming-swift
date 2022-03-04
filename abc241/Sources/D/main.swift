@@ -7,7 +7,80 @@ func main() {
     // =====================
     // actual code goes here
     // =====================
+    
+    
+    enum Commands: Int {
+        case add = 1
+        case smaller = 2
+        case bigger = 3
+    }
+    
+    struct Query {
+        let command: Commands
+        let value: Int
+        let count: Int
+        
+        init(rawQuery: [Int]) {
+            command = Commands(rawValue: rawQuery[0])!
+            value = rawQuery[1]
+            count = rawQuery.count > 2 ? rawQuery[2] : 0
+        }
+    }
 
+    let Q = readInt()
+    var queries = [Query]()
+    for _ in 0..<Q {
+        queries.append(Query(rawQuery: readInts()))
+    }
+    
+    var values = [Int]()
+    
+    for q in queries where q.command == .add {
+        values.append(q.value)
+    }
+    
+    values.sort()
+    
+    var linkedList = LinkedList<Int>()
+    
+    linkedList.append(contestOf: values)
+    
+    var answer = [Int]()
+    
+    for q in queries.reversed() {
+        switch q.command {
+        case .add:
+            let index = linkedList.getIndex { index in values[index] <= q.value  }
+
+            linkedList.removeElement(index: index!)
+        case .smaller:
+            var index = linkedList.getIndex(where: { index in values[index] <= q.value })
+            
+            for _ in 0..<q.count - 1 where index != nil {
+                index = linkedList.getPreviousIndexOf(index: index!)
+            }
+            if let index = index {
+                answer.append(linkedList.getElement(index: index).value)
+            } else {
+                answer.append(-1)
+            }
+        case .bigger:
+            var index = linkedList.getIndex(where: { index in values[index] >= q.value }, reversed: true)
+
+            for _ in 0..<q.count - 1 where index != nil {
+                index = linkedList.getNextIndexOf(index: index!)
+            }
+            if let index = index {
+                answer.append(linkedList.getElement(index: index).value)
+            } else {
+                answer.append(-1)
+            }
+        }
+    }
+        
+    for ans in answer.reversed() {
+        print(ans)
+    }
 
     // ===============
     // actual code end
@@ -15,6 +88,103 @@ func main() {
 }
 
 main()
+
+func binarySearch(start: Int, end: Int, where predicate: (Int) -> Bool ) -> Int {
+    var l = start
+    var r = end
+    
+    while abs(l-r) > 1 {
+        let mid = (l + r) / 2
+        if predicate(mid) {
+            l = mid
+        } else {
+            r = mid
+        }
+    }
+    return l
+}
+
+// First Version for generic linked list
+
+struct LinkedList<T>{
+    var list = [LinkedElement<T>]()
+    var count = 0
+    
+    struct LinkedElement<T> {
+        let index: Int
+        let value: T
+        var previous: Int? = nil
+        var next: Int? = nil
+        var active: Bool = true
+    }
+    
+    mutating func append(_ value: T) {
+        var newElement = LinkedElement(index: count, value: value)
+        defer {
+            list.append(newElement)
+            count += 1
+        }
+        guard count > 0 else { return }
+        
+        newElement.previous = count - 1
+        list[count-1].next = count
+    }
+    mutating func append(contestOf elements: [T]) {
+        elements.forEach { append($0) }
+    }
+    
+    mutating func getPreviousIndexOf(index: Int) -> Int? {
+        guard let previousIndex = list[index].previous else { return nil }
+        let previous = list[previousIndex]
+        guard !previous.active else { return previousIndex }
+        
+        let actual = getPreviousIndexOf(index: previous.index)
+        list[index].previous = actual
+        return actual
+    }
+    mutating func getNextIndexOf(index: Int) -> Int? {
+        guard let nextIndex = list[index].next else { return nil }
+        let next = list[nextIndex]
+        guard !next.active else { return nextIndex }
+        
+        let actual = getNextIndexOf(index: next.index)
+        list[index].next = actual
+        return actual
+    }
+    func getElement(index: Int) -> LinkedElement<T> {
+        return list[index]
+    }
+    mutating func removeElement(index: Int) {
+        let element = list[index]
+        list[index].active = false
+        if let previous = element.previous {
+            list[previous].next = element.next
+        }
+        if let next = element.next {
+            list[next].previous = element.previous
+        }
+    }
+    
+    mutating func getIndex(where predicate: (Int) -> Bool, reversed: Bool = false) -> Int? {
+        let start = !reversed ? -1 : count
+        let end = !reversed ? count : -1
+        
+        let index = binarySearch(start: start, end: end, where: predicate)
+        guard index != start else { return nil }
+        let element = list[index]
+        guard !element.active else { return index }
+        
+        return !reversed ? getPreviousIndexOf(index: index) : getNextIndexOf(index: index)
+    }
+    
+    mutating func getStart() -> Int? {
+        guard list.isEmpty == false else { return nil }
+        let startIndex = list.startIndex
+        guard !list[startIndex].active else { return startIndex }
+        
+        return getNextIndexOf(index: startIndex)
+    }
+}
 
 func readString () -> String { readLine()! }
 func readChars () -> [Character] { Array(readString()) }
