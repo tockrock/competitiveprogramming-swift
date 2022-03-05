@@ -17,60 +17,27 @@ func main() {
             S.append(line.map({$0 == "#"}))
         }
         
+        let pattern = [(0, 1), (1, 1), (1, 0), (1, -1)]
+        
         for i in 0..<N {
             for j in 0..<N {
-                guard S[i][j] else { continue }
-                
-                // horizontal
-                if S[i][j..<min(j+6, N)].filter({$0}).count > 3 {
-                    return true
-                }
-                
-                // vertical
-                var count = 0
-                for k in i..<min(i+6, N) {
-                    if S[k][j] {
-                        count += 1
-                    }
-                }
-                
-                if count > 3 {
-                    return true
-                }
-                
-                // to lower right
-                let limitLR = [N-i, N-j, 6].min()!
-                let limitUL = min(i, j)
-                
-                if limitLR + limitUL > 5 {
-                    count = 0
-                    for k in 0..<limitLR {
-                        if S[i + k][j + k] {
-                            count += 1
+                nextPattern: for (dY, dX) in pattern {
+                    var no = 0
+                    for k in 0..<6 {
+                        let y = i + dY * k
+                        let x = j + dX * k
+                        guard 0 <= y && y < N && 0 <= x && x < N else {
+                            continue nextPattern
+                        }
+                                                
+                        if !S[y][x] { no += 1 }
+                        
+                        guard no <= 2 else {
+                            continue nextPattern
                         }
                     }
-                    
-                    if count > 3 {
-                        return true
-                    }
-                }
-                
-                // to lower left
-                let limitLL = [N-i, j+1, 6].min()!
-                let limitUR = min(i, N-j-1)
-                
-                guard limitLL + limitUR > 5 else { continue }
-                
-                count = 0
-                for k in 0..<limitLL {
-                    if S[i + k][j - k] {
-                        count += 1
-                    }
-                }
-                if count > 3 {
                     return true
                 }
-                
             }
         }
         
