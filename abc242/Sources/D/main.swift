@@ -9,20 +9,18 @@ func main() {
     // =====================
     
     let S = readChars()
+    func encode(_ c: Character) -> Int {
+        return ["A", "B", "C"].firstIndex(of: c)!
+    }
     
     func getPrevious(t: Int, k: Int) -> Int {
         guard t > 0 else {
-            switch S[k] {
-            case "A":
-                return 0
-            case "B":
-                return 1
-            case "C":
-                return 2
-            default:
-                return 3
-            }
+            return encode(S[k])
         }
+        guard k > 0 else {
+            return (encode(S[k]) + t) % 3
+        }
+        
         var previous = getPrevious(t: t - 1, k: k / 2)
         
         if k % 2 == 1 {
@@ -37,16 +35,7 @@ func main() {
     let Q = readInt()
     for _ in 1...Q {
         let (t, k) = readInts().tupled()
-        switch getPrevious(t: t, k: k-1) {
-        case 0:
-            print("A")
-        case 1:
-            print("B")
-        case 2:
-            print("C")
-        default:
-            print("Error")
-        }
+        print(["A", "B", "C"][getPrevious(t: t, k: k-1)])
     }
     
     
