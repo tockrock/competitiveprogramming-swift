@@ -40,6 +40,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
+    // let mod = 1000000007
+    let mod = 998244353
+
     print("foo")
     
     // ===============

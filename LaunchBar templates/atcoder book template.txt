@@ -27,6 +27,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInt() -> Int { Int(readString())! }
     func readInts() -> [Int] { readSubsequence().map{Int($0)!} }
     
+    // let mod = 1000000007
+    let mod = 998244353
+
     // =====================
     // actual code goes here
     // =====================
