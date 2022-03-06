@@ -8,7 +8,7 @@ func main() {
     // actual code goes here
     // =====================
     
-    let S = readChars()
+    let S = readString()
     
     print(String(S.sorted()))
     
