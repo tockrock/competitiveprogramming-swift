@@ -10,11 +10,14 @@ func main() {
     func solve() -> Double {
         let (A, B, C, X) = readInts().tupled()
         
-        guard X > A else { return 1.0 }
-        guard X <= B else { return 0.0}
-        
-        return Double(C) / Double(B-A)
-        
+        switch X {
+        case 1...A:
+            return 1.0
+        case A+1...B:
+            return Double(C) / Double(B-A)
+        default:
+            return 0.0
+        }
     }
     
     print(solve())
