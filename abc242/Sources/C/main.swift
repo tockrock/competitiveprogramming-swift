@@ -11,22 +11,17 @@ func main() {
     let N = readInt()
     let mod = 998244353
     
-    var previous = [Int](repeating: 1, count: 11)
-    previous[0] = 0
-    previous[10] = 0
+    var previous = [Int](repeating: 1, count: 9)
+    let clear = [Int](repeating: 0, count: 9)
     
     for _ in 2...N {
-        var next = [0] // 0
-        for j in 1...9 {
-            var this = 0
-            this += previous[j-1]
-            this += previous[j]
-            this += previous[j+1]
-            this %= mod
-            
-            next.append(this)
+        var next = clear
+        for i in 0..<9 {
+            for d in (-1...1) where (0..<9).contains(d+i) {
+                next[i] += previous[i+d]
+            }
+            next[i] %= mod
         }
-        next.append(0) // 10
         previous = next
     }
     
