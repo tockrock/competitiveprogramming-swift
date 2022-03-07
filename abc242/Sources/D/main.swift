@@ -13,13 +13,14 @@ func main() {
     func encode(_ c: Character) -> Int {
         return abc.firstIndex(of: c)!
     }
+    let firstLetter = encode(S[0])
     
     func getPrevious(t: Int, k: Int) -> Int {
         guard t > 0 else {
             return encode(S[k])
         }
         guard k > 0 else {
-            return (encode(S[k]) + t) % 3
+            return (firstLetter + t) % 3
         }
         
         var previous = getPrevious(t: t - 1, k: k / 2)
