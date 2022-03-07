@@ -9,8 +9,9 @@ func main() {
     // =====================
     
     let S = readChars()
+    let abc: [Character] = ["A", "B", "C"]
     func encode(_ c: Character) -> Int {
-        return ["A", "B", "C"].firstIndex(of: c)!
+        return abc.firstIndex(of: c)!
     }
     
     func getPrevious(t: Int, k: Int) -> Int {
@@ -35,7 +36,7 @@ func main() {
     let Q = readInt()
     for _ in 1...Q {
         let (t, k) = readInts().tupled()
-        print(["A", "B", "C"][getPrevious(t: t, k: k-1)])
+        print(abc[getPrevious(t: t, k: k-1)])
     }
     
     
