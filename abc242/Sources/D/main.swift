@@ -24,10 +24,10 @@ func main() {
         
         var previous = getPrevious(t: t - 1, k: k / 2)
         
-        if k % 2 == 1 {
-            previous += 2
-        } else {
+        if k % 2 == 0 {
             previous += 1
+        } else {
+            previous += 2
         }
         
         return previous % 3
