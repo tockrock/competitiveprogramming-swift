@@ -42,21 +42,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // Solution using combination
     
     func combination(n: Int, r: Int) -> Int {
-        var permutation = 1
-        for i in 0..<r {
-            permutation *= n - i
-        }
-        var factor = 1
-        for i in 1...r {
-            factor *= i
-        }
-        return permutation / factor
+        return (n-r+1...n).reduce(1, *) / (1...r).reduce(1, *)
     }
     
     let input = readLine()!.split(separator: " ").map { Int($0)! }
     let N = input[0]
     let M = input[1]
-    
+
     print(combination(n: N+M-1, r: M))
     
     
