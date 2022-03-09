@@ -1,5 +1,0 @@
-    ("", Example(
-        input: """
-            """,
-        expected: """
-            """)),
