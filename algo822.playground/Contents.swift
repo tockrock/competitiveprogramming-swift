@@ -39,39 +39,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    // Solution using combination
     
-    // Using Dynamic Programming
-    struct Set: Equatable, Hashable {
-        let count: Int
-        let target: Int
+    func combination(n: Int, r: Int) -> Int {
+        var permutation = 1
+        for i in 0..<r {
+            permutation *= n - i
+        }
+        var factor = 1
+        for i in 1...r {
+            factor *= i
+        }
+        return permutation / factor
     }
     
-    let input = readLine()!.split(separator: " ").map {Int($0)!}
+    let input = readLine()!.split(separator: " ").map { Int($0)! }
     let N = input[0]
     let M = input[1]
     
-    var dp = [Set: Int]()
-    func solve(count: Int, target: Int) -> Int {
-        guard count > 1 else {
-            return 1
-        }
-        guard target > 0 else {
-            return 1
-        }
-        let set = Set(count: count, target: target)
-        if let previous = dp[set] {
-            return previous
-        }
-        var total = 0
-        for i in 0...target {
-            total += solve(count: count - 1, target: target - i)
-        }
-        
-        dp[set] = total
-        return total
-    }
+    print(combination(n: N+M-1, r: M))
     
-    print(solve(count: N, target: M))
     
     // ===============
     // actual code end
