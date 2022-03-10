@@ -67,6 +67,15 @@ let examples: [(String, Example)] = [
             """)),
 ]
 
+// Extentions
+
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) {
+        (self[0], self[1], self[2], self[3]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
@@ -84,8 +93,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
 
     func solve() -> Int {
-        let input = readInts()
-        let N = input[0], M = input[1]
+        let (N, M) = readInts().tupled()
         let Xs = readInts()
         
         let total = Xs.reduce(0, +)
