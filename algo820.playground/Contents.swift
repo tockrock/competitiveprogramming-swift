@@ -40,15 +40,40 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) {
+        (self[0], self[1], self[2], self[3]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+        
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
+    func combination(n: Int, r: Int) -> Int {
+        let smaller = min(n-r, r)
+        guard smaller >= 0 else { return 0 }
+        guard smaller > 0 else { return 1 }
+        let larger = n - smaller
+        return (larger+1...n).reduce(1, *) / (1...smaller).reduce(1, *)
+    }
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func solve() -> Int {
+        let (N, M) = readInts().tupled()
+        let Xs = readInts()
+        
+        let xTotal = Xs.reduce(0, +)
+        
+        let diff = xTotal - M
+        return combination(n: N + diff - 1, r: diff)
+    }
     
-    print("foo")
+    print(solve())
     
     // ===============
     // actual code end
@@ -86,4 +111,4 @@ for example in examples {
     main(label: example.0, example: example.1)
 }
 
-func myDebugPrint (_ s: Any... ) { Swift.print(s.joinedAsString(separator: " ")) }
+func myDebugPrint (_ s: Any... ) { Swift.print(s.map {"\($0)"}.joined(separator: " ")) }
