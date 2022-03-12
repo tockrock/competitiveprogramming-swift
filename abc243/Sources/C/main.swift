@@ -34,7 +34,7 @@ func main() {
         case .left:
             yLeft[p.y] = max(yLeft[p.y, default: Int.min], p.x)
         case .right:
-            yRight[p.y] = min(yLeft[p.y, default: Int.max], p.x)
+            yRight[p.y] = min(yRight[p.y, default: Int.max], p.x)
         }
     }
     
