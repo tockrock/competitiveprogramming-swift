@@ -11,7 +11,43 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    enum Direction: Character {
+        case right = "R"
+        case left = "L"
+    }
+    
+    let N = readInt()
+    
+    var peoples = [(x: Int, y: Int)]()
+    for _ in 0..<N {
+        peoples.append(readInts().tupled())
+    }
+    let S = readChars()
+        
+    var yLeft = [Int: Int]()
+    var yRight = [Int: Int]()
+    
+    for i in 0..<N {
+        let dir = Direction(rawValue: S[i])!
+        let p = peoples[i]
+        switch dir {
+        case .left:
+            yLeft[p.y] = max(yLeft[p.y, default: Int.min], p.x)
+        case .right:
+            yRight[p.y] = min(yLeft[p.y, default: Int.max], p.x)
+        }
+    }
+    
+    var ans = false
+
+    for (y, lX) in yLeft {
+        guard let rX = yRight[y] else { continue }
+        guard rX < lX else { continue }
+        ans = true
+        break
+    }
+    
+    print(ans.yN)
     
     // ===============
     // actual code end
