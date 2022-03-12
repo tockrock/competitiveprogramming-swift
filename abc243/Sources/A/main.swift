@@ -11,7 +11,17 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (V, A, B, C) = readInts().tupled()
+    
+    var left = V % (A + B + C)
+    
+    for (use, person) in [(A, "F"), (B, "M"), (C, "T")] {
+        left -= use
+        guard left >= 0 else {
+            print(person)
+            break
+        }
+    }
     
     // ===============
     // actual code end
