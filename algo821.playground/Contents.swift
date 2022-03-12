@@ -30,15 +30,33 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) {
+        (self[0], self[1], self[2], self[3]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
     
-    print("foo")
+    func combination(n: Int, r: Int) -> Int {
+        let smaller = min(n-r, r)
+        guard smaller >= 0 else { return 0 }
+        guard smaller > 0 else { return 1 }
+        let start = n - smaller + 1
+        return (start...n).reduce(1, *) / (1...smaller).reduce(1, *)
+    }
+    
+    let (N, M) = readInts().tupled()
+    
+    print(combination(n: N+M, r: M))
     
     // ===============
     // actual code end
