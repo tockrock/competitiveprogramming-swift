@@ -20,20 +20,20 @@ func main() {
     let (_, X) = readInts().tupled()
     let S = readChars()
     
-    var current = X
+    var current = Array(String(X, radix: 2))
     for s in S {
         let move = Movement(rawValue: s)!
         switch move {
         case .up:
-            current /= 2
+            current.removeLast()
         case .left:
-            current *= 2
+            current.append("0")
         case .right:
-            current = current * 2 + 1
+            current.append("1")
         }
     }
     
-    print(current)
+    print(Int(String(current), radix: 2)!)
     
     // ===============
     // actual code end
