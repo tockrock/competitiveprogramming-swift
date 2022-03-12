@@ -11,7 +11,25 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    let A = readInts()
+    let B = readInts()
+    
+    var same = 0
+    var diff = 0
+    
+    for i in 0..<N {
+        if A[i] == B[i] {
+            same += 1
+            continue
+        }
+        
+        if B.contains(A[i]) {
+            diff += 1
+        }
+    }
+    print(same)
+    print(diff)
     
     // ===============
     // actual code end
