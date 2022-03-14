@@ -11,7 +11,48 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    // Referenced the official guide
+    // https://atcoder.jp/contests/abc243/editorial/3561
+    
+    let (N, M) = readInts().tupled()
+    
+    // Get the paths
+    var paths = [(from: Int, to: Int, distance: Int)]()
+    for _ in 0..<M {
+        let (A, B, C) = readInts().tupled()
+        paths.append((from: A-1, to: B-1, distance: C))
+    }
+    
+    // Generate graph with the given paths
+    let initGraph = [Int](repeating: Int.max/2, count: N)
+    var graph = [[Int]](repeating: initGraph, count: N)
+    for (from, to, distance) in paths {
+        graph[from][to] = distance
+        graph[to][from] = distance
+    }
+        
+    // Find if there are shorter path via another node
+    for via in 0..<N {
+        for from in 0..<N {
+            for to in 0..<N {
+                graph[from][to] = min(graph[from][to], graph[from][via] + graph[via][to])
+            }
+        }
+    }
+            
+    // Find if the original paths are needed for the shortest path
+    var answer = 0
+    nextPath: for (from, to, distance) in paths {
+        for via in 0..<N {
+            guard graph[from][via] + graph[via][to] >= distance else {
+                continue
+            }
+            answer += 1
+            continue nextPath
+        }
+    }
+    
+    print(answer)
     
     // ===============
     // actual code end
