@@ -6,75 +6,12 @@ import Foundation
 // let mod = 1000000007
 let mod = 998244353
 
-struct Path {
-    let from: Int
-    let to: Int
-    let d: Int
-    let path: [Int]
-}
-
-extension Path: Comparable {
-    static func < (lhs: Path, rhs: Path) -> Bool {
-        return lhs.d < rhs.d
-    }
-}
-
 func main() {
     // =====================
     // actual code goes here
     // =====================
     
-    // Sample passes locally
-    
-    let (N, M) = readInts().tupled()
-    var graph = [[Path]](repeating: [], count: N+1)
-    for i in 0..<M {
-        let (A, B, C) = readInts().tupled()
-        graph[A].append(Path(from: A, to: B, d: C, path: [i]))
-        graph[B].append(Path(from: B, to: A, d: C, path: [i]))
-    }
-    var removablePath = [Bool](repeating: true, count: M)
-    
-    func dijkstra(from: Int, to: Int) -> [Int] {
-        var pathTo = [[Int]](repeating: [], count: N + 1)
-        
-        var pq = PriorityQueue<Path>.init(graph[from], smallerFirst: true)
-        
-        while true {
-            guard let current = pq.pop() else { break }
-            guard pathTo[current.to].isEmpty else { continue }
-            
-            pathTo[current.to] = current.path
-            
-            guard current.to != to else { break }
-            
-            for next in graph[current.to] {
-                guard next.to != from else { continue }
-                guard pathTo[next.to].isEmpty else { continue }
-                let new = Path(
-                    from: next.from,
-                    to: next.to,
-                    d: current.d + next.d,
-                    path: current.path + next.path)
-                
-                pq.push(new)
-            }
-        }
-        return pathTo[to]
-    }
-    
-    for i in 1..<N {
-        for j in i+1...N {
-            let paths = dijkstra(from: i, to: j)
-            for path in paths {
-                removablePath[path] = false
-            }
-            
-        }
-    }
-    
-    print(removablePath.filter({$0}).count)
-    
+    print("foo")
     
     // ===============
     // actual code end
