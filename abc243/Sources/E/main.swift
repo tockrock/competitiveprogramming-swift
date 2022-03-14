@@ -10,7 +10,7 @@ struct Path {
     let from: Int
     let to: Int
     let d: Int
-    let id: Int
+    let path: [Int]
 }
 
 extension Path: Comparable {
@@ -24,12 +24,14 @@ func main() {
     // actual code goes here
     // =====================
     
+    // Sample passes locally
+    
     let (N, M) = readInts().tupled()
     var graph = [[Path]](repeating: [], count: N+1)
     for i in 0..<M {
         let (A, B, C) = readInts().tupled()
-        graph[A].append(Path(from: A, to: B, d: C, id: i))
-        graph[B].append(Path(from: B, to: A, d: C, id: i))
+        graph[A].append(Path(from: A, to: B, d: C, path: [i]))
+        graph[B].append(Path(from: B, to: A, d: C, path: [i]))
     }
     var removablePath = [Bool](repeating: true, count: M)
     
@@ -39,17 +41,23 @@ func main() {
         var pq = PriorityQueue<Path>.init(graph[from], smallerFirst: true)
         
         while true {
-            guard let curent = pq.pop() else { break }
-            guard pathTo[curent.to].isEmpty else { continue }
+            guard let current = pq.pop() else { break }
+            guard pathTo[current.to].isEmpty else { continue }
             
-            pathTo[curent.to] = pathTo[curent.from] + [curent.id]
+            pathTo[current.to] = current.path
             
-            guard curent.to != to else { breakx }
+            guard current.to != to else { break }
             
-            for next in graph[curent.to] {
+            for next in graph[current.to] {
                 guard next.to != from else { continue }
                 guard pathTo[next.to].isEmpty else { continue }
-                pq.push(next)
+                let new = Path(
+                    from: next.from,
+                    to: next.to,
+                    d: current.d + next.d,
+                    path: current.path + next.path)
+                
+                pq.push(new)
             }
         }
         return pathTo[to]
