@@ -24,7 +24,8 @@ let examples: [(String, Example)] = [
             1 2 3 4 5 6 7 8 9
             """,
         expected: """
-            826
+            1
+            9
             """)),
 ]
 
@@ -33,15 +34,27 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) {
+        (self[0], self[1], self[2], self[3]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
     
-    print("foo")
+    let (N, k) = readInts().tupled()
+    let A = readLine()!.split(separator: " ")
+    
+    print(A[k])
+    print(A[N-k-1])
     
     // ===============
     // actual code end
