@@ -20,20 +20,31 @@ func main() {
     let (_, X) = readInts().tupled()
     let S = readChars()
     
-    var current = Array(String(X, radix: 2))
+    var movements = [Movement]()
     for s in S {
-        let move = Movement(rawValue: s)!
-        switch move {
+        let movement = Movement(rawValue: s)!
+        
+        guard movements.isEmpty || movement != .up else {
+            movements.removeLast()
+            continue
+        }
+        
+        movements.append(movement)
+    }
+    
+    var position = X
+    for movement in movements {
+        switch movement {
         case .up:
-            current.removeLast()
+            position /= 2
         case .left:
-            current.append("0")
+            position *= 2
         case .right:
-            current.append("1")
+            position = position * 2 + 1
         }
     }
     
-    print(Int(String(current), radix: 2)!)
+    print(position)
     
     // ===============
     // actual code end
