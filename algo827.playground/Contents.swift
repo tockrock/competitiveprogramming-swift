@@ -46,10 +46,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
+
+    var N = Int(readLine()!)!
+    var A = readInts()
+    let Q = Int(readLine()!)!
     
-    print("foo")
+    for _ in 0..<Q {
+        let queue = readInts()
+        let k = queue[1]
+        guard queue[0] == 0 else {
+            A.append(k)
+            N += 1
+            continue
+        }
+        
+        guard k < N else {
+            print("Error")
+            continue
+        }
+        
+        print(A[k])
+    }
     
     // ===============
     // actual code end
