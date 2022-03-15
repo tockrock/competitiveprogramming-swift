@@ -19,20 +19,25 @@ func main() {
     
     let (_, X) = readInts().tupled()
     let S = readChars()
+    var position = X
     
     var movements = [Movement]()
     for s in S {
         let movement = Movement(rawValue: s)!
         
-        guard movements.isEmpty || movement != .up else {
-            movements.removeLast()
+        guard movement == .up else {
+            movements.append(movement)
             continue
         }
         
-        movements.append(movement)
+        guard movements.isEmpty else {
+            movements.removeLast()
+            continue
+        }
+
+        position /= 2
     }
     
-    var position = X
     for movement in movements {
         switch movement {
         case .up:
