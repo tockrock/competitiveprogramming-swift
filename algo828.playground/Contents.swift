@@ -61,11 +61,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         case .push:
             A.append(input[1])
         case .pop:
-            if A.isEmpty {
-                print("Error")
-            } else {
-                print(A.removeLast())
-            }
+            print(A.isEmpty ? "Error" : A.removeLast())
         }
     }
     
