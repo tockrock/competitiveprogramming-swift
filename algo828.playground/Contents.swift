@@ -29,11 +29,6 @@ let examples: [(String, Example)] = [
             Error
             2
             """)),
-    ("2", Example(
-        input: """
-            """,
-        expected: """
-            """)),
 ]
 
 // =================================
@@ -45,8 +40,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-        
-    print("foo")
+    
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
+
+    enum Command: Int {
+        case push
+        case pop
+    }
+
+    let _ = readLine()
+    var A = readInts()
+    
+    let Q = Int(readLine()!)!
+    for _ in 0..<Q {
+        let input = readInts()
+        let command = Command(rawValue: input[0])!
+        switch command {
+        case .push:
+            A.append(input[1])
+        case .pop:
+            if A.isEmpty {
+                print("Error")
+            } else {
+                print(A.removeLast())
+            }
+        }
+    }
     
     // ===============
     // actual code end
