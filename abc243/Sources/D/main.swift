@@ -30,12 +30,17 @@ func main() {
             continue
         }
         
-        guard movements.isEmpty else {
-            movements.removeLast()
+        guard !movements.isEmpty else {
+            movements.append(movement)
             continue
         }
-
-        position /= 2
+        
+        guard movements.last != .up else {
+            movements.append(movement)
+            continue
+        }
+        
+        movements.removeLast()
     }
     
     for movement in movements {
