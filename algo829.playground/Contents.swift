@@ -47,12 +47,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
+    enum Command: Int {
+        case insert
+        case erase
+        case count
+    }
     
-    // let mod = 1000000007
-    let mod = 998244353
-    
-    print("foo")
-    
+    let _ = readLine()
+    var A = readInts()
+    let Q = Int(readLine()!)!
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .insert:
+            A.insert(query[2], at: query[1])
+        case .erase:
+            A.remove(at: query[1])
+        case .count:
+            print(A.filter {$0 == query[1]}.count)
+        }
+        
+    }
     // ===============
     // actual code end
     // ===============
