@@ -21,14 +21,28 @@ let examples: [(String, Example)] = [
             1
             """,
         expected: """
-            2
+            1
             """)),
     ("3", Example(
+        input: """
+            2
+            """,
+        expected: """
+            2
+            """)),
+    ("4", Example(
         input: """
             1996
             """,
         expected: """
             1944
+            """)),
+    ("5", Example(
+        input: """
+            3000
+            """,
+        expected: """
+            1904
             """)),
 ]
 
@@ -42,10 +56,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    let N = Int(readLine()!)!
     
-    print("foo")
+    var arr = Array(1...N)
+    var i = 0
+    while arr.count > 1 {
+        arr.remove(at: i)
+        i = (i + 1) % arr.count
+    }
+    print(arr[0])
     
     // ===============
     // actual code end
