@@ -59,13 +59,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let N = Int(readLine()!)!
     
     var arr = Array(1...N)
-    var i = 0
-    while arr.count > 1 {
-        arr.remove(at: i)
-        i = (i + 1) % arr.count
+    var l = 1
+    var r = N
+    while l < r {
+        arr.append(arr[l])
+        r += 1
+        l += 2
     }
-    print(arr[0])
-    
+    print(arr.last!)
+
     // ===============
     // actual code end
     // ===============
