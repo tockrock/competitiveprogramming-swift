@@ -58,13 +58,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let N = Int(readLine()!)!
     
-    var arr = Array(1...N)
-    var l = 1
-    var r = N
-    while l < r {
-        arr.append(arr[l])
-        r += 1
-        l += 2
+    var arr = ArraySlice(1...N)
+    while arr.endIndex - arr.startIndex > 1 {
+        arr.popFirst()
+        arr.append(arr.popFirst()!)
     }
     print(arr.last!)
 
