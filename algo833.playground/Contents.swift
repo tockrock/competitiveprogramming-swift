@@ -56,10 +56,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    // Implementation using ArraySlice
+    
     let N = Int(readLine()!)!
     
     var arr = ArraySlice(1...N)
-    while arr.endIndex - arr.startIndex > 1 {
+    while arr.count > 1 {
         arr.popFirst()
         arr.append(arr.popFirst()!)
     }
