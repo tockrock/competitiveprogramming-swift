@@ -5,6 +5,8 @@ let package = Package(
     name: "ARC137",
     dependencies: [],
     targets: [
+        .target(name: "A"),
+        .testTarget(name: "ATests", dependencies: ["A", "TestLibrary"]),
         .target(name: "B"),
         .testTarget(name: "BTests", dependencies: ["B", "TestLibrary"]),
         .target(name: "C"),
