@@ -53,8 +53,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     // let mod = 1000000007
 //    let mod = 998244353
+    func readInts() -> [Int] {
+        return readLine()!.split(separator: " ").map { Int(String($0))! }
+    }
     
-    print("foo")
+    enum Command: Int {
+        case reverse
+        case push
+        case pop
+    }
+    
+    let _ = readLine()
+    var A = readInts()
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let input = readInts()
+        
+        switch Command(rawValue: input[0])! {
+        case .reverse:
+            A.reverse()
+        case .push:
+            A.append(input[1])
+        case .pop:
+            print(A.popLast() ?? "Error")
+        }
+        
+    }
+    
     
     // ===============
     // actual code end
