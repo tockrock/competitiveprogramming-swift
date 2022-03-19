@@ -47,7 +47,7 @@ func main() {
         for i in 0...compactBy {
             let l = L + i
             let r = R - compactBy + i
-            guard !isCoPrime(l: l, r: r) else {
+            if gcd(r, l) == 1 {
                 break overall
             }
         }
