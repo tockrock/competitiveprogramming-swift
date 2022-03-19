@@ -41,18 +41,15 @@ func main() {
     
     
     let (L, R) = readInts().tupled()
-    
-    if L == 1 {
-        print(R-L)
-        return
-    }
-    
+        
     var compactBy = 0
     overall: while true {
-        for i in 0..<compactBy {
+        for i in 0...compactBy {
             let l = L + i
             let r = R - compactBy + i
-            guard !isCoPrime(l: l, r: r) else { break overall}
+            guard !isCoPrime(l: l, r: r) else {
+                break overall
+            }
         }
         compactBy += 1
     }
