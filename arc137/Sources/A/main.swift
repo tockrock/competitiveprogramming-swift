@@ -10,6 +10,54 @@ func main() {
     // actual code goes here
     // =====================
     
+    func pf(_ numb: Int) -> Set<Int> {
+        var n = numb, i = 2, primeList = Set<Int>()
+        while i * i <= numb && i <= n {
+            var count = 0
+            while n % i == 0 { n /= i; count += 1 }
+            if count > 0 { primeList.insert(i) }
+            i += 1
+        }
+        if n != 1 { primeList.insert(n) }
+        return primeList
+    }
+    
+    var dp = [Int: Set<Int>]()
+    
+    func getPrimes(_ x: Int) -> Set<Int> {
+        if let primes = dp[x] {
+            return primes
+        }
+        let primes = pf(x)
+        dp[x] = primes
+        return primes
+    }
+    
+    func isCoPrime(l: Int, r: Int) -> Bool {
+        let lPrimes = getPrimes(l)
+        let rPrimes = getPrimes(r)
+        return lPrimes.isDisjoint(with: rPrimes)
+    }
+    
+    
+    let (L, R) = readInts().tupled()
+    
+    if L == 1 {
+        print(R-L)
+        return
+    }
+    
+    var compactBy = 0
+    overall: while true {
+        for i in 0..<compactBy {
+            let l = L + i
+            let r = R - compactBy + i
+            guard !isCoPrime(l: l, r: r) else { break overall}
+        }
+        compactBy += 1
+    }
+    
+    print(R-L-compactBy)
 
     // ===============
     // actual code end
