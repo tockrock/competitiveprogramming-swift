@@ -20,6 +20,12 @@ let cases: [TestCase] = [
 """, """
 99
 """),
+(#filePath, #line,
+"""
+3 100
+""", """
+97
+"""),
 ]
 
 final class ATests: XCTestCase, TimeLimit {
