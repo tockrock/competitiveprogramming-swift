@@ -11,7 +11,66 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let input = readInts()
+    let N = input[0]
+    let M = input[1]
+    let K = input[2]
+    let S = input[3]
+    let T = input[4]
+    let X = input[5]
+    
+    struct Remaining: Hashable {
+        let current: Int
+        let remaining: Int
+    }
+    
+    struct Path {
+        let path: [Int]
+        let isEven: Bool
+    }
+    struct Previous {
+        let even: Int
+        let odd: Int
+    }
+    
+    var dp = [Remaining: Previous]()
+    
+    var graph = [[Int]](repeating: [], count: N+1)
+    
+    for _ in 0..<M {
+        let (U, V) = readInts().tupled()
+        graph[U].append(V)
+        graph[V].append(U)
+    }
+    
+    func handlePath(p: Path) -> Previous {
+        let current = p.path.last!
+        let remaining = K + 1 - p.path.count
+        
+        guard remaining != 0 else {
+            return Previous(even: current == T ? 1 : 0, odd: 0)
+        }
+        
+        if let previous = dp[Remaining(current: current, remaining: remaining)] {
+            return previous
+        }
+        var even = 0
+        var odd = 0
+        for next in graph[current]{
+            let next_path = p.path + [next]
+            let previous = handlePath(p: Path(path: next_path, isEven: next != X ? p.isEven : !p.isEven))
+            
+            even += previous.even % mod
+            odd += previous.odd % mod
+        }
+        
+        let thisPrevious = p.isEven ? Previous(even: even, odd: odd) : Previous(even: odd, odd: even)
+        
+        dp[Remaining(current: current, remaining: remaining)] = thisPrevious
+        return thisPrevious
+    }
+    
+    print(handlePath(p: Path(path: [S], isEven: true)).even % mod)
     
     // ===============
     // actual code end
