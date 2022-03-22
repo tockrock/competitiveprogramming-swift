@@ -41,16 +41,41 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    enum Command: Int {
+        case follow, getFollowers
+    }
     
+    let (N, Q) = readInts().tupled()
+    
+    var userFollowers = [Set<Int>](repeating: [], count: N)
+    
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .follow:
+            userFollowers[query[2]].insert(query[1])
+        case .getFollowers:
+            let followers = userFollowers[query[1]]
+            if followers.isEmpty {
+                print("No")
+            } else {
+                print(followers.sorted().map {"\($0)"}.joined(separator: " "))
+            }
+        }
+    }
+    
+
     // ===============
     // actual code end
     // ===============
