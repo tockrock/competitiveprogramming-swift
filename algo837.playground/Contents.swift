@@ -27,6 +27,16 @@ let examples: [(String, Example)] = [
         expected: """
             3
             """)),
+    ("3", Example(
+        input: """
+            3 red
+            3 blue red green
+            2 blue red
+            3 green yellow red
+            """,
+        expected: """
+            3
+            """)),
 ]
 
 // =================================
@@ -34,16 +44,32 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+    func tupled() -> (Element, Element, Element) { (self[0], self[1], self[2]) }
+    func tupled() -> (Element, Element, Element, Element) {
+        (self[0], self[1], self[2], self[3]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readStrings() -> [String] { readLine()!.split(separator: " ").map({String($0)}) }
     
-    // let mod = 1000000007
-    let mod = 998244353
+    let (N, T) = readStrings().tupled()
     
-    print("foo")
+    var ans = 0
+    for _ in 0..<Int(N)! {
+        let student = readStrings()
+        if student.contains(T) {
+            ans += 1
+        }
+    }
     
+    print(ans)
+
     // ===============
     // actual code end
     // ===============
