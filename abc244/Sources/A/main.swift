@@ -12,8 +12,8 @@ func main() {
     // =====================
     
     let _ = readLine()
-    let S = readChars()
     print(S.last!)
+    let S = readString()
     
     // ===============
     // actual code end
