@@ -12,8 +12,8 @@ func main() {
     // =====================
     
     let _ = readLine()
-    print(S.last!)
     let S = readString()
+    print(S[S.index(before: S.endIndex)])
     
     // ===============
     // actual code end
