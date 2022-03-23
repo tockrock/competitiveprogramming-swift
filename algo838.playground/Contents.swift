@@ -58,20 +58,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let (N, Q) = readInts().tupled()
     
-    var userFollowers = [Set<Int>](repeating: [], count: N)
+    var usersFollowers = [[Bool]](repeating: [Bool](repeating: false, count: N), count: N)
     
     for _ in 0..<Q {
         let query = readInts()
         switch Command(rawValue: query[0])! {
         case .follow:
-            userFollowers[query[2]].insert(query[1])
+            usersFollowers[query[2]][query[1]] = true
         case .getFollowers:
-            let followers = userFollowers[query[1]]
-            if followers.isEmpty {
+            let followers = usersFollowers[query[1]].enumerated().filter {$0.1}.map {"\($0.0)"}
+            guard !followers.isEmpty else {
                 print("No")
-            } else {
-                print(followers.sorted().map {"\($0)"}.joined(separator: " "))
+                continue
             }
+            let result = followers.joined(separator: " ")
+            print(result)
         }
     }
     
