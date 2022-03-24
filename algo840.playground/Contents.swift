@@ -62,8 +62,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (p, q) = readInts().tupled()
     
     var ans = 0
-    ans += grid[p].filter {$0 == "#"}.count
-    ans += grid.filter {$0[q] == "#"}.count
+    grid[p].filter {$0 == "#"}.forEach { _ in ans += 1 }
+    grid.filter {$0[q] == "#"}.forEach { _ in ans += 1 }
     ans -= grid[p][q] == "#" ? 1 : 0
     print(ans)
     
