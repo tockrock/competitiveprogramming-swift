@@ -62,8 +62,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (p, q) = readInts().tupled()
     
     var ans = 0
-    grid[p].filter {$0 == "#"}.forEach { _ in ans += 1 }
-    grid.filter {$0[q] == "#"}.forEach { _ in ans += 1 }
+    for w in grid[p] where w == "#" {
+        ans += 1
+    }
+    for h in 0..<H where grid[h][q] == "#" {
+        ans += 1
+    }
     ans -= grid[p][q] == "#" ? 1 : 0
     print(ans)
     
