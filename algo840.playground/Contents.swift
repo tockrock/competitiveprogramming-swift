@@ -40,15 +40,34 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+}
+
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let (H, _) = readInts().tupled()
+    var grid = [[Bool]]()
     
-    print("foo")
+    for _ in 0..<H {
+        grid.append(readLine()!.map {$0 == "#"})
+    }
+    
+    let (p, q) = readInts().tupled()
+    
+    var ans = grid[p].filter {$0}.count
+    for i in 0..<H {
+        guard i != p else { continue }
+        guard grid[i][q] else { continue }
+        ans += 1
+    }
+    print(ans)
     
     // ===============
     // actual code end
