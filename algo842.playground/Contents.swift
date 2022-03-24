@@ -50,15 +50,70 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let (H, W) = readInts().tupled()
     
-    print("foo")
+    var charGraph = [[Character]]()
+    
+    for _ in 0..<H {
+        charGraph.append(Array(readLine()!))
+    }
+    
+    var rowCount = [Int?](repeating: nil, count: H)
+    var columnCount = [Int?](repeating: nil, count: W)
+    var intGraph = [[Int?]](repeating: [Int?](repeating: nil, count: W), count: H)
+    
+    func getRowCount(h: Int) -> Int {
+        if let count = rowCount[h] {
+            return count
+        }
+        
+        var count = 0
+        for w in 0..<W {
+            let value = charGraph[h][w] == "#" ? 1 : 0
+            intGraph[h][w] = value
+            count += value
+        }
+        rowCount[h] = count
+        return count
+    }
+    
+    func getColumnCount(w: Int) -> Int {
+        if let count = columnCount[w] {
+            return count
+        }
+        
+        var count = 0
+        for h in 0..<H {
+            let value = charGraph[h][w] == "#" ? 1 : 0
+            intGraph[h][w] = value
+            count += value
+        }
+        columnCount[w] = count
+        return count
+    }
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let (p, q) = readInts().tupled()
+        
+        var count = 0
+        count += getRowCount(h: p)
+        count += getColumnCount(w: q)
+        count -= intGraph[p][q]!
+        print(count)
+    }
     
     // ===============
     // actual code end
