@@ -53,18 +53,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
     let (H, _) = readInts().tupled()
-    var grid = [[Bool]]()
+    var grid = [[Int]]()
     
     for _ in 0..<H {
-        grid.append(readLine()!.map {$0 == "#"})
+        grid.append(readLine()!.map {$0 == "#" ? 1 : 0})
     }
     
     let (p, q) = readInts().tupled()
     
-    var ans = grid[p].filter {$0}.count
-    for i in 0..<H where i != p && grid[i][q] {
-        ans += 1
-    }
+    var ans = 0
+    ans += grid[p].reduce(0) {$0 + $1}
+    ans += grid.reduce(0) {$0 + $1[q]}
+    ans -= grid[p][q]
     print(ans)
     
     // ===============
