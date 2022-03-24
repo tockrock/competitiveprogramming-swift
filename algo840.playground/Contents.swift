@@ -62,9 +62,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (p, q) = readInts().tupled()
     
     var ans = grid[p].filter {$0}.count
-    for i in 0..<H {
-        guard i != p else { continue }
-        guard grid[i][q] else { continue }
+    for i in 0..<H where i != p && grid[i][q] {
         ans += 1
     }
     print(ans)
