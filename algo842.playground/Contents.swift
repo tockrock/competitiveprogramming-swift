@@ -71,7 +71,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     var rowCount = [Int?](repeating: nil, count: H)
     var columnCount = [Int?](repeating: nil, count: W)
-    var intGraph = [[Int]](repeating: [Int](repeating: 0, count: W), count: H)
+    var intGraph = [[Bool]](repeating: [Bool](repeating: false, count: W), count: H)
     
     func getRowCount(h: Int) -> Int {
         if let count = rowCount[h] {
@@ -79,10 +79,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
         
         var count = 0
-        for w in 0..<W {
-            let value = charGraph[h][w] == "#" ? 1 : 0
-            intGraph[h][w] = value
-            count += value
+        for w in 0..<W where charGraph[h][w] == "#" {
+            intGraph[h][w] = true
+            count += 1
         }
         rowCount[h] = count
         return count
@@ -109,7 +108,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         var count = 0
         count += getRowCount(h: p)
         count += getColumnCount(w: q)
-        count -= intGraph[p][q]
+        if intGraph[p][q] { count -= 1 }
         print(count)
     }
     
