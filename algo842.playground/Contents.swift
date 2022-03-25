@@ -79,9 +79,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
         
         var count = 0
-        for w in 0..<W where charGraph[h][w] == "#" {
-            intGraph[h][w] = 1
-            count += 1
+        for w in 0..<W {
+            let value = charGraph[h][w] == "#" ? 1 : 0
+            intGraph[h][w] = value
+            count += value
         }
         rowCount[h] = count
         return count
