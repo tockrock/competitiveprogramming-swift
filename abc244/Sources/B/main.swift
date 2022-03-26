@@ -21,6 +21,10 @@ func main() {
         case south
         case west
         case north
+        
+        mutating func rotate() {
+            self = Direction(rawValue: (self.rawValue + 1) % 4)!
+        }
     }
     
     let _ = readLine()
@@ -45,7 +49,7 @@ func main() {
                 y += 1
             }
         case .rotate:
-            current = Direction(rawValue: (current.rawValue + 1) % 4)!
+            current.rotate()
         }
     }
     print(x, y)
