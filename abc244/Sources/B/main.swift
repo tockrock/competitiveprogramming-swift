@@ -26,7 +26,7 @@ func main() {
             self = Direction(rawValue: (self.rawValue + 1) % 4)!
         }
         
-        var movement: (Int, Int) {
+        var forward: (Int, Int) {
             switch self {
             case .east:
                 return (1, 0)
@@ -40,9 +40,18 @@ func main() {
         }
     }
     
-    struct Position {
+    struct Position: CustomStringConvertible {
         var x: Int
         var y: Int
+        
+        mutating func move(dX: Int, dY: Int) {
+            x += dX
+            y += dY
+        }
+        
+        var description: String {
+            "\(x) \(y)"
+        }
     }
     
     let _ = readLine()
@@ -50,19 +59,18 @@ func main() {
     
     var pos = Position(x: 0, y: 0)
     
-    var current = Direction.east
+    var direction = Direction.east
     
     for t in T {
         switch Movement(rawValue: t)! {
         case .forward:
-            let (dX, dY) = current.movement
-            pos.x += dX
-            pos.y += dY
+            let (dX, dY) = direction.forward
+            pos.move(dX: dX, dY: dY)
         case .rotate:
-            current.rotate()
+            direction.rotate()
         }
     }
-    print(pos.x, pos.y)
+    print(pos)
     
     // ===============
     // actual code end
