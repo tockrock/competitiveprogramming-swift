@@ -40,11 +40,15 @@ func main() {
         }
     }
     
+    struct Position {
+        var x: Int
+        var y: Int
+    }
+    
     let _ = readLine()
     let T = readChars()
     
-    var x = 0
-    var y = 0
+    var pos = Position(x: 0, y: 0)
     
     var current = Direction.east
     
@@ -52,13 +56,13 @@ func main() {
         switch Movement(rawValue: t)! {
         case .forward:
             let (dX, dY) = current.movement
-            x += dX
-            y += dY
+            pos.x += dX
+            pos.y += dY
         case .rotate:
             current.rotate()
         }
     }
-    print(x, y)
+    print(pos.x, pos.y)
     
     // ===============
     // actual code end
