@@ -25,6 +25,19 @@ func main() {
         mutating func rotate() {
             self = Direction(rawValue: (self.rawValue + 1) % 4)!
         }
+        
+        var movement: (Int, Int) {
+            switch self {
+            case .east:
+                return (1, 0)
+            case .south:
+                return (0, -1)
+            case .west:
+                return (-1, 0)
+            case .north:
+                return (0, 1)
+            }
+        }
     }
     
     let _ = readLine()
@@ -38,16 +51,9 @@ func main() {
     for t in T {
         switch Movement(rawValue: t)! {
         case .forward:
-            switch current {
-            case .east:
-                x += 1
-            case .south:
-                y -= 1
-            case .west:
-                x -= 1
-            case .north:
-                y += 1
-            }
+            let (dX, dY) = current.movement
+            x += dX
+            y += dY
         case .rotate:
             current.rotate()
         }
