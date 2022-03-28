@@ -45,23 +45,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         case output = "1"
     }
     
-    struct Node {
+    class Node {
         let name: String
-        var next: Int?
+        var next: Node?
         
-        static var nextId: Int {
-            defer { _nextId += 1 }
-            return _nextId
+        init(name: String, next: Node?) {
+            self.name = name
+            self.next = next
         }
-        
-        private static var _nextId: Int = 0
     }
     
-    var nodes = [Int: Node]()
-    
-    let root = Node.nextId
-    nodes[root] = Node(name: "root", next: nil)
-    
+    var head: Node? = nil
+        
     let Q = Int(readLine()!)!
     
     for _ in 0..<Q {
@@ -69,19 +64,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
         switch Command(rawValue: query[0])! {
         case .insert:
-            let name = query[1]
-            let nextId = Node.nextId
-            nodes[nextId] = Node(name: name, next: nodes[root]!.next)
-            nodes[root]!.next = nextId
+            head = Node(name: query[1], next: head)
         case .output:
             var names = [String]()
             defer { print(names.joined(separator: " ")) }
-            var nextId = nodes[root]!.next
+            var nextNode = head
             for _ in 0..<Int(query[1])! {
-                guard let id = nextId else { break }
-                guard let currentNode = nodes[id] else { break }
-                names.append(currentNode.name)
-                nextId = currentNode.next
+                guard let current = nextNode else { break }
+                names.append(current.name)
+                nextNode = current.next
             }
         }
     }
