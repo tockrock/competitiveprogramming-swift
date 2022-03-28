@@ -45,9 +45,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         case output = "1"
     }
     
-    var nodes = [String: String]()
+    struct Node {
+        var next: String?
+    }
+    
+    var nodes = [String: Node]()
     let root = "root"
-    nodes[root] = "nil"
+    nodes[root] = Node(next: nil)
     
     let Q = Int(readLine()!)!
     
@@ -58,15 +62,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         case .insert:
             let name = query[1]
             nodes[name] = nodes[root]
-            nodes[root] = name
+            nodes[root]!.next = name
         case .output:
-            myDebugPrint(nodes)
-            var nextName = nodes[root]!
             var names = [String]()
+            var nextName = nodes[root]!.next
             for _ in 0..<Int(query[1])! {
-                guard nextName != "nil" else { break }
-                names.append(nextName)
-                nextName = nodes[nextName]!
+                guard let current = nextName else { break }
+                names.append(current)
+                nextName = nodes[current]!.next
             }
             print(names.joined(separator: " "))
         }
