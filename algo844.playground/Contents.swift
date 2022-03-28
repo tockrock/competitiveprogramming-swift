@@ -65,11 +65,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             nodes[root]!.next = name
         case .output:
             var names = [String]()
-            var nextName = nodes[root]!.next
+            guard let startName = nodes[root]!.next else { continue }
+            var currentName = startName
             for _ in 0..<Int(query[1])! {
-                guard let current = nextName else { break }
-                names.append(current)
-                nextName = nodes[current]!.next
+                names.append(currentName)
+                guard let nextName = nodes[currentName]!.next else { break }
+                currentName = nextName
             }
             print(names.joined(separator: " "))
         }
