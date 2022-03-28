@@ -46,12 +46,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     struct Node {
-        var next: String?
+        let name: String
+        var next: Int?
+        
+        static var nextId: Int {
+            defer { _nextId += 1 }
+            return _nextId
+        }
+        
+        private static var _nextId: Int = 0
     }
     
-    var nodes = [String: Node]()
-    let root = "root"
-    nodes[root] = Node(next: nil)
+    var nodes = [Int: Node]()
+    
+    let root = Node.nextId
+    nodes[root] = Node(name: "root", next: nil)
     
     let Q = Int(readLine()!)!
     
@@ -61,18 +70,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         switch Command(rawValue: query[0])! {
         case .insert:
             let name = query[1]
-            nodes[name] = nodes[root]
-            nodes[root]!.next = name
+            let nextId = Node.nextId
+            nodes[nextId] = Node(name: name, next: nodes[root]!.next)
+            nodes[root]!.next = nextId
         case .output:
             var names = [String]()
-            guard let startName = nodes[root]!.next else { continue }
-            var currentName = startName
+            defer { print(names.joined(separator: " ")) }
+            var nextId = nodes[root]!.next
             for _ in 0..<Int(query[1])! {
-                names.append(currentName)
-                guard let nextName = nodes[currentName]!.next else { break }
-                currentName = nextName
+                guard let id = nextId else { break }
+                guard let currentNode = nodes[id] else { break }
+                names.append(currentNode.name)
+                nextId = currentNode.next
             }
-            print(names.joined(separator: " "))
         }
     }
         
