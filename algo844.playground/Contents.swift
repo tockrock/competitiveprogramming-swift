@@ -38,11 +38,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readStrings() -> [String] { readLine()!.split(separator: " ").map({String($0)}) }
+
+    enum Command: String {
+        case insert = "0"
+        case output = "1"
+    }
     
-    print("foo")
+    var nodes = [String: String]()
+    let root = "root"
+    nodes[root] = "nil"
     
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readStrings()
+        
+        switch Command(rawValue: query[0])! {
+        case .insert:
+            let name = query[1]
+            nodes[name] = nodes[root]
+            nodes[root] = name
+        case .output:
+            myDebugPrint(nodes)
+            var nextName = nodes[root]!
+            var names = [String]()
+            for _ in 0..<Int(query[1])! {
+                guard nextName != "nil" else { break }
+                names.append(nextName)
+                nextName = nodes[nextName]!
+            }
+            print(names.joined(separator: " "))
+        }
+    }
+        
     // ===============
     // actual code end
     // ===============
