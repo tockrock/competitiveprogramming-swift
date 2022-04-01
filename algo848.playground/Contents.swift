@@ -28,19 +28,74 @@ let examples: [(String, Example)] = [
 ]
 
 // =================================
-// Extentions
+// Extensions
 // Remember to paste these as well!!
 // =================================
+
+extension Array {
+    func tupled() -> (Element, Element) { (self[0], self[1]) }
+}
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    struct ConnectedBlocks {
+        private struct Block {
+            var previous: Int?
+            var next: Int?
+        }
+        
+        private var blocks: [Block]
+        
+        init(_ N: Int) {
+            blocks = [Block](repeating: Block(), count: N)
+        }
+        
+        mutating func connect(p: Int, q: Int) -> Bool {
+            guard blocks[p].next == nil && blocks[q].previous == nil else {
+                return false
+            }
+            
+            blocks[p].next = q
+            blocks[q].previous = p
     
-    // let mod = 1000000007
-    // let mod = 998244353
+            return true
+        }
+        
+        mutating func contract(r: Int) {
+            if let p = blocks[r].previous {
+                blocks[p].next = blocks[r].next
+            }
+            if let q = blocks[r].next {
+                blocks[q].previous = blocks[r].previous
+            }
+            blocks[r].next = nil
+            blocks[r].previous = nil
+        }
+    }
     
-    print("foo")
+    enum Command: Int {
+        case connect
+        case contract
+    }
+    
+    let (N, Q) = readInts().tupled()
+    
+    var connectedBlocks = ConnectedBlocks(N)
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .connect:
+            let result = connectedBlocks.connect(p: query[1], q: query[2])
+            print(result ? "Yes" : "Error")
+        case .contract:
+            connectedBlocks.contract(r: query[1])
+        }
+    }
     
     // ===============
     // actual code end
