@@ -76,9 +76,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             
             var new = blocks[start].next
             while let next = new {
+                guard next != start else { return count }
                 count += 1
                 new = blocks[next].next
-                guard new == start else { return count }
             }
             
             new = blocks[start].previous
