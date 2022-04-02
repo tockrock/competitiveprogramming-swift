@@ -11,19 +11,15 @@ struct Example {
 let examples: [(String, Example)] = [
     ("1", Example(
         input: """
-            5 6
+            5 5
             0 3 4
             0 4 0
             1 4
-            0 3 1
             1 2
             0 1 4
             """,
         expected: """
-            Yes
-            Yes
-            Error
-            Yes
+            2
             """)),
 ]
 
@@ -55,15 +51,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             blocks = [Block](repeating: Block(), count: N)
         }
         
-        mutating func connect(p: Int, q: Int) -> Bool {
+        mutating func connect(p: Int, q: Int) {
             guard blocks[p].next == nil && blocks[q].previous == nil else {
-                return false
+                return
             }
             
             blocks[p].next = q
             blocks[q].previous = p
-    
-            return true
         }
         
         mutating func contract(r: Int) {
@@ -75,6 +69,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             }
             blocks[r].next = nil
             blocks[r].previous = nil
+        }
+        
+        func connectionCount(with start: Int) -> Int {
+            var count = 1
+            
+            var new = blocks[start].next
+            while let next = new {
+                count += 1
+                new = blocks[next].next
+                guard new == start else { return count }
+            }
+            
+            new = blocks[start].previous
+            while let previous = new {
+                count += 1
+                new = blocks[previous].previous
+            }
+            
+            return count
         }
     }
     
@@ -90,12 +103,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let query = readInts()
         switch Command(rawValue: query[0])! {
         case .connect:
-            let result = connectedBlocks.connect(p: query[1], q: query[2])
-            print(result ? "Yes" : "Error")
+            connectedBlocks.connect(p: query[1], q: query[2])
         case .contract:
             connectedBlocks.contract(r: query[1])
         }
     }
+    
+    print(connectedBlocks.connectionCount(with: 0))
     
     // ===============
     // actual code end
