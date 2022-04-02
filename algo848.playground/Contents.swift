@@ -52,10 +52,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
         
         mutating func connect(p: Int, q: Int) {
-            guard blocks[p].next == nil && blocks[q].previous == nil else {
-                return
-            }
-            
             blocks[p].next = q
             blocks[q].previous = p
         }
@@ -76,7 +72,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             
             var new = blocks[start].next
             while let next = new {
-                guard next != start else { return count }
                 count += 1
                 new = blocks[next].next
             }
