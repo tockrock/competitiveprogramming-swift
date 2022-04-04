@@ -49,19 +49,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    func readInt() -> Int { Int(readLine()!)!  }
+    func readInt() -> Int { Int(readLine()!)! }
     
     let _ = readLine()
-    let As = readLine()!
-    var ans = [Int: Int]()
-
-    for A in As.split(separator: " ") {
-        ans[Int(String(A))!, default: 0] += 1
-    }
+    let As = readLine()!.split(separator: " ").map {Int(String($0))!}
+    let ans = Dictionary(grouping: As) { $0 }
 
     let Q = readInt()
     for _ in 0..<Q {
-        print(ans[readInt(), default: 0])
+        print(ans[readInt(), default: []].count)
     }
     
     // ===============
