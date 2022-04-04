@@ -41,39 +41,27 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
-extension Array {
-    func tupled() -> (Element, Element) { (self[0], self[1]) }
-}
-
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-    
-    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
-        
+            
     struct FloorMap {
-        private struct Floor {
-            var left: Int
-            var right: Int
-        }
-        
-        private var floorMap: [Floor]
+        private var left: [Int]
+        private var right: [Int]
         private var instructions: [Character]
         
         init(initialMap rawFloors: String) {
             instructions = Array(rawFloors)
-
-            floorMap = [Floor]()
-            
-            for pos in 0..<instructions.count {
-                floorMap.append( Floor(left: pos - 1, right: pos + 1))
-            }
+            left = []
+            right = []
+            (-1...instructions.count-2).forEach {left.append($0)}
+            (1...instructions.count).forEach {right.append($0)}
         }
         
         private mutating func remove(i: Int) {
-            floorMap[floorMap[i].left].right = floorMap[i].right
-            floorMap[floorMap[i].right].left = floorMap[i].left
+            right[left[i]] = right[i]
+            left[right[i]] = left[i]
         }
         
         mutating func walk(from start: Int) -> Int {
@@ -81,19 +69,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             var position = start
             var walkingRight = true
             
-            while 0 < position && position < floorMap.count - 1 {
-                let floor = floorMap[position]
+            while 0 < position && position < instructions.count - 1 {
                 remove(i: position)
 
                 if instructions[position] == "<" { walkingRight = false }
                 if instructions[position] == ">" { walkingRight = true }
 
                 if walkingRight {
-                    duration += floor.right - position
-                    position = floor.right
+                    duration += right[position] - position
+                    position = right[position]
                 } else {
-                    duration += position - floor.left
-                    position = floor.left
+                    duration += position - left[position]
+                    position = left[position]
                 }
             }
             
@@ -102,11 +89,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
     }
     
-    let (_, K) = readInts().tupled()
+    let input = readLine()!.split(separator: " ")
     
     var floorMap = FloorMap(initialMap: readLine()!)
     
-    print(floorMap.walk(from: K))
+    print(floorMap.walk(from: Int(input[1])!))
     
     // ===============
     // actual code end
