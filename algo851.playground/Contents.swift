@@ -55,8 +55,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             instructions = Array(rawFloors)
             left = []
             right = []
-            (-1...instructions.count-2).forEach {left.append($0)}
-            (1...instructions.count).forEach {right.append($0)}
+            (0..<instructions.count).forEach {
+                left.append($0 - 1)
+                right.append($0 + 1)
+            }
         }
         
         private mutating func remove(i: Int) {
