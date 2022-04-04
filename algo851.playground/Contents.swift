@@ -55,10 +55,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             instructions = Array(rawFloors)
             left = []
             right = []
-            (0..<instructions.count).forEach {
-                left.append($0 - 1)
-                right.append($0 + 1)
-            }
+            (-1..<instructions.count-1).forEach { left.append($0) }
+            (1..<instructions.count+1).forEach { right.append($0) }
         }
         
         private mutating func remove(i: Int) {
@@ -74,8 +72,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             while 0 < position && position < instructions.count - 1 {
                 remove(i: position)
 
-                if instructions[position] == "<" { walkingRight = false }
-                if instructions[position] == ">" { walkingRight = true }
+                switch instructions[position] {
+                case "<":
+                    walkingRight = false
+                case ">":
+                    walkingRight = true
+                default:
+                    break
+                }
 
                 if walkingRight {
                     duration += right[position] - position
