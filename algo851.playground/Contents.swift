@@ -51,29 +51,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
-    
-    enum Direction: Character {
-        case neutral = "."
-        case left = "<"
-        case right = ">"
-    }
-    
+        
     struct FloorMap {
         private struct Floor {
-            let direction: Direction
             var left: Int
             var right: Int
         }
         
         private var floorMap: [Floor]
-        init(initialMap rawFloors: [Character]) {
+        private var instructions: [Character]
+        
+        init(initialMap rawFloors: String) {
+            instructions = Array(rawFloors)
+
             floorMap = [Floor]()
             
-            for pos in 0..<rawFloors.count {
-                floorMap.append(
-                    Floor(direction: Direction(rawValue: rawFloors[pos])!,
-                          left: pos - 1,
-                          right: pos + 1))
+            for pos in 0..<instructions.count {
+                floorMap.append( Floor(left: pos - 1, right: pos + 1))
             }
         }
         
@@ -84,26 +78,22 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
         mutating func walk(from start: Int) -> Int {
             var duration = 0
-            var current = start
-            var walkingDirection: Direction = .right
+            var position = start
+            var walkingRight = true
             
-            while 0 < current && current < floorMap.count - 1 {
-                let currentFloor = floorMap[current]
-                remove(i: current)
-                
-                if currentFloor.direction != .neutral {
-                    walkingDirection = currentFloor.direction
-                }
-                
-                switch walkingDirection {
-                case .neutral:
-                    fatalError()
-                case .right:
-                    duration += currentFloor.right - current
-                    current = currentFloor.right
-                case .left:
-                    duration += current - currentFloor.left
-                    current = currentFloor.left
+            while 0 < position && position < floorMap.count - 1 {
+                let floor = floorMap[position]
+                remove(i: position)
+
+                if instructions[position] == "<" { walkingRight = false }
+                if instructions[position] == ">" { walkingRight = true }
+
+                if walkingRight {
+                    duration += floor.right - position
+                    position = floor.right
+                } else {
+                    duration += position - floor.left
+                    position = floor.left
                 }
             }
             
@@ -113,14 +103,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     let (_, K) = readInts().tupled()
-    let initialMap = Array(readLine()!)
     
-    var floorMap = FloorMap(initialMap: initialMap)
+    var floorMap = FloorMap(initialMap: readLine()!)
     
     print(floorMap.walk(from: K))
-    
-    
-        
     
     // ===============
     // actual code end
