@@ -49,10 +49,41 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInt() -> Int { Int(readLine()!)!  }
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    let N = readInt()
+    var As = readInts()
+    As.sort()
+
+    let Q = readInt()
+    var xs = [Int]()
+    for _ in 0..<Q {
+        xs.append(readInt())
+    }
+    
+    var ans = [Int: Int]()
+    let xSorted = xs.sorted()
+    
+    var aPos = 0
+    var xPos = 0
+        
+    while aPos < N && xPos < Q {
+        let A = As[aPos], x = xSorted[xPos]
+        
+        guard A <= x else {
+            xPos += 1
+            continue
+        }
+        if A == x {
+            ans[x, default: 0] += 1
+        }
+        aPos += 1
+    }
+    
+    for x in xs {
+        print(ans[x, default: 0])
+    }
     
     // ===============
     // actual code end
