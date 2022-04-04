@@ -53,7 +53,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
     enum Direction: Character {
-        case nutural = "."
+        case neutral = "."
         case left = "<"
         case right = ">"
     }
@@ -61,34 +61,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     struct FloorMap {
         private struct Floor {
             let direction: Direction
-            var left: Int?
-            var right: Int?
+            var left: Int
+            var right: Int
         }
         
         private var floorMap: [Floor]
         init(initialMap rawFloors: [Character]) {
             floorMap = [Floor]()
-            floorMap.append(
-                Floor(direction: Direction(rawValue: rawFloors.first!)!,
-                      left: nil,
-                      right: nil))
             
-            for pos in 1..<rawFloors.count {
+            for pos in 0..<rawFloors.count {
                 floorMap.append(
                     Floor(direction: Direction(rawValue: rawFloors[pos])!,
                           left: pos - 1,
-                          right: nil))
-                floorMap[pos-1].right = pos
+                          right: pos + 1))
             }
         }
         
         private mutating func remove(i: Int) {
-            if let left = floorMap[i].left {
-                floorMap[left].right = floorMap[i].right
-            }
-            if let right = floorMap[i].right {
-                floorMap[right].left = floorMap[i].left
-            }
+            floorMap[floorMap[i].left].right = floorMap[i].right
+            floorMap[floorMap[i].right].left = floorMap[i].left
         }
         
         mutating func walk(from start: Int) -> Int {
@@ -100,19 +91,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
                 let currentFloor = floorMap[current]
                 remove(i: current)
                 
-                if currentFloor.direction != .nutural {
+                if currentFloor.direction != .neutral {
                     walkingDirection = currentFloor.direction
                 }
                 
                 switch walkingDirection {
-                case .nutural:
+                case .neutral:
                     fatalError()
                 case .right:
-                    duration += currentFloor.right! - current
-                    current = currentFloor.right!
+                    duration += currentFloor.right - current
+                    current = currentFloor.right
                 case .left:
-                    duration += current - currentFloor.left!
-                    current = currentFloor.left!
+                    duration += current - currentFloor.left
+                    current = currentFloor.left
                 }
             }
             
