@@ -82,39 +82,37 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
             }
         }
         
-        func walk(from start: Int) -> Int {
+        private mutating func remove(i: Int) {
+            if let left = floorMap[i].left {
+                floorMap[left].right = floorMap[i].right
+            }
+            if let right = floorMap[i].right {
+                floorMap[right].left = floorMap[i].left
+            }
+        }
+        
+        mutating func walk(from start: Int) -> Int {
             var duration = 0
             var current = start
             var walkingDirection: Direction = .right
             
-            var nextLeft: Int? = floorMap[start].left
-            var nextRight: Int? = floorMap[start].right
-            
             while 0 < current && current < floorMap.count - 1 {
                 let currentFloor = floorMap[current]
-
-                switch walkingDirection {
-                case .nutural:
-                    fatalError()
-                case .right:
-                    nextRight = currentFloor.right
-                case .left:
-                    nextLeft = currentFloor.left
-                }
-
+                remove(i: current)
+                
                 if currentFloor.direction != .nutural {
                     walkingDirection = currentFloor.direction
                 }
-
+                
                 switch walkingDirection {
                 case .nutural:
                     fatalError()
                 case .right:
-                    duration += nextRight! - current
-                    current = nextRight!
+                    duration += currentFloor.right! - current
+                    current = currentFloor.right!
                 case .left:
-                    duration += current - nextLeft!
-                    current = nextLeft!
+                    duration += current - currentFloor.left!
+                    current = currentFloor.left!
                 }
             }
             
@@ -126,7 +124,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let (_, K) = readInts().tupled()
     let initialMap = Array(readLine()!)
     
-    let floorMap = FloorMap(initialMap: initialMap)
+    var floorMap = FloorMap(initialMap: initialMap)
     
     print(floorMap.walk(from: K))
     
