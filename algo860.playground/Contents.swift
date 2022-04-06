@@ -58,8 +58,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var ans = -1
     var max = Int.min
 
-    for i in stride(from: AMax, through: 0, by: -1) {
-        guard counter[i] >= max else { continue }
+    for i in 0...AMax where max < counter[i] {
         ans = i
         max = counter[i]
     }
