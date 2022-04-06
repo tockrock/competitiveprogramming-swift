@@ -48,19 +48,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let _ = readLine()
     let As = readLine()!.split(separator: " ").map { Int(String($0))! }
     
-    var ans = -1
-    var max = Int.min
-    var counter = [Int](repeating: 0, count: 5 * 10_000 + 1)
+    var counter = [Int](repeating: 0, count: 5 * 100_000 + 1)
     
     for a in As {
         counter[a] += 1
-        let count = counter[a]
-        guard count >= max else { continue }
-        guard count > max || a < ans else { continue }
-        
-        ans = a
-        max = count
     }
+    
+    let max = counter.max()!
+    let ans = counter.firstIndex(of: max)!
     
     print(ans)
 
