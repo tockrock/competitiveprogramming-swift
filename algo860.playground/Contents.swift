@@ -45,11 +45,25 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let _ = readLine()
+    let As = readLine()!.split(separator: " ").map { Int(String($0))! }
     
-    print("foo")
+    var ans = -1
+    var max = Int.min
+    var counter = [Int](repeating: 0, count: 5 * 10_000 + 1)
     
+    for a in As {
+        counter[a] += 1
+        let count = counter[a]
+        guard count >= max else { continue }
+        guard count > max || a < ans else { continue }
+        
+        ans = a
+        max = count
+    }
+    
+    print(ans)
+
     // ===============
     // actual code end
     // ===============
