@@ -55,7 +55,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    enum Command: String {
+        case insert = "0"
+        case delete = "1"
+        case count = "2"
+    }
+    
+    let aMax = 100_000
+    var bucket = [Int](repeating: 0, count: aMax + 1)
+    
+    let _ = readLine()
+    
+    for a in readLine()!.split(separator: " ") {
+        bucket[Int(String(a))!] += 1
+    }
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readLine()!.split(separator: " ")
+        let v = Int(String(query[1]))!
+        switch Command(rawValue: String(query[0]))! {
+        case .insert:
+            bucket[v] += 1
+        case .delete:
+            bucket[v] = 0
+        case .count:
+            print(bucket[v])
+        }
+    }
     
     // ===============
     // actual code end
