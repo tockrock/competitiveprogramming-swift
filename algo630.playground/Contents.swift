@@ -37,10 +37,15 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let _ = readLine()
     
-    print("foo")
+    var alphabet = [Bool](repeating: false, count: 26)
+    
+    for c in readLine()! where c != " " {
+        alphabet[Int(c.asciiValue!) - 97] = true
+    }
+    
+    print(alphabet.contains(false) ? "No" : "Yes")
     
     // ===============
     // actual code end
