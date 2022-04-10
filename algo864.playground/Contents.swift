@@ -53,10 +53,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
-    
-    
     func combination(n: Int, r: Int) -> Int {
         let smaller = min(n-r, r)
         guard smaller >= 0 else { return 0 }
@@ -64,8 +60,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         let start = n - smaller + 1
         return (start...n).reduce(1, *) / (1...smaller).reduce(1, *)
     }
-
-    print("foo")
+    
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+    
+    let N = Int(readLine()!)!
+    let As = readInts()
+    
+    var bucket = [Int: Int]()
+    for a in As {
+        bucket[a, default: 0] += 1
+    }
+    
+    var possible = 0
+    let total = combination(n: N, r: 2)
+    
+    for (_, r) in bucket where r > 1 {
+        possible += combination(n: r, r: 2)
+    }
+    
+    print(Double(possible) / Double(total))
+    
     
     // ===============
     // actual code end
