@@ -14,9 +14,20 @@ func main() {
     let (N, K) = readInts().tupled()
     let A = readInts()
     
+    var rangeMin = A[K-1]
+    var outerMax = A[K]
+    
     for distance in 1..<N {
         let lMin = max(K-distance, 0)
         let lMax = min(N-distance, K)
+        
+        rangeMin = min(A[lMin], rangeMin)
+        outerMax = max(A[lMax - 1 + distance], outerMax)
+        
+        guard rangeMin < outerMax else {
+            continue
+        }
+        
         for l in lMin..<lMax {
             if A[l] < A[l + distance] {
                 print(distance)
