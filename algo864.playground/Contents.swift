@@ -66,10 +66,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let N = Int(readLine()!)!
     let As = readInts()
     
-    var bucket = [Int: Int]()
-    for a in As {
-        bucket[a, default: 0] += 1
-    }
+    let bucket = Dictionary(As.map{ ($0, 1) },
+                            uniquingKeysWith: + )
     
     var possible = 0
     let total = combination(n: N, r: 2)
