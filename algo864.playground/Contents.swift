@@ -53,31 +53,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    func combination(n: Int, r: Int) -> Int {
-        let smaller = min(n-r, r)
-        guard smaller >= 0 else { return 0 }
-        guard smaller > 0 else { return 1 }
-        let start = n - smaller + 1
-        return (start...n).reduce(1, *) / (1...smaller).reduce(1, *)
-    }
-    
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
     let N = Int(readLine()!)!
-    let As = readInts()
     
-    let bucket = Dictionary(As.map{ ($0, 1) },
-                            uniquingKeysWith: + )
-    
-    var possible = 0
-    let total = combination(n: N, r: 2)
-    
-    for (_, r) in bucket where r > 1 {
-        possible += combination(n: r, r: 2)
+    var bucket = [Int](repeating: 0, count: 100_001)
+    for a in readInts() {
+        bucket[a] += 1
     }
     
-    print(Double(possible) / Double(total))
+    let possible = Double(bucket
+        .reduce(0) { $0 + $1 * ($1 - 1) / 2 })
+    let total = Double(N * (N - 1) / 2)
     
+    print(possible / total)
+
     
     // ===============
     // actual code end
