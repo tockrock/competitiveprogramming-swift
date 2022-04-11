@@ -58,7 +58,45 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+    
+    enum Command: Int {
+        case insert, change, sum
+    }
+    
+    let maxNumb = 100_000
+    var bucket = [Int](repeating: 0, count: maxNumb + 1)
+    
+    var sum = 0
+    
+    readLine()
+    
+    let As = readInts()
+    
+    for A in As {
+        bucket[A] += 1
+        sum += A
+    }
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .insert:
+            let v = query[1]
+            bucket[v] += 1
+            sum += v
+        case .change:
+            let x = query[1], y = query[2]
+            let count = bucket[x]
+            sum += (y-x) * count
+            bucket[y] += count
+            bucket[x] = 0
+        case .sum:
+            print(sum)
+        }
+    }
     
     // ===============
     // actual code end
