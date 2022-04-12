@@ -53,38 +53,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
-    
-    var isSquare = [Bool](repeating: false, count: 10_001)
-    
-    for i in 0...100 {
-        isSquare[i*i] = true
+    var counter = [Int](repeating: 0, count: 20_001)
+    for x in -100...100 {
+        for y in -100...100 {
+            let v = x * x + y * y
+            counter[v] += 1
+        }
     }
     
     let Q = Int(readLine()!)!
     
     for _ in 0..<Q {
         let P = Int(readLine()!)!
-        
-        var count = 0
-        defer { print(count) }
-        
-        guard P != 0 else {
-            count = 1
-            continue
-        }
-        
-        for x in 1...100 {
-            guard P >= x * x else { break }
-            
-            let ySquare = P - x * x
-            if isSquare[ySquare] {
-                count += 4
-            }
-        }
+        print(counter[P])
     }
-    
+
     // ===============
     // actual code end
     // ===============
