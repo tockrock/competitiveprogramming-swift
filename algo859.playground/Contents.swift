@@ -33,6 +33,14 @@ let examples: [(String, Example)] = [
             32
             20
             """)),
+    ("3", Example(
+        input: """
+            1
+            0
+            """,
+        expected: """
+            1
+            """)),
 ]
 
 // =================================
@@ -48,7 +56,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    var isSquare = [Bool](repeating: false, count: 10_001)
+    
+    for i in 0...100 {
+        isSquare[i*i] = true
+    }
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let P = Int(readLine()!)!
+        
+        var count = 0
+        defer { print(count) }
+        
+        guard P != 0 else {
+            count = 1
+            continue
+        }
+        
+        for x in 1...100 {
+            guard P >= x * x else { break }
+            
+            let ySquare = P - x * x
+            if isSquare[ySquare] {
+                count += 4
+            }
+        }
+    }
     
     // ===============
     // actual code end
