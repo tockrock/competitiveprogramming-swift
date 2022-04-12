@@ -53,11 +53,11 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    var counter = [Int](repeating: 0, count: 20_001)
+    var counter = [Int: Int]()
     for x in -100...100 {
         for y in -100...100 {
             let v = x * x + y * y
-            counter[v] += 1
+            counter[v, default: 0] += 1
         }
     }
     
@@ -65,7 +65,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     for _ in 0..<Q {
         let P = Int(readLine()!)!
-        print(counter[P])
+        print(counter[P, default: 0])
     }
 
     // ===============
