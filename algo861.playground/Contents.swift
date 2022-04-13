@@ -53,28 +53,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let input = readInts()
     
     let M = input[1]
-    var A = Array(Set(readInts()))
-    A.sort()
-    A = A.map {$0 * $0}
+    let A = Array(Set(readInts()))
+    let ASquared = A.map {$0 * $0}
     
+    let abMax = 2_000_000
+    
+    var isSumOfSquare = [Bool](repeating: false, count: abMax + 1)
     let aCount = A.count
+    for a in 0..<aCount {
+        for b in a..<aCount {
+            isSumOfSquare[ASquared[a]+ASquared[b]] = true
+        }
+    }
     
     var ans = false
     
-    overall: for a in 0..<aCount {
-        for b in a..<aCount {
-            for c in b..<aCount {
-                for d in c..<aCount {
-                    let total = A[a] + A[b] + A[c] + A[d]
-                    guard total == M else { continue }
-                    ans = true
-                    break overall
-                }
-            }
+    for i in 0...M/2 {
+        guard isSumOfSquare[i] && isSumOfSquare[M-i] else {
+            continue
         }
+        ans = true
+        break
     }
-    print(ans ? "Yes" : "No")
     
+    print(ans ? "Yes" : "No")
 
     // ===============
     // actual code end
