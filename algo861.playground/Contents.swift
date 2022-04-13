@@ -48,8 +48,34 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
 
-    print("foo")
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
+    let input = readInts()
+    
+    let M = input[1]
+    var A = Array(Set(readInts()))
+    A.sort()
+    A = A.map {$0 * $0}
+    
+    let aCount = A.count
+    
+    var ans = false
+    
+    overall: for a in 0..<aCount {
+        for b in a..<aCount {
+            for c in b..<aCount {
+                for d in c..<aCount {
+                    let total = A[a] + A[b] + A[c] + A[d]
+                    guard total == M else { continue }
+                    ans = true
+                    break overall
+                }
+            }
+        }
+    }
+    print(ans ? "Yes" : "No")
+    
+
     // ===============
     // actual code end
     // ===============
