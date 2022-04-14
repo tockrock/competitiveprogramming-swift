@@ -56,7 +56,33 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let _ = readLine()
+    let As = readInts()
+    let largestA = As.max()!
+    let maxA = 500_000
+    var counterA = [Int](repeating: 0, count: maxA + 1)
+    
+    for A in As {
+        counterA[A] += 1
+    }
+
+    var ans = [Int?](repeating: nil, count: maxA + 1)
+    
+    let Q = Int(readLine()!)!
+    for _ in 0..<Q {
+        let x = Int(readLine()!)!
+        defer { print(ans[x]!) }
+        
+        guard ans[x] == nil else { continue }
+        
+        var count = 0
+        for i in stride(from: 0, through: largestA, by: x) {
+            count += counterA[i]
+        }
+        ans[x] = count
+    }
     
     // ===============
     // actual code end
