@@ -43,12 +43,37 @@ let examples: [(String, Example)] = [
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
-    // =====================
+    // ====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let mod = 1000003
+    let asciiZero = Int(Character("a").asciiValue!) - 1
+    let base = 30
     
-    print("foo")
+    func hashAsInt(_ str: String) -> Int {
+        var digit = 1
+        var result = 0
+        for char in str.reversed() {
+            let charInt = Int(char.asciiValue!) - asciiZero
+            result += charInt * digit
+            digit *= base
+        }
+        
+        return result % mod
+    }
+    
+    let _ = readLine()
+    
+    let Ss = readLine()!.split(separator: " ").map {String($0)}
+    var hashMap = [Int](repeating: 0, count: mod + 1)
+
+    var largest = Int.min
+    for S in Ss {
+        let hash = hashAsInt(S)
+        hashMap[hash] += 1
+        largest = max(largest, hashMap[hash])
+    }
+    
+    print(largest)
     
     // ===============
     // actual code end
