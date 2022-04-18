@@ -49,11 +49,47 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    enum Command: Int {
+        case insert
+        case delete
+        case find
+    }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let mod = 1000003
+    let asciiZero = Int(Character("a").asciiValue!) - 1
+    let base = 27
+
+    func h(_ str: String) -> Int {
+        var result = 0
+        var digit = 1
+        for char in str.reversed() {
+            let charValue = Int(char.asciiValue!) - asciiZero
+            result += charValue * digit
+            digit *= base
+        }
+        return result % mod
+    }
     
-    print("foo")
+    var T = [[String]](repeating: [], count: mod)
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readLine()!.split(separator: " ").map {String($0)}
+        let rawCommand = Int(query[0])!
+        let x = query[1]
+        switch Command(rawValue: rawCommand)! {
+        case .insert:
+            T[h(x)].append(x)
+        case .delete:
+            let xIndex = T[h(x)].firstIndex(of: x)!
+            T[h(x)].remove(at: xIndex)
+        case .find:
+            let result = T[h(x)].contains(x)
+            print(result ? "Yes" : "No")
+        }
+    }
     
     // ===============
     // actual code end
