@@ -53,10 +53,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    enum Command: Int {
+        case insert, delete, count
+    }
     
-    print("foo")
+    let _ = readLine() // ignore N
+    var dict = [String: Int]()
+
+    readLine()!.split(separator: " ")
+        .forEach { dict[String($0), default: 0] += 1 }
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readLine()!.split(separator: " ").map { String($0) }
+        switch Command(rawValue: Int(query[0])!)! {
+        case .insert:
+            dict[query[1], default: 0] += 1
+        case .delete:
+            dict[query[1]] = 0
+        case .count:
+            print(dict[query[1]] ?? 0)
+        }
+    }
     
     // ===============
     // actual code end
