@@ -48,7 +48,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    let _ = readLine()
+    let Ss = Set(readLine()!.split(separator: " "))
+    
+    print(Ss.count)
     
     // ===============
     // actual code end
