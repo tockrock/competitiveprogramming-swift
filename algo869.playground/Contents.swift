@@ -52,11 +52,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+        
+    func combination(n: Int, r: Int) -> Int {
+        let smaller = min(n-r, r)
+        guard smaller >= 0 else { return 0 }
+        guard smaller > 0 else { return 1 }
+        let start = n - smaller + 1
+        return (start...n).reduce(1, *) / (1...smaller).reduce(1, *)
+    }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let N = Int(readLine()!)!
+    let Ss = readLine()!.split(separator: " ").map { String($0) }
     
-    print("foo")
+    var anagramPattern = [[Character]: Int]()
+    
+    for S in Ss {
+        anagramPattern[S.sorted(), default: 0] += 1
+    }
+    var possibility = 0
+    for (_, n) in anagramPattern where n > 1 {
+        possibility += combination(n: n, r: 2)
+    }
+    
+    print(Double(possibility) / Double(combination(n: N, r: 2)))
     
     // ===============
     // actual code end
