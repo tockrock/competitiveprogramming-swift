@@ -62,12 +62,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     let N = Int(readLine()!)!
-    let Ss = readLine()!.split(separator: " ").map { String($0) }
+    let Ss = readLine()!.split(separator: " ").map { String($0.sorted()) }
     
-    var anagramPattern = [[Character]: Int]()
+    var anagramPattern = [String: Int]()
     
     for S in Ss {
-        anagramPattern[S.sorted(), default: 0] += 1
+        anagramPattern[S, default: 0] += 1
     }
     var possibility = 0
     for (_, n) in anagramPattern where n > 1 {
