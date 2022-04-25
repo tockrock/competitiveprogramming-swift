@@ -13,7 +13,10 @@ let examples: [(String, Example)] = [
         input: """
             """,
         expected: """
-            CXYZ
+            C
+            X
+            Y
+            Z
             """)),
 ]
 
@@ -27,10 +30,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let inputs = [
+        "0 A",
+        "0 B",
+        "0 C",
+        "1",
+        "0 X",
+        "0 Y",
+        "0 Z",
+        "1",
+    ]
     
-    print("foo")
+    enum Commmand: Int {
+        case enqueue, dequeue
+    }
+    
+    var queue = ArraySlice<String>()
+    
+    for input in inputs {
+        let i = input.split(separator: " ").map { String($0) }
+        switch Commmand(rawValue: Int(i[0])!)! {
+        case .enqueue:
+            queue.append(i[1])
+        case .dequeue:
+            queue.popFirst()
+        }
+    }
+    
+    for q in queue {
+        print(q)
+    }
     
     // ===============
     // actual code end
