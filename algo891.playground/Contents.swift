@@ -37,10 +37,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let input = readInts()
+    let L = input[1]
+    let As = readInts()
     
-    print("foo")
+    var seals = ArraySlice([Int](repeating: 0, count: L-1))
+    var layer = 0
+    var total = 0
+    
+    for A in As {
+        let need = max(0, A - layer)
+        layer += need
+        total += need
+        seals.append(need)
+        layer -= seals.popFirst()!
+    }
+    
+    print(total)
+    
     
     // ===============
     // actual code end
