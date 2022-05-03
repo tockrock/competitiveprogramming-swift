@@ -43,7 +43,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let L = input[1]
     let As = readInts()
     
-    var seals = ArraySlice([Int](repeating: 0, count: L-1))
+    var seals = ArraySlice(repeating: 0, count: L-1)
     var layer = 0
     var total = 0
     
@@ -56,7 +56,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     print(total)
-    
     
     // ===============
     // actual code end
