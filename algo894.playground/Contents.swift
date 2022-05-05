@@ -50,11 +50,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInt() -> Int { Int(readLine()!)! }
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let N = readInt()
+    let Ps = readInts()
+    var childrenOf = [[Int]](repeating: [], count: N)
     
-    print("foo")
+    for (subI, P) in Ps.enumerated() {
+        let i = subI + 1
+        childrenOf[P].append(i)
+    }
+    
+    var answer = [Int: String]()
+    
+    let Q = readInt()
+    
+    for _ in 0..<Q {
+        let v = readInt()
+        let P = Ps[v-1]
+        
+        defer { print(answer[P]!) }
+        
+        guard answer[P] == nil else { continue }
+        
+        answer[P] = childrenOf[P]
+            .sorted()
+            .map { String($0) }
+            .joined(separator: " ")
+    }
     
     // ===============
     // actual code end
