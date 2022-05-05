@@ -43,10 +43,84 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    struct Maze {
+        private enum CellStatus {
+            case wall
+            case unTravelled
+            case travelled
+            case goal
+        }
+        
+        private struct CellPosition {
+            let h: Int
+            let w: Int
+        }
+        
+        private let H: Int
+        private let W: Int
+        
+        init(H: Int, W: Int) {
+            self.H = H
+            self.W = W
+        }
+
+        private var mazeMap = [[CellStatus]]()
+        private var nextSteps = ArraySlice<(cell: CellPosition, d: Int)>()
+
+        mutating func addMapLine(line: String) {
+            var mazeLine = [CellStatus]()
+            for cell in line {
+                switch cell {
+                case "#":
+                    mazeLine.append(.wall)
+                case "G":
+                    mazeLine.append(.goal)
+                case "S":
+                    nextSteps.append((CellPosition(h: mazeMap.count, w: mazeLine.count), 0))
+                    fallthrough
+                default:
+                    mazeLine.append(.unTravelled)
+                }
+            }
+            mazeMap.append(mazeLine)
+        }
+        
+        mutating func solve() -> Int {
+            while let (cell, distance) = nextSteps.popFirst() {
+                let cellStatus = mazeMap[cell.h][cell.w]
+                switch cellStatus {
+                case .wall, .travelled:
+                    continue
+                case .goal:
+                    return distance
+                case .unTravelled:
+                    mazeMap[cell.h][cell.w] = .travelled
+                    for (dH, dW) in [(1, 0), (0, 1), (-1, 0), (0, -1)] {
+                        let nextH = cell.h + dH
+                        let nextW = cell.w + dW
+                        
+                        guard 0 <= nextH && nextH < H else { continue }
+                        guard 0 <= nextW && nextW < W else { continue }
+                        
+                        nextSteps.append((CellPosition(h: nextH, w: nextW), distance + 1))
+                    }
+                }
+            }
+            return -1
+        }
+    }
     
-    print("foo")
+    let HW = readLine()!.split(separator: " ").map {Int(String($0))!}
+    let H = HW[0]
+    let W = HW[1]
+    
+    var maze = Maze(H: H, W: W)
+    
+    for _ in 0..<H {
+        maze.addMapLine(line: readLine()!)
+    }
+    
+    print(maze.solve())
     
     // ===============
     // actual code end
