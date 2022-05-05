@@ -101,7 +101,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
 
         private var mazeMap = [[CellStatus]]()
-        private var nextSteps = ArraySlice<(cell: CellPosition, d: Int)>()
+        private var nextSteps = [CellPosition]()
 
         mutating func addMapLine(line: String) {
             var mazeLine = [CellStatus]()
@@ -112,7 +112,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
                 case "G":
                     mazeLine.append(.goal)
                 case "S":
-                    nextSteps.append((CellPosition(h: mazeMap.count, w: mazeLine.count), 0))
+                    nextSteps.append(CellPosition(h: mazeMap.count, w: mazeLine.count))
                     mazeLine.append(.travelled)
                 default:
                     mazeLine.append(.unTravelled)
@@ -122,25 +122,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         }
         
         mutating func solve() -> Int {
-            while let (cell, distance) = nextSteps.popFirst() {
-                for (dH, dW) in [(1, 0), (0, 1), (-1, 0), (0, -1)] {
-                    let nextH = cell.h + dH
-                    let nextW = cell.w + dW
-                    
-                    guard 0 <= nextH && nextH < H else { continue }
-                    guard 0 <= nextW && nextW < W else { continue }
-                    
-                    let cellStatus = mazeMap[nextH][nextW]
-                    switch cellStatus {
-                    case .wall, .travelled:
-                        continue
-                    case .goal:
-                        return distance + 1
-                    case .unTravelled:
-                        mazeMap[nextH][nextW] = .travelled
-                        nextSteps.append((CellPosition(h: nextH, w: nextW), distance + 1))
+            var nextDistance = 1
+            while !nextSteps.isEmpty {
+                var newSteps = [CellPosition]()
+                for cell in nextSteps {
+                    for (dH, dW) in [(1, 0), (0, 1), (-1, 0), (0, -1)] {
+                        let nextH = cell.h + dH
+                        let nextW = cell.w + dW
+                        
+                        guard 0 <= nextH && nextH < H else { continue }
+                        guard 0 <= nextW && nextW < W else { continue }
+                        
+                        let cellStatus = mazeMap[nextH][nextW]
+                        switch cellStatus {
+                        case .wall, .travelled:
+                            continue
+                        case .goal:
+                            return nextDistance
+                        case .unTravelled:
+                            mazeMap[nextH][nextW] = .travelled
+                            newSteps.append(CellPosition(h: nextH, w: nextW))
+                        }
                     }
                 }
+                nextSteps = newSteps
+                nextDistance += 1
             }
             return -1
         }
