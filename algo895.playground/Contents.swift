@@ -64,11 +64,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInt() -> Int { Int(readLine()!)! }
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let N = readInt()
+    var childrenOf = [[Int]](repeating: [], count: N)
+    var parentOf = [Int](repeating: -1, count: N)
     
-    print("foo")
+    for _ in 0..<N - 1 {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        childrenOf[a].append(b)
+        parentOf[b] = a
+    }
+    
+    var answer = [Int: String]()
+    let Q = readInt()
+    for _ in 0..<Q {
+        let v = readInt()
+        let p = parentOf[v]
+        
+        defer { print(answer[p]!) }
+        
+        guard answer[p] == nil else { continue }
+        
+        answer[p] = childrenOf[p]
+            .sorted()
+            .map { String($0) }
+            .joined(separator: " ")
+    }
     
     // ===============
     // actual code end
