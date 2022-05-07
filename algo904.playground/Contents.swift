@@ -48,15 +48,9 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
     let N = Int(readLine()!)!
-    let Ps = readInts()
+    let Ps = Set(readInts())
     
-    var leaf = [Bool](repeating: true, count: N)
-    
-    for P in Ps {
-        leaf[P] = false
-    }
-    
-    print(leaf.filter {$0}.count)
+    print(N - Ps.count)
     
     // ===============
     // actual code end
