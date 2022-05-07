@@ -44,11 +44,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let N = Int(readLine()!)!
+    let Ps = readInts()
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var leaf = [Bool](repeating: true, count: N)
     
-    print("foo")
+    for P in Ps {
+        leaf[P] = false
+    }
+    
+    print(leaf.filter {$0}.count)
     
     // ===============
     // actual code end
