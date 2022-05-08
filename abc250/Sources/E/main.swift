@@ -16,18 +16,13 @@ func main() {
     let As = readInts()
     let Bs = readInts()
     
-    let abMax = 1_000_000_000
-    
-    var currentA = [Bool](repeating: false, count: abMax + 1)
-    var currentB = [Bool](repeating: false, count: abMax + 1)
-    
-    var aSet = [[Bool]]()
-    var bSet = [[Bool]]()
+    var aSet = [Set<Int>()]
+    var bSet = [Set<Int>()]
     for i in 0..<N {
-        currentA[As[i]] = true
-        currentB[Bs[i]] = true
-        aSet.append(currentA)
-        bSet.append(currentB)
+        aSet.append(aSet[i])
+        aSet[i+1].insert(As[i])
+        bSet.append(bSet[i])
+        bSet[i+1].insert(Bs[i])
     }
     
     let Q = readInt()
