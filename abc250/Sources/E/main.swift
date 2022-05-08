@@ -16,13 +16,15 @@ func main() {
     let As = readInts()
     let Bs = readInts()
     
-    var aSet = [Set<Int>()]
-    var bSet = [Set<Int>()]
+    var currentA = Set<Int>()
+    var currentB = Set<Int>()
+    var aSet = [Set<Int>]()
+    var bSet = [Set<Int>]()
     for i in 0..<N {
-        aSet.append(aSet[i])
-        aSet[i+1].insert(As[i])
-        bSet.append(bSet[i])
-        bSet[i+1].insert(Bs[i])
+        currentA.insert(As[i])
+        aSet.append(currentA)
+        currentB.insert(Bs[i])
+        bSet.append(currentB)
     }
     
     let Q = readInt()
@@ -30,7 +32,7 @@ func main() {
     for _ in 0..<Q{
         let (x, y) = readInts().tupled()
         
-        print(aSet[x] == bSet[y] ? "Yes" : "No")
+        print(aSet[x - 1] == bSet[y - 1] ? "Yes" : "No")
     }
     
     // ===============
