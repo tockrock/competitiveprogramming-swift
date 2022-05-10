@@ -39,10 +39,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    let N = Int(readLine()!)!
+    let As = readInts()
+    let v = Int(readLine()!)!
+    
+    var children = [[Int]](repeating: [], count: N)
+    
+    for (i, A) in As.enumerated() {
+        children[A].append(i+1)
+    }
+    
+    func countDescendants(v: Int) -> Int {
+        var count = children[v].count
+        for child in children[v] {
+            count += countDescendants(v: child)
+        }
+        return count
+    }
+    
+    print(countDescendants(v: v))
     
     // ===============
     // actual code end
