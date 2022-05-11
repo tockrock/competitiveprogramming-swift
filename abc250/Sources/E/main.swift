@@ -11,6 +11,12 @@ func main() {
     // actual code goes here
     // =====================
     
+    // reference: https://atcoder.jp/contests/abc250/editorial/3940
+    let P = 8128812800000059
+    func liteHash(s: Int, a: Int) -> Int {
+        return s + a * (a + 1346) * (a + 9185) % P
+    }
+    
     let N = readInt()
     
     let As = readInts()
@@ -25,12 +31,12 @@ func main() {
     for i in 0..<N {
         if !currentA.contains(As[i]) {
             currentA.insert(As[i])
-            aHash = currentA.hashValue
+            aHash = liteHash(s: aHash, a: As[i])
         }
         aSet.append(aHash)
         if !currentB.contains(Bs[i]) {
             currentB.insert(Bs[i])
-            bHash = currentB.hashValue
+            bHash = liteHash(s: bHash, a: Bs[i])
         }
         bSet.append(bHash)
     }
