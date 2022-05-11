@@ -11,51 +11,56 @@ func main() {
     // actual code goes here
     // =====================
     
-    // reference: https://atcoder.jp/contests/abc250/editorial/3948
-    var next = 0
-    var replaceMap = [Int: Int]()
-    func replace(n: Int) -> Int {
-        if replaceMap[n] == nil {
-            replaceMap[n] = next
-            next += 1
-        }
-        return replaceMap[n]!
-    }
-    
-    let _ = readLine()
+    let N = readInt()
     
     let As = readInts()
     let Bs = readInts()
     
-    var replacedAs = [(count: 0, largest: 0)]
+    var aPos = 0
+    var bPos = 0
     var currentA = Set<Int>()
-    var largest = Int.min
-    for A in As {
-        let replacedA = replace(n: A)
-        if !currentA.contains(replacedA) {
-            largest = max(largest, replacedA)
-            currentA.insert(replacedA)
-        }
-        replacedAs.append((currentA.count, largest))
-    }
-    
-    var replacedBs = [(count: 0, largest: 0)]
     var currentB = Set<Int>()
-    largest = Int.min
-    for B in Bs {
-        let replacedB = replace(n: B)
-        if !currentB.contains(replacedB) {
-            largest = max(largest, replacedB)
-            currentB.insert(replacedB)
+    var aCount = [0]
+    var bCount = [0]
+    var countMatch = [false]
+    var nextCount = 1
+    
+    overall: while true {
+        // adjust each Set until the both matches the next count
+        // while keeping track of the count separately
+        while currentA.count != nextCount {
+            guard aPos < N else {
+                bCount.append(contentsOf: [Int](repeating: 0, count: N-bPos))
+                break overall
+            }
+            currentA.insert(As[aPos])
+            aCount.append(currentA.count)
+            aPos += 1
         }
-        replacedBs.append((currentB.count, largest))
-    }
+        while currentB.count != nextCount {
+            guard bPos < N else {
+                aCount.append(contentsOf: [Int](repeating: 0, count: N-aPos))
+                break overall
+            }
+            currentB.insert(Bs[bPos])
+            bCount.append(currentB.count)
+            bPos += 1
+        }
         
+        // Now that each count are at the next count,
+        // compare the set if they match, and store the result
+        countMatch.append(currentA == currentB)
+        nextCount += 1
+    }
+
     let Q = readInt()
     
-    for _ in 0..<Q{
+    for _ in 0..<Q {
         let (x, y) = readInts().tupled()
-        print((replacedAs[x] == replacedBs[y]).yN)
+        var result = false
+        defer { print(result.yN) }
+        guard aCount[x] == bCount[y] else { continue }
+        result = countMatch[aCount[x]]
     }
     
     // ===============
