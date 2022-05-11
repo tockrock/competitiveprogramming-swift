@@ -18,21 +18,28 @@ func main() {
     
     var currentA = Set<Int>()
     var currentB = Set<Int>()
-    var aSet = [Set<Int>]()
-    var bSet = [Set<Int>]()
+    var aSet = [0]
+    var bSet = [0]
+    var aHash = 0
+    var bHash = 0
     for i in 0..<N {
-        currentA.insert(As[i])
-        aSet.append(currentA)
-        currentB.insert(Bs[i])
-        bSet.append(currentB)
+        if !currentA.contains(As[i]) {
+            currentA.insert(As[i])
+            aHash = currentA.hashValue
+        }
+        aSet.append(aHash)
+        if !currentB.contains(Bs[i]) {
+            currentB.insert(Bs[i])
+            bHash = currentB.hashValue
+        }
+        bSet.append(bHash)
     }
     
     let Q = readInt()
     
     for _ in 0..<Q{
         let (x, y) = readInts().tupled()
-        
-        print(aSet[x - 1] == bSet[y - 1] ? "Yes" : "No")
+        print((aSet[x] == bSet[y]).yN)
     }
     
     // ===============
