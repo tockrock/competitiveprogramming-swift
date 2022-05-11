@@ -11,41 +11,51 @@ func main() {
     // actual code goes here
     // =====================
     
-    // reference: https://atcoder.jp/contests/abc250/editorial/3940
-    let P = 8128812800000059
-    func liteHash(s: Int, a: Int) -> Int {
-        return s + a * (a + 1346) * (a + 9185) % P
+    // reference: https://atcoder.jp/contests/abc250/editorial/3948
+    var next = 0
+    var replaceMap = [Int: Int]()
+    func replace(n: Int) -> Int {
+        if replaceMap[n] == nil {
+            replaceMap[n] = next
+            next += 1
+        }
+        return replaceMap[n]!
     }
     
-    let N = readInt()
+    let _ = readLine()
     
     let As = readInts()
     let Bs = readInts()
     
+    var replacedAs = [(count: 0, largest: 0)]
     var currentA = Set<Int>()
-    var currentB = Set<Int>()
-    var aSet = [0]
-    var bSet = [0]
-    var aHash = 0
-    var bHash = 0
-    for i in 0..<N {
-        if !currentA.contains(As[i]) {
-            currentA.insert(As[i])
-            aHash = liteHash(s: aHash, a: As[i])
+    var largest = Int.min
+    for A in As {
+        let replacedA = replace(n: A)
+        if !currentA.contains(replacedA) {
+            largest = max(largest, replacedA)
+            currentA.insert(replacedA)
         }
-        aSet.append(aHash)
-        if !currentB.contains(Bs[i]) {
-            currentB.insert(Bs[i])
-            bHash = liteHash(s: bHash, a: Bs[i])
-        }
-        bSet.append(bHash)
+        replacedAs.append((currentA.count, largest))
     }
     
+    var replacedBs = [(count: 0, largest: 0)]
+    var currentB = Set<Int>()
+    largest = Int.min
+    for B in Bs {
+        let replacedB = replace(n: B)
+        if !currentB.contains(replacedB) {
+            largest = max(largest, replacedB)
+            currentB.insert(replacedB)
+        }
+        replacedBs.append((currentB.count, largest))
+    }
+        
     let Q = readInt()
     
     for _ in 0..<Q{
         let (x, y) = readInts().tupled()
-        print((aSet[x] == bSet[y]).yN)
+        print((replacedAs[x] == replacedBs[y]).yN)
     }
     
     // ===============
