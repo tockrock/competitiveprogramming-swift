@@ -65,6 +65,43 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+    
+    let N = Int(readLine()!)!
+    var connected = [Set<Int>](repeating: [], count: N)
+    
+    for _ in 0..<N-1 {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        connected[a].insert(b)
+        connected[b].insert(a)
+    }
+        
+    var childrenString = [String](repeating: "", count: N)
+    var parent = [Int](repeating: -1, count: N)
+    
+    func makeGraph(n: Int) {
+        let children = connected[n]
+        childrenString[n] = children
+            .sorted()
+            .map { String($0) }
+            .joined(separator: " ")
+        
+        for child in children {
+            parent[child] = n
+            connected[child].remove(n)
+            makeGraph(n: child)
+        }
+    }
+    
+    makeGraph(n: 0)
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let v = Int(readLine()!)!
+        print(childrenString[parent[v]])
+    }
     
     // ===============
     // actual code end
