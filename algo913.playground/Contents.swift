@@ -53,10 +53,42 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    struct BinaryTree {
+        private struct Node {
+            let left: Int?
+            let right: Int?
+        }
+        
+        private var nodes = [Node]()
+        
+        mutating func append(l: Int, r: Int) {
+            let left: Int? = l != -1 ? l : nil
+            let right: Int? = r != -1 ? r : nil
+            
+            nodes.append(Node(left: left, right: right))
+        }
+                
+        func inOrder(v: Int?, result: inout [Int]) {
+            guard let v = v else { return }
+            inOrder(v: nodes[v].left, result: &result)
+            result.append(v)
+            inOrder(v: nodes[v].right, result: &result)
+        }
+    }
+    
+    let N = Int(readLine()!)!
+    var tree = BinaryTree()
+    for _ in 0..<N {
+        let lr = readInts()
+        let l = lr[0], r = lr[1]
+        tree.append(l: l, r: r)
+    }
+    
+    var result = [Int]()
+    tree.inOrder(v: 0, result: &result)
+    print(result.map(\.description).joined(separator: " "))
     
     // ===============
     // actual code end
