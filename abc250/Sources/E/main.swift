@@ -20,7 +20,7 @@ func main() {
     var nextBPos = 0
     var currentA = Set<Int>()
     var currentB = Set<Int>()
-    var appeardOnce = Set<Int>()
+    var appearedOnce = Set<Int>()
     var aCount = [Int](repeating: 0, count: N + 1)
     var bCount = [Int](repeating: 0, count: N + 1)
     var countMatch = [false]
@@ -46,17 +46,17 @@ func main() {
             nextBPos += 1
         }
 
-        if appeardOnce.remove(nextA) == nil {
-            appeardOnce.insert(nextA)
+        if appearedOnce.remove(nextA) == nil {
+            appearedOnce.insert(nextA)
         }
         
-        if appeardOnce.remove(nextB) == nil {
-            appeardOnce.insert(nextB)
+        if appearedOnce.remove(nextB) == nil {
+            appearedOnce.insert(nextB)
         }
 
         // Now that each count are at the next count,
         // compare the set if they match, and store the result
-        countMatch.append(appeardOnce.isEmpty)
+        countMatch.append(appearedOnce.isEmpty)
         nextCount += 1
     }
 
