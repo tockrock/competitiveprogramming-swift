@@ -16,40 +16,47 @@ func main() {
     let As = readInts()
     let Bs = readInts()
     
-    var aPos = 0
-    var bPos = 0
+    var nextAPos = 0
+    var nextBPos = 0
     var currentA = Set<Int>()
     var currentB = Set<Int>()
-    var aCount = [0]
-    var bCount = [0]
+    var appeardOnce = Set<Int>()
+    var aCount = [Int](repeating: 0, count: N + 1)
+    var bCount = [Int](repeating: 0, count: N + 1)
     var countMatch = [false]
     var nextCount = 1
     
     overall: while true {
         // adjust each Set until the both matches the next count
         // while keeping track of the count separately
+        var nextA = 0, nextB = 0
+        
         while currentA.count != nextCount {
-            guard aPos < N else {
-                bCount.append(contentsOf: [Int](repeating: 0, count: N-bPos))
-                break overall
-            }
-            currentA.insert(As[aPos])
-            aCount.append(currentA.count)
-            aPos += 1
+            guard nextAPos < N else { break overall }
+            nextA = As[nextAPos]
+            currentA.insert(nextA)
+            aCount[nextAPos] = currentA.count
+            nextAPos += 1
         }
         while currentB.count != nextCount {
-            guard bPos < N else {
-                aCount.append(contentsOf: [Int](repeating: 0, count: N-aPos))
-                break overall
-            }
-            currentB.insert(Bs[bPos])
-            bCount.append(currentB.count)
-            bPos += 1
+            guard nextBPos < N else { break overall }
+            nextB = Bs[nextBPos]
+            currentB.insert(nextB)
+            bCount[nextBPos] = currentB.count
+            nextBPos += 1
+        }
+
+        if appeardOnce.remove(nextA) == nil {
+            appeardOnce.insert(nextA)
         }
         
+        if appeardOnce.remove(nextB) == nil {
+            appeardOnce.insert(nextB)
+        }
+
         // Now that each count are at the next count,
         // compare the set if they match, and store the result
-        countMatch.append(currentA == currentB)
+        countMatch.append(appeardOnce.isEmpty)
         nextCount += 1
     }
 
@@ -59,8 +66,8 @@ func main() {
         let (x, y) = readInts().tupled()
         var result = false
         defer { print(result.yN) }
-        guard aCount[x] == bCount[y] else { continue }
-        result = countMatch[aCount[x]]
+        guard aCount[x - 1] == bCount[y - 1] else { continue }
+        result = countMatch[aCount[x - 1]]
     }
     
     // ===============
