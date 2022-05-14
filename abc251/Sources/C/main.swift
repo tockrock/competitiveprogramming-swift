@@ -10,7 +10,25 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    
+    var existing = Set<String>()
+    var highest = Int.min
+    var ans = Int.min
+    
+    for i in 0..<N {
+        let (S, T) = readStrings().tupled()
+        let t = Int(T)!
+        
+        guard existing.insert(S).inserted else { continue }
+        
+        if t > highest {
+            highest = t
+            ans = i + 1
+        }
+    }
+    
+    print(ans)
     
     // ===============
     // actual code end
