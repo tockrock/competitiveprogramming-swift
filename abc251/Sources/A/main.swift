@@ -11,7 +11,14 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let S = readString()
+    var ans = S
+    
+    while ans.count < 6 {
+        ans += S
+    }
+    
+    print(ans)
     
     // ===============
     // actual code end
