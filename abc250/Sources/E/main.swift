@@ -11,63 +11,60 @@ func main() {
     // actual code goes here
     // =====================
     
-    let N = readInt()
+    let _ = readLine()
     
     let As = readInts()
     let Bs = readInts()
     
-    var nextAPos = 0
-    var nextBPos = 0
     var currentA = Set<Int>()
-    var currentB = Set<Int>()
-    var appearedOnce = Set<Int>()
-    var aCount = [Int](repeating: 0, count: N + 1)
-    var bCount = [Int](repeating: 0, count: N + 1)
-    var countMatch = [false]
-    var nextCount = 1
+    var aCount = [0]
+    var trimmedA = [Int]()
     
-    overall: while true {
-        // adjust each Set until the both matches the next count
-        // while keeping track of the count separately
-        var nextA = 0, nextB = 0
-        
-        while currentA.count != nextCount {
-            guard nextAPos < N else { break overall }
-            nextA = As[nextAPos]
-            currentA.insert(nextA)
-            aCount[nextAPos] = currentA.count
-            nextAPos += 1
+    for A in As {
+        if currentA.insert(A).inserted {
+            trimmedA.append(A)
         }
-        while currentB.count != nextCount {
-            guard nextBPos < N else { break overall }
-            nextB = Bs[nextBPos]
-            currentB.insert(nextB)
-            bCount[nextBPos] = currentB.count
-            nextBPos += 1
-        }
-
-        if appearedOnce.remove(nextA) == nil {
-            appearedOnce.insert(nextA)
-        }
-        
-        if appearedOnce.remove(nextB) == nil {
-            appearedOnce.insert(nextB)
-        }
-
-        // Now that each count are at the next count,
-        // compare the set if they match, and store the result
-        countMatch.append(appearedOnce.isEmpty)
-        nextCount += 1
+        aCount.append(currentA.count)
     }
-
+    
+    var currentB = Set<Int>()
+    var bCount = [0]
+    var trimmedB = [Int]()
+    
+    for B in Bs {
+        if currentB.insert(B).inserted {
+            trimmedB.append(B)
+        }
+        bCount.append(currentB.count)
+    }
+    
+    var countMatch = [false]
+    var appearedOnce = Set<Int>()
+    let minCount = min(trimmedA.count, trimmedB.count)
+    
+    for i in 0..<minCount {
+        let A = trimmedA[i], B = trimmedB[i]
+        
+        if appearedOnce.remove(A) == nil {
+            appearedOnce.insert(A)
+        }
+        
+        if appearedOnce.remove(B) == nil {
+            appearedOnce.insert(B)
+        }
+        
+        countMatch.append(appearedOnce.isEmpty)
+    }
+    
     let Q = readInt()
     
     for _ in 0..<Q {
         let (x, y) = readInts().tupled()
-        var result = false
-        defer { print(result.yN) }
-        guard aCount[x - 1] == bCount[y - 1] else { continue }
-        result = countMatch[aCount[x - 1]]
+        guard aCount[x] == bCount[y] else {
+            print(false.yN)
+            continue
+        }
+        print(countMatch[aCount[x]].yN)
     }
     
     // ===============
