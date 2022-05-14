@@ -45,12 +45,12 @@ func main() {
     for i in 0..<minCount {
         let A = trimmedA[i], B = trimmedB[i]
         
-        if appearedOnce.remove(A) == nil {
-            appearedOnce.insert(A)
+        if !appearedOnce.insert(A).inserted {
+            appearedOnce.remove(A)
         }
         
-        if appearedOnce.remove(B) == nil {
-            appearedOnce.insert(B)
+        if !appearedOnce.insert(B).inserted {
+            appearedOnce.remove(B)
         }
         
         countMatch.append(appearedOnce.isEmpty)
