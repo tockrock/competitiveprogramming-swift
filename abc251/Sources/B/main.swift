@@ -11,7 +11,34 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, W) = readInts().tupled()
+    let As = readInts()
+    
+    var ans = Set<Int>()
+    for i in 0..<N {
+        let first = As[i]
+        
+        guard first <= W else { continue }
+        ans.insert(first)
+        
+        guard N-i > 1 else { continue }
+        for j in i+1..<N {
+            let second = first + As[j]
+            
+            guard second <= W else { continue }
+            ans.insert(second)
+            
+            guard N-j > 1 else { continue }
+            for k in j+1..<N {
+                let third = second + As[k]
+                
+                guard third <= W else { continue }
+                ans.insert(third)
+            }
+        }
+    }
+    
+    print(ans.count)
     
     // ===============
     // actual code end
