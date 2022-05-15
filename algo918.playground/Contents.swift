@@ -48,6 +48,68 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+struct BinaryTree<T: Comparable> {
+    private class Node: Comparable {
+        static func < (lhs: BinaryTree<T>.Node, rhs: BinaryTree<T>.Node) -> Bool {
+            lhs.key < rhs.key
+        }
+        
+        static func == (lhs: BinaryTree<T>.Node, rhs: BinaryTree<T>.Node) -> Bool {
+            lhs.key == rhs.key
+        }
+        
+        let key: T
+        var left: Node?
+        var right: Node?
+        
+        init(_ key: T) {
+            self.key = key
+        }
+    }
+    
+    private var root: Node? = nil
+    
+    mutating func insert(_ key: T) {
+        let node = Node(key)
+        guard let root = root else {
+            root = node
+            return
+        }
+        
+        _insert(node, under: root)
+        
+    }
+    
+    mutating private func _insert(_ node: Node, under p: Node) {
+        if node <= p {
+            guard let left = p.left else {
+                p.left = node
+                return
+            }
+            _insert(node, under: left)
+        } else {
+            guard let right = p.right else {
+                p.right = node
+                return
+            }
+            _insert(node, under: right)
+        }
+    }
+    
+    func preorder() -> [T] {
+        var result = [T]()
+        _preorder(node: root, result: &result)
+        return result
+    }
+    
+    private func _preorder(node: Node?, result: inout [T]) {
+        guard let node = node else { return }
+        result.append(node.key)
+        _preorder(node: node.left, result: &result)
+        _preorder(node: node.right, result: &result)
+    }
+}
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
@@ -56,7 +118,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    var tree = BinaryTree<Int>()
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let v = Int(readLine()!)!
+        tree.insert(v)
+    }
+    
+    print(tree.preorder().map(\.description).joined(separator: " "))
     
     // ===============
     // actual code end
