@@ -43,6 +43,30 @@ let examples: [(String, Example)] = [
             """)),
 ]
 
+func run(readLine: () -> String?, print: (Any...) -> Void) {
+    // =====================
+    // actual code goes here
+    // =====================
+    
+    // let mod = 1000000007
+    // let mod = 998244353
+    
+    var tree = BinaryTree<Int>()
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let v = Int(readLine()!)!
+        tree.insert(v)
+    }
+    
+    print(tree.preorder().map(\.description).joined(separator: " "))
+    
+    // ===============
+    // actual code end
+    // ===============
+}
+
 // =================================
 // Extensions
 // Remember to paste these as well!!
@@ -110,29 +134,6 @@ struct BinaryTree<T: Comparable> {
     }
 }
 
-func run(readLine: () -> String?, print: (Any...) -> Void) {
-    // =====================
-    // actual code goes here
-    // =====================
-    
-    // let mod = 1000000007
-    // let mod = 998244353
-    
-    var tree = BinaryTree<Int>()
-    
-    let Q = Int(readLine()!)!
-    
-    for _ in 0..<Q {
-        let v = Int(readLine()!)!
-        tree.insert(v)
-    }
-    
-    print(tree.preorder().map(\.description).joined(separator: " "))
-    
-    // ===============
-    // actual code end
-    // ===============
-}
 
 func main(label: String, example: Example) {
     var inputLines = example.input.split(separator: "\n")
