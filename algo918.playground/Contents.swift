@@ -73,7 +73,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // =================================
 
 struct BinaryTree<T: Comparable> {
-    private class Node {        
+    private class Node {
         let key: T
         var left: Node?
         var right: Node?
@@ -91,24 +91,20 @@ struct BinaryTree<T: Comparable> {
             root = node
             return
         }
-        
-        _insert(node, under: root)
+        var parent: Node = root
+        var next: Node? = root
+        while let foo = next {
+            parent = foo
+            next = _insert(node, under: parent)
+        }
         
     }
     
-    mutating private func _insert(_ node: Node, under p: Node) {
+    mutating private func _insert(_ node: Node, under p: Node) -> Node? {
         if node.key <= p.key {
-            guard let left = p.left else {
-                p.left = node
-                return
-            }
-            _insert(node, under: left)
+            return node.left
         } else {
-            guard let right = p.right else {
-                p.right = node
-                return
-            }
-            _insert(node, under: right)
+            return node.right
         }
     }
     
