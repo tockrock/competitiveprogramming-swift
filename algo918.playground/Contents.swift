@@ -73,15 +73,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // =================================
 
 struct BinaryTree<T: Comparable> {
-    private class Node: Comparable {
-        static func < (lhs: BinaryTree<T>.Node, rhs: BinaryTree<T>.Node) -> Bool {
-            lhs.key < rhs.key
-        }
-        
-        static func == (lhs: BinaryTree<T>.Node, rhs: BinaryTree<T>.Node) -> Bool {
-            lhs.key == rhs.key
-        }
-        
+    private class Node {        
         let key: T
         var left: Node?
         var right: Node?
@@ -105,7 +97,7 @@ struct BinaryTree<T: Comparable> {
     }
     
     mutating private func _insert(_ node: Node, under p: Node) {
-        if node <= p {
+        if node.key <= p.key {
             guard let left = p.left else {
                 p.left = node
                 return
