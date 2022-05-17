@@ -53,12 +53,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    enum Command: Int {
+        case insert, search
+    }
+        
+    var tree = BinaryTree<Int>()
+    let Q = Int(readLine()!)!
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .insert:
+            tree.insert(query[1])
+        case .search:
+            print(tree.search(query[1]) ? "Yes" : "No")
+        }
+        
+    }
     
-    print("foo")
-    
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
     // ===============
     // actual code end
     // ===============
@@ -69,7 +84,60 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Remember to paste these as well!!
 // =================================
 
-
+struct BinaryTree<T: Comparable> {
+    private class Node {
+        let key: T
+        var left: Node?
+        var right: Node?
+        
+        init(_ key: T) {
+            self.key = key
+        }
+    }
+    
+    private var root: Node?
+    
+    mutating func insert(_ key: T) {
+        let node = Node(key)
+        guard let root = root else {
+            root = node
+            return
+        }
+        _insert(node: node, next: root)
+    }
+    
+    private mutating func _insert(node: Node, next: Node) {
+        if node.key <= next.key {
+            guard let left = next.left else {
+                next.left = node
+                return
+            }
+            _insert(node: node, next: left)
+        } else {
+            guard let right = next.right else {
+                next.right = node
+                return
+            }
+            _insert(node: node, next: right)
+        }
+    }
+    
+    func search(_ key: T) -> Bool {
+        return _search(key: key, next: root)
+    }
+    
+    private func _search(key: T, next: Node?) -> Bool {
+        guard let next = next else { return false }
+        
+        if key == next.key {
+            return true
+        } else if key < next.key {
+            return _search(key: key, next: next.left)
+        } else {
+            return _search(key: key, next: next.right)
+        }
+    }
+}
 
 func main(label: String, example: Example) {
     var inputLines = example.input.split(separator: "\n")
