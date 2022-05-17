@@ -53,7 +53,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
-
     
     enum Command: Int {
         case insert, search
@@ -85,7 +84,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // =================================
 
 struct BinaryTree<T: Comparable> {
-    private class Node {
+    private final class Node {
         let key: T
         var left: Node?
         var right: Node?
@@ -93,51 +92,42 @@ struct BinaryTree<T: Comparable> {
         init(_ key: T) {
             self.key = key
         }
+        
+        func insert(node: Node) -> Node {
+            if node.key <= key {
+                left = left?.insert(node: node) ?? node
+            } else {
+                right = right?.insert(node: node) ?? node
+            }
+            return self
+        }
+        
+        func search(value: T) -> Node? {
+            if value == key {
+                return self
+            } else if value < key {
+                return left?.search(value: value)
+            } else {
+                return right?.search(value: value)
+            }
+        }
     }
     
     private var root: Node?
     
-    mutating func insert(_ key: T) {
-        let node = Node(key)
-        guard let root = root else {
-            root = node
-            return
-        }
-        _insert(node: node, next: root)
+    mutating func insert(_ value: T) {
+        let node = Node(value)
+        root = root?.insert(node: node) ?? node
     }
-    
-    private mutating func _insert(node: Node, next: Node) {
-        if node.key <= next.key {
-            guard let left = next.left else {
-                next.left = node
-                return
-            }
-            _insert(node: node, next: left)
-        } else {
-            guard let right = next.right else {
-                next.right = node
-                return
-            }
-            _insert(node: node, next: right)
-        }
-    }
-    
-    func search(_ key: T) -> Bool {
-        return _search(key: key, next: root)
-    }
-    
-    private func _search(key: T, next: Node?) -> Bool {
-        guard let next = next else { return false }
         
-        if key == next.key {
-            return true
-        } else if key < next.key {
-            return _search(key: key, next: next.left)
-        } else {
-            return _search(key: key, next: next.right)
-        }
+    func search(_ value: T) -> Bool {
+        return root?.search(value: value) != nil
     }
 }
+
+// ====================
+// Extensions Ends Here
+// ====================
 
 func main(label: String, example: Example) {
     var inputLines = example.input.split(separator: "\n")
