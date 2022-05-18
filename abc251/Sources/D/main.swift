@@ -11,7 +11,17 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let W = readInt()
+    
+    var ans = [Int]()
+    
+    func get(to: Int, with: Int) {
+        if to % with == 0 {
+            ans.append[to/3, to/3, to/3]
+        }
+        
+    }
+    get(to: W, with: 3)
     
     // ===============
     // actual code end

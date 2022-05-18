@@ -10,9 +10,45 @@ func main() {
     // =====================
     // actual code goes here
     // =====================
+        
+    let N = readInt()
+    let A = readInts()
+    var remaining = [Bool](repeating: true, count: N)
+    var skippable = [Int](0)
     
-    print("foo")
+    if A[0] < A[1] + A[N-1] {
+        remaining[0] = false
+        skippable.append(0)
+    }
+    for i in 1..<N-1 {
+        if A[i] < A[i-1] + A[i+1] else {
+            remaining[i] = false
+            skippable.append(i)
+        }
+    }
+    if A[N-1] < A[0] + A[N-2] {
+        remaining[N-1] = false
+        skippable.append(i-1)
+    }
     
+    func compare(from: Int, to: Int) {
+        var baseStart = 0
+        for i in stride(from: from, to: to, by: 2) {
+            baseStart += A[i]
+        }
+        var offsetStart = 0
+        for i in stride(from: from + 1, to: to, by: 2) {
+            offsetStart += A[i]
+        }
+        
+    }
+    
+    if skippable.isEmpty  {
+        if N > 
+        compare(from: 0, to: N)
+    }
+    
+
     // ===============
     // actual code end
     // ===============
