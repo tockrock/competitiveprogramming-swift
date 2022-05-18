@@ -93,18 +93,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 struct BinaryTree<T: Comparable> {
     private final class Node {
         var key: T
+        var parent: Node?
         var left: Node?
         var right: Node?
         
-        init(_ key: T) {
+        init(_ key: T, parent: Node?) {
             self.key = key
+            self.parent = parent
         }
         
-        func insert(node: Node) -> Node {
-            if node.key <= key {
-                left = left?.insert(node: node) ?? node
+        func insert(value: T) -> Node {
+            if value <= key {
+                left = left?.insert(value: value) ?? Node(value, parent: self)
             } else {
-                right = right?.insert(node: node) ?? node
+                right = right?.insert(value: value) ?? Node(value, parent: self)
             }
             return self
         }
@@ -118,7 +120,7 @@ struct BinaryTree<T: Comparable> {
                 return right?.search(value: value)
             }
         }
-                        
+        
         private func nextInorder() -> Node {
             return left?.nextInorder() ?? self
         }
@@ -150,8 +152,7 @@ struct BinaryTree<T: Comparable> {
     private var root: Node?
     
     mutating func insert(_ key: T) {
-        let node = Node(key)
-        root = root?.insert(node: node) ?? node
+        root = root?.insert(value: key) ?? Node(key, parent: nil)
     }
     
     func search(_ key: T) -> Bool {
