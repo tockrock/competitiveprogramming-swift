@@ -137,8 +137,14 @@ struct BinaryTree<T: Comparable> {
         }
         
         private func _delete() -> Node? {
-            guard left != nil else { return right }
-            guard let right = right else { return left }
+            guard left != nil else {
+                right?.parent = parent
+                return right
+            }
+            guard let right = right else {
+                left?.parent = parent
+                return left
+            }
             
             let nextChild = right.nextInorder()
             key = nextChild.key
