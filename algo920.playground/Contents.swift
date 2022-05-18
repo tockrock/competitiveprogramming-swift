@@ -109,35 +109,41 @@ struct BinaryTree<T: Comparable> {
             return self
         }
         
-        func search(value: T) -> [Node] {
-            if value == key { return [self] }
-            let child = value <= key ? left : right
-            guard let child = child else { return [Node]() }
-            var result = child.search(value: value)
-            if result.count == 1 {
-                result.append(self)
+        func search(value: T) -> Node? {
+            if value == key {
+                return self
+            } else if value < key {
+                return left?.search(value: value)
+            } else {
+                return right?.search(value: value)
             }
-            return result
+        }
+                        
+        private func nextInorder() -> Node {
+            return left?.nextInorder() ?? self
         }
         
-        func delete() -> Node? {
-            let children = [left, right]
-                .filter { $0 != nil }
-                .map { $0! }
-            
-            guard !children.isEmpty else { return nil }
-            guard children.count > 1 else { return children.first }
-            
-            let nextChild = right!.nextChildInorder()
-            
-            key = nextChild.key
-            nextChild.delete()
-            
+        func delete(value: T) -> Node? {
+            if value == key {
+                return _delete()
+            } else if value < key {
+                left = left?.delete(value: value)
+            } else {
+                right = right?.delete(value: value)
+            }
             return self
         }
-                
-        private func nextChildInorder() -> Node {
-            return left?.nextChildInorder() ?? self
+        
+        private func _delete() -> Node? {
+            guard left != nil else { return right }
+            guard let right = right else { return left }
+            
+            let nextChild = right.nextInorder()
+            key = nextChild.key
+            // nextChild cannot be deleted directly
+            // because its parent also needs to be updated
+            right.delete(value: key)
+            return self
         }
     }
     
@@ -149,31 +155,12 @@ struct BinaryTree<T: Comparable> {
     }
     
     func search(_ key: T) -> Bool {
-        guard let root = root else { return false }
-        return !root.search(value: key).isEmpty
+        return root?.search(value: key) != nil
     }
     
     mutating func delete(_ key: T) -> Bool {
-        guard let root = root else { return false }
-        let lineage = root.search(value: key)
-        guard !lineage.isEmpty else { return false }
-        
-        let node = lineage[0]
-        let replacement = node.delete()
-        
-        guard lineage.count > 1 else {
-            self.root = replacement
-            return true
-        }
-        
-        let parent = lineage[1]
-        
-        if key <= parent.key {
-            parent.left = replacement
-        } else {
-            parent.right = replacement
-        }
-        
+        guard search(key) else { return false }
+        root = root?.delete(value: key)
         return true
     }
 }
