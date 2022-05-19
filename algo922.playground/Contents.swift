@@ -30,11 +30,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+        
+    let H = Int(readLine()!)!
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var previousMax = 0
+    var multipler = 1
     
-    print("foo")
+    for i in 0..<H {
+        previousMax += multipler
+        multipler *= 2
+    }
+    
+    print(previousMax + 1, previousMax + multipler)
     
     // ===============
     // actual code end
