@@ -11,9 +11,13 @@ func main() {
     // actual code goes here
     // =====================
         
-    struct CostForLast: Hashable {
+    struct CostForLast: Hashable, CustomStringConvertible {
         let i: Int
         let last: Int
+        
+        var description: String {
+            "cfL(\(i), \(last))"
+        }
     }
     
     let N = readInt()
@@ -30,7 +34,7 @@ func main() {
         var cost = A[i]
         
         defer {
-            print(i, cost)
+            print(costForLast, cost)
             costSet[costForLast] = cost
         }
         
@@ -40,7 +44,7 @@ func main() {
         for next in i+1..<min(i+2, N-1) {
             options.append(giveFood(next, last: last))
         }
-        cost += options.min()!
+        if !options.isEmpty { cost += options.min()! }
         
         return cost
     }
@@ -48,6 +52,7 @@ func main() {
     let giveFirst = giveFood(0, last: N-2)
     let skipFirst = giveFood(1, last: N-1)
     
+    print(giveFirst, skipFirst)
     print(min(giveFirst, skipFirst))
 
     // ===============

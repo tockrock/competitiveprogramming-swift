@@ -21,7 +21,7 @@ let cases: [TestCase] = [
 4
 5 3 2 5
 """, """
-5
+7
 """),
 (#filePath, #line,
 """
