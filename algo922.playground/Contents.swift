@@ -32,16 +32,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
         
     let H = Int(readLine()!)!
-    
-    var previousMax = 0
-    var multipler = 1
-    
-    for i in 0..<H {
-        previousMax += multipler
-        multipler *= 2
-    }
-    
-    print(previousMax + 1, previousMax + multipler)
+    print(1 << H, 1 << (H + 1) - 1)
     
     // ===============
     // actual code end
