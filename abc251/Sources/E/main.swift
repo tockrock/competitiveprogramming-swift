@@ -11,8 +11,44 @@ func main() {
     // actual code goes here
     // =====================
         
+    struct CostForLast: Hashable {
+        let i: Int
+        let last: Int
+    }
+    
     let N = readInt()
-    let A = readInts()    
+    let A = readInts()
+    
+//    var animalFed = [Bool](repeating: false, count: N)
+//    var foodGiven = [Bool](repeating: false, count: N)
+    var costSet = [CostForLast: Int]()
+    
+    func giveFood(_ i: Int, last: Int) -> Int {
+        let costForLast = CostForLast(i: i, last: last)
+        if let cost = costSet[costForLast] { return cost }
+        
+        var cost = A[i]
+        
+        defer {
+            print(i, cost)
+            costSet[costForLast] = cost
+        }
+        
+        guard i < last else { return cost }
+        
+        var options = [Int]()
+        for next in i+1..<min(i+2, N-1) {
+            options.append(giveFood(next, last: last))
+        }
+        cost += options.min()!
+        
+        return cost
+    }
+
+    let giveFirst = giveFood(0, last: N-2)
+    let skipFirst = giveFood(1, last: N-1)
+    
+    print(min(giveFirst, skipFirst))
 
     // ===============
     // actual code end
