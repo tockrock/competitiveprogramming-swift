@@ -24,10 +24,7 @@ func main() {
     
     for i in 2..<N+1 {
         // minimum amount when A[i] is given
-        giveFirst[i] = min(
-            giveFirst[i-2] + A[i],
-            giveFirst[i-1] + A[i]
-        )
+        giveFirst[i] = min(giveFirst[i-2], giveFirst[i-1]) + A[i]
     }
 
     var giveLast = [Int](repeating: -1, count: N)
@@ -35,7 +32,7 @@ func main() {
     giveLast[0] = A[N]
     giveLast[1] = A[N] + A[1]
     for i in 2..<N {
-        giveLast[i] = min(giveLast[i-2] + A[i], giveLast[i-1] + A[i] )
+        giveLast[i] = min(giveLast[i-2], giveLast[i-1]) + A[i]
     }
 
     print(min(giveFirst[N-1], giveFirst[N], giveLast[N-2], giveLast[N-1]))
