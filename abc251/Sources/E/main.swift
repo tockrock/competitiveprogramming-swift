@@ -14,25 +14,29 @@ func main() {
     
     // reference: https://atcoder.jp/contests/abc251/submissions/31684739
     let N = readInt()
-    let As = [0] + readInts() // start from 1
+    let A = [0] + readInts() // start from 1
     
     // stores the minimum amount if the index item is given
     var giveFirst = [Int](repeating: Int.max, count: N+1)
-    giveFirst[0] = 0 // A(N) is not yet given (optional)
-    giveFirst[1] = As[1] // A(1) is given
+    giveFirst[0] = 0 // A[N] is not yet given (optional)
+    giveFirst[1] = A[1] // A[1] is given
     
     for i in 2..<N {
-        // gives A(i)
-        giveFirst[i] = min(giveFirst[i], giveFirst[i-1] + As[i])
-        // skips A(i) and gives A(i+1)
-        giveFirst[i+1] = min(giveFirst[i+1], giveFirst[i-1] + As[i + 1])
+        // decides the smallest amount when A[i] is given
+        giveFirst[i] = min(
+            giveFirst[i], // if i > 2 { giveFirst[i-2] + A[i] } else { Int.max }
+            giveFirst[i-1] + A[i]
+        )
+
+        // prepares for giveFisrt[i+1]
+        giveFirst[i+1] = giveFirst[i-1] + A[i + 1]
     }
 
-    var giveLast = [Int](repeating: Int.max, count: N+1)
-    giveLast[0] = As[N] // A(N) is given
+    var giveLast = [Int](repeating: Int.max, count: N)
+    giveLast[0] = A[N] // A(N) is given
     for i in 1..<N-1 {
-        giveLast[i] = min(giveLast[i], giveLast[i-1] + As[i])
-        giveLast[i+1] = min(giveLast[i+1], giveLast[i-1] + As[i + 1])
+        giveLast[i] = min(giveLast[i], giveLast[i-1] + A[i])
+        giveLast[i+1] = giveLast[i-1] + A[i + 1]
     }
 
     
