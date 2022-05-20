@@ -54,10 +54,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    enum Command: Int {
+        case parent, leftChild, rightChild
+    }
     
-    print("foo")
+    let H = Int(readLine()!)!
+    let maxNode = 1 << (H + 1) - 2
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let tv = readInts()
+        let t = tv[0], v = tv[1]
+        switch Command(rawValue: t)! {
+        case .parent:
+            print(v == 0 ? -1 : (v - 1) / 2)
+        case .leftChild:
+            let childNode = v * 2 + 1
+            print(childNode <= maxNode ? childNode: -1)
+        case .rightChild:
+            let childNode = v * 2 + 2
+            print(childNode <= maxNode ? childNode: -1)
+        }
+    }
     
     // ===============
     // actual code end
