@@ -11,17 +11,18 @@ func main() {
     // actual code goes here
     // =====================
     
-    let W = readInt()
+    let _ = readLine()
     
-    var ans = [Int]()
-    
-    func get(to: Int, with: Int) {
-        if to % with == 0 {
-            ans.append[to/3, to/3, to/3]
-        }
-        
+    let base = Array(1...99)
+    var ans = [1_000_000]
+    var multipler = 1
+    for _ in 0..<(6 / 2) {
+        ans += base.map { $0 * multipler }
+        multipler *= 100
     }
-    get(to: W, with: 3)
+    
+    print(ans.count)
+    print(ans.joinedAsString(separator: " "))
     
     // ===============
     // actual code end
