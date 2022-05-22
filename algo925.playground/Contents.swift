@@ -48,11 +48,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    let Q = Int(readLine()!)!
+    var heap = Heap<Int>()
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    for _ in 0..<Q {
+        let v = Int(readLine()!)!
+        heap.insert(v)
+    }
     
-    print("foo")
+    print(heap.data.map(\.description).joined(separator: " "))
     
     // ===============
     // actual code end
@@ -63,6 +68,24 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Extensions
 // Remember to paste these as well!!
 // =================================
+
+struct Heap<T: Comparable> {
+    private(set) var data = [T]()
+    
+    mutating func insert(_ n: T) {
+        data.append(n)
+        swim(data.count - 1)
+    }
+    
+    private mutating func swim(_ index: Int) {
+        guard index > 0 else { return }
+        let parentIndex = (index - 1) / 2
+        
+        guard data[parentIndex] < data[index] else { return }
+        data.swapAt(parentIndex, index)
+        swim(parentIndex)
+    }
+}
 
 
 
