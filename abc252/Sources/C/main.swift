@@ -12,27 +12,31 @@ func main() {
     // =====================
     
     let N = readInt()
-    var Ss = [ArraySlice<Character>]()
+    
+    var Ss = [[Character]]()
+    // Using ArraySlice as a quick queue
     var appearance = [ArraySlice<Int>](repeating: [], count: 10)
 
     for _ in 0..<N {
-        Ss.append(readChars()[...])
+        Ss.append(readChars())
     }
-    
+
+    // store the position of appearance for each number (sorted)
     for i in 0..<10 {
         for j in 0..<N {
-            appearance[Int(String(Ss[j].popFirst()!))!].append(i)
+            appearance[Int(String(Ss[j][i]))!].append(i)
         }
     }
     
     var smallest = Int.max
     
+    // for each number
     for i in 0..<10 {
-        var queue = appearance[i]
         var previous = -1
-        while let this = queue.popFirst() {
+        while let this = appearance[i].popFirst() {
+            // if there is duplicate with the previous 2
             guard this != previous else {
-                queue.append(this + 10)
+                appearance[i].append(this + 10)
                 continue
             }
             previous = this
