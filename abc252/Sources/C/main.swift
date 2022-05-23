@@ -13,28 +13,21 @@ func main() {
     
     let N = readInt()
     
-    var Ss = [[Character]]()
     var appearance = [[Int]](repeating: [], count: 10)
 
     for _ in 0..<N {
-        Ss.append(readChars())
-    }
-
-    // store the position of appearance for each number (sorted)
-    for i in 0..<10 {
-        for j in 0..<N {
-            appearance[Int(String(Ss[j][i]))!].append(i)
+        for (i, char) in readChars().enumerated() {
+            appearance[Int(String(char))!].append(i)
         }
     }
-    
+
     var smallest = Int.max
     
     // for each number
     for i in 0..<10 {
         var previous = -1
-        var queue = ArraySlice(appearance[i])
+        var queue = ArraySlice(appearance[i].sorted())
         while let this = queue.popFirst() {
-            // if there is duplicate with the previous 2
             guard this != previous else {
                 queue.append(this + 10)
                 continue
