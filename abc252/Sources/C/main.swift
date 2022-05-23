@@ -13,11 +13,11 @@ func main() {
     
     let N = readInt()
     
-    var appearance = [[Int]](repeating: [], count: 10)
+    var appearance = [[Int]](repeating: [Int](repeating: 0, count: 10), count: 10)
 
     for _ in 0..<N {
-        for (i, char) in readChars().enumerated() {
-            appearance[Int(String(char))!].append(i)
+        for (j, char) in readChars().enumerated() {
+            appearance[Int(String(char))!][j] += 1
         }
     }
 
@@ -25,16 +25,13 @@ func main() {
     
     // for each number
     for i in 0..<10 {
-        var previous = -1
-        var queue = ArraySlice(appearance[i].sorted())
-        while let this = queue.popFirst() {
-            guard this != previous else {
-                queue.append(this + 10)
-                continue
-            }
-            previous = this
+        var last = 0
+        
+        for (j, count) in appearance[i].enumerated() {
+            last = max((count - 1) * 10 + j, last)
         }
-        smallest = min(smallest, previous)
+        
+        smallest = min(smallest, last)
     }
     
     print(smallest)
