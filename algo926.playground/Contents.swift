@@ -66,10 +66,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    enum Command: Int {
+        case insert, pop
+    }
+    var heap = Heap<Int>()
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .insert:
+            heap.insert(query[1])
+        case .pop:
+            print(heap.pop() ?? -1)
+        }
+    }
     
     // ===============
     // actual code end
@@ -81,7 +94,49 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Remember to paste these as well!!
 // =================================
 
-
+struct Heap<T: Comparable> {
+    private(set) var data = [T]()
+    
+    mutating func insert(_ element: T) {
+        data.append(element)
+        swim(index: data.count - 1)
+    }
+    
+    @discardableResult
+    mutating func pop() -> T? {
+        guard data.count > 0 else { return nil }
+        data.swapAt(0, data.count - 1)
+        defer { sink(index: 0) }
+        return data.popLast()
+    }
+    
+    func order(_ lhs: T, _ rhs: T) -> Bool {
+        lhs >= rhs
+    }
+    
+    private mutating func swim(index: Int) {
+        guard index > 0 else { return }
+        let parentIndex = (index - 1) / 2
+        guard !order(data[parentIndex], data[index]) else { return }
+        data.swapAt(parentIndex, index)
+        swim(index: parentIndex)
+    }
+    
+    private mutating func sink(index: Int)  {
+        let childIndex = index * 2
+        var sinkIndex = index
+        for offset in 1...2 {
+            let nextChildIndex = childIndex + offset
+            guard nextChildIndex < data.count else { break }
+            guard !order(data[sinkIndex], data[nextChildIndex]) else { continue }
+            sinkIndex = nextChildIndex
+        }
+        guard sinkIndex > index else { return }
+        data.swapAt(index, sinkIndex)
+        sink(index: sinkIndex)
+    }
+    
+}
 
 // ====================
 // Extensions Ends Here
