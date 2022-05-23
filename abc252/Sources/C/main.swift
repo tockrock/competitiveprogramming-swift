@@ -14,8 +14,7 @@ func main() {
     let N = readInt()
     
     var Ss = [[Character]]()
-    // Using ArraySlice as a quick queue
-    var appearance = [ArraySlice<Int>](repeating: [], count: 10)
+    var appearance = [[Int]](repeating: [], count: 10)
 
     for _ in 0..<N {
         Ss.append(readChars())
@@ -33,10 +32,11 @@ func main() {
     // for each number
     for i in 0..<10 {
         var previous = -1
-        while let this = appearance[i].popFirst() {
+        var queue = ArraySlice(appearance[i])
+        while let this = queue.popFirst() {
             // if there is duplicate with the previous 2
             guard this != previous else {
-                appearance[i].append(this + 10)
+                queue.append(this + 10)
                 continue
             }
             previous = this
