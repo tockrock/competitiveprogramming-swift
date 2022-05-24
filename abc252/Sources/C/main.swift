@@ -25,12 +25,14 @@ func main() {
     
     // for each number
     for i in 0..<10 {
-        var last = 0
-        
-        for (j, count) in appearance[i].enumerated() {
-            last = max((count - 1) * 10 + j, last)
-        }
-        
+        let (j, count) = appearance[i].enumerated().filter({$0.element > 0})
+            .max(by: { (lhs, rhs) in
+            if lhs.element == rhs.element {
+                return lhs.offset < rhs.offset
+            }
+            return lhs.element < rhs.element
+        })!
+        let last = (count - 1) * 10 + j
         smallest = min(smallest, last)
     }
     
