@@ -27,14 +27,26 @@ let examples: [(String, Example)] = [
             """)),
     ("2", Example(
         input: """
-            4
+            12
             0 5 abc
             0 5 stu
+            0 5 def
+            0 5 ghi
+            0 5 jkl
+            0 5 mno
             0 3 xyz
+            1
+            1
+            1
+            1
             1
             """,
         expected: """
             xyz
+            abc
+            stu
+            def
+            ghi
             """)),
 ]
 
@@ -46,14 +58,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var heap = Heap<Task>()
     let Q = Int(readLine()!)!
     
-    for i in 0..<Q {
+    for _ in 0..<Q {
         let queue = readLine()!.split(separator: " ")
         let rawCommand = Int(String(queue[0]))!
         switch Command(rawValue: rawCommand)! {
         case .insert:
             let deadline = Int(String(queue[1]))!
             let taskName = String(queue[2])
-            let task = Task(deadline: deadline, queue: i, task: taskName)
+            let task = Task(deadline: deadline, task: taskName)
             heap.insert(element: task)
         case .pop:
             print(heap.pop()?.task ?? "-1")
@@ -71,13 +83,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // =================================
 
 struct Task: Comparable {
+    private let insertionCounter: UInt64 = getCounter
     let deadline: Int
-    let queue: Int
     let task: String
+    
+    private static var counter: UInt64 = 0
+    
+    private static var getCounter: UInt64 {
+        defer { counter += 1 }
+        return counter
+    }
     
     static func < (lhs: Task, rhs: Task) -> Bool {
         guard lhs.deadline != rhs.deadline else {
-            return lhs.queue < rhs.queue
+            return lhs.insertionCounter < rhs.insertionCounter
         }
         return lhs.deadline < rhs.deadline
     }
@@ -127,7 +146,6 @@ struct Heap<T: Comparable> {
         sink(index: replaceIndex)
     }
 }
-
 
 // ====================
 // Extensions Ends Here
