@@ -11,7 +11,28 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    _ = readLine()
+    let As = readInts()
+    
+    let e = Array(Set(As)).sorted()
+    var eCount = [Int: Int]()
+    for A in As {
+        eCount[A, default: 0] += 1
+    }
+    
+    var result = 0
+    defer { print(result) }
+    
+    let elementCount = e.count
+    guard elementCount > 2 else { return }
+        
+    var smaller = 
+
+    for j in 1..<elementCount-1 {
+        for k in j+1..<elementCount {
+            result += eCount[e[i]]! * eCount[e[j]]! * eCount[e[k]]!
+        }
+    }
     
     // ===============
     // actual code end
