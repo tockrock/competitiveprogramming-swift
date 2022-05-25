@@ -50,10 +50,38 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let hw = readInts()
+    let h = hw[0], w = hw[1]
     
-    print("foo")
+    var bombGrid = [[Int]]()
+    
+    for _ in 0..<h {
+        let line = Array(readLine()!).map { $0 == "#" ? 1 : 0 }
+        bombGrid.append(line)
+    }
+    
+    var adjacentBoms = [[Int?]](repeating: [Int?](repeating: nil, count: w), count: h)
+    let q = Int(readLine()!)!
+    for _ in 0..<q {
+        let xy = readInts()
+        let x = xy[0], y = xy[1]
+        
+        if let count = adjacentBoms[x][y] {
+            print(count)
+            continue
+        }
+        
+        var count = 0
+        if 0 < x   { count += bombGrid[x-1][y] }
+        if x < h-1 { count += bombGrid[x+1][y] }
+        if 0 < y   { count += bombGrid[x][y-1] }
+        if y < w-1 { count += bombGrid[x][y+1] }
+        
+        adjacentBoms[x][y] = count
+        print(count)
+    }
     
     // ===============
     // actual code end
