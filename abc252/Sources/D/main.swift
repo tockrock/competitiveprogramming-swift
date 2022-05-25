@@ -26,12 +26,14 @@ func main() {
     let elementCount = e.count
     guard elementCount > 2 else { return }
         
-    var smaller = 
+    var smaller = eCount[e[0]]!
+    var larger = e[2...].reduce(0) { $0 + eCount[$1]! }
 
     for j in 1..<elementCount-1 {
-        for k in j+1..<elementCount {
-            result += eCount[e[i]]! * eCount[e[j]]! * eCount[e[k]]!
-        }
+        let count = eCount[e[j]]!
+        result += smaller * count * larger
+        smaller += count
+        larger -= count
     }
     
     // ===============
