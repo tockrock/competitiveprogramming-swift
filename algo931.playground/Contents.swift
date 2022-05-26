@@ -48,10 +48,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let N = Int(readLine()!)!
+    let As = Set(readInts())
     
-    print("foo")
+    var ans = true
+    for i in 1...N {
+        guard As.contains(i) else {
+            ans = false
+            break
+        }
+    }
+    
+    print(ans ? "Yes" : "No")
     
     // ===============
     // actual code end
