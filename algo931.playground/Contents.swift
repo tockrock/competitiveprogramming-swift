@@ -50,18 +50,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    let N = Int(readLine()!)!
-    let As = Set(readInts())
-    
-    var ans = true
-    for i in 1...N {
-        guard As.contains(i) else {
-            ans = false
-            break
+    func check() -> Bool {
+        let N = Int(readLine()!)!
+        let As = Set(readInts())
+        
+        guard As.count == N else { return false }
+        
+        for A in As {
+            guard A <= N else { return false }
         }
+
+        return true
     }
     
-    print(ans ? "Yes" : "No")
+    print(check() ? "Yes" : "No")
     
     // ===============
     // actual code end
