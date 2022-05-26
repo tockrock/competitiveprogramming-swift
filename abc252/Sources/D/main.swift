@@ -11,30 +11,27 @@ func main() {
     // actual code goes here
     // =====================
     
-    _ = readLine()
+    // reference: https://atcoder.jp/contests/abc252/editorial/3965
+    let N = readInt()
     let As = readInts()
     
-    let e = Array(Set(As)).sorted()
-    var eCount = [Int: Int]()
+    let largestN = 2 * Int(1e5)
+    
+    var count = [Int](repeating: 0, count: largestN + 1)
     for A in As {
-        eCount[A, default: 0] += 1
+        count[A] += 1
+    }
+    for i in 0..<largestN {
+        count[i+1] += count[i]
     }
     
     var result = 0
-    defer { print(result) }
     
-    let elementCount = e.count
-    guard elementCount > 2 else { return }
-        
-    var smaller = eCount[e[0]]!
-    var larger = e[2...].reduce(0) { $0 + eCount[$1]! }
-
-    for j in 1..<elementCount-1 {
-        let count = eCount[e[j]]!
-        result += smaller * count * larger
-        smaller += count
-        larger -= count
+    for Aj in As {
+        result += count[Aj-1] * (N - count[Aj])
     }
+    
+    print(result)
     
     // ===============
     // actual code end
