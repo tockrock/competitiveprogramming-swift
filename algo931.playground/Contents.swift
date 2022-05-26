@@ -49,21 +49,23 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+    
+    let N = Int(readLine()!)!
+    let As = readInts()
 
-    func check() -> Bool {
-        let N = Int(readLine()!)!
-        let As = Set(readInts())
-        
-        guard As.count == N else { return false }
-        
-        for A in As {
-            guard A <= N else { return false }
+    var notUsed = [Bool](repeating: true, count: N)
+    
+    var ans = true
+    
+    for A in As {
+        guard A <= N && notUsed[A-1] else {
+            ans = false
+            break
         }
-
-        return true
+        notUsed[A-1] = false
     }
     
-    print(check() ? "Yes" : "No")
+    print(ans ? "Yes" : "No")
     
     // ===============
     // actual code end
