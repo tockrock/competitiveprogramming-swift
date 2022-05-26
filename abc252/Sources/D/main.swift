@@ -15,20 +15,22 @@ func main() {
     let N = readInt()
     let As = readInts()
     
-    let largestN = 2 * Int(1e5)
+    let elements = Array(Set(As)).sorted()
     
-    var count = [Int](repeating: 0, count: largestN + 1)
+    var elementCount = [Int: Int]()
+    
     for A in As {
-        count[A] += 1
-    }
-    for i in 0..<largestN {
-        count[i+1] += count[i]
+        elementCount[A, default: 0] += 1
     }
     
     var result = 0
-    
-    for Aj in As {
-        result += count[Aj-1] * (N - count[Aj])
+    var smallerElements = 0
+    var largerElements = N
+    for i in 0..<elements.count {
+        let count = elementCount[elements[i]]!
+        largerElements -= count
+        result += smallerElements * count * largerElements
+        smallerElements += count
     }
     
     print(result)
