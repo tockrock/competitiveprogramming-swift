@@ -11,12 +11,59 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let (N, M) = readInts().tupled()
+    var graph = [[Road?]](repeating: [Road?](repeating: nil, count: N+1), count: N+1)
+    
+    for i in 1...M {
+        let (A, B, C) = readInts().tupled()
+        let road = Road(id: i, distance: C)
+        graph[A][B] = road
+        graph[B][A] = road
+    }
+    var travelledTo = [Bool](repeating: false, count: N+1)
+    travelledTo[0] = true
+    travelledTo[1] = true
+    
+    var ans = [Int]()
+    var pq = PriorityQueue<Path>([], smallerFirst: true)
+    for to in 1...N {
+        guard let road = graph[1][to] else { continue }
+        pq.push(Path(roadId: road.id, from: 1, to: to, distance: road.distance))
+    }
+    
+    while let next = pq.pop() {
+        guard !travelledTo[next.to] else { continue }
+        travelledTo[next.to] = true
+        ans.append(next.roadId)
+        
+        for to in 1...N {
+            guard let road = graph[next.to][to] else { continue }
+            pq.push(Path(roadId: road.id, from: next.to, to: to, distance: next.distance + road.distance))
+        }
+    }
+    print(ans.joinedAsString(separator: " "))
     
     // ===============
     // actual code end
     // ===============
 }
+
+struct Road {
+    let id: Int
+    let distance: Int
+}
+
+struct Path: Comparable {
+    static func < (lhs: Path, rhs: Path) -> Bool {
+        lhs.distance < rhs.distance
+    }
+    
+    let roadId: Int
+    let from: Int
+    let to: Int
+    let distance: Int
+}
+
 
 main()
 
