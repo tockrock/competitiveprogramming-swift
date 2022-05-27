@@ -39,11 +39,28 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    readLine()
+    let As = readInts()
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var count = [Int: Int]()
     
-    print("foo")
+    for A in As {
+        count[A, default: 0] += 1
+    }
+    var ans = 0
+    
+    for (v, c) in count {
+        if c < v {
+            ans += c
+        } else if v < c {
+            ans += c - v
+        }
+    }
+    
+    print(ans)
     
     // ===============
     // actual code end
