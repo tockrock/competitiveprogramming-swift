@@ -50,12 +50,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     for A in As {
         count[A, default: 0] += 1
     }
-    var ans = 0
     
+    var ans = 0
     for (v, c) in count {
         if c < v {
             ans += c
-        } else if v < c {
+        } else {
             ans += c - v
         }
     }
