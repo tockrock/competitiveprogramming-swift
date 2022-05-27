@@ -11,26 +11,20 @@ func main() {
     // actual code goes here
     // =====================
     
-    // reference: https://atcoder.jp/contests/abc252/editorial/3965
+    // reference: https://atcoder.jp/contests/abc252/submissions/31866153
     let N = readInt()
     let As = readInts()
-    
-    let elements = Array(Set(As)).sorted()
-    
+        
     var elementCount = [Int: Int]()
     
     for A in As {
         elementCount[A, default: 0] += 1
     }
     
-    var result = 0
-    var smallerElements = 0
-    var largerElements = N
-    for i in 0..<elements.count {
-        let count = elementCount[elements[i]]!
-        largerElements -= count
-        result += smallerElements * count * largerElements
-        smallerElements += count
+    var result = N * (N - 1) * (N - 2) / 6
+    for (_, count) in elementCount {
+        result -= count * (count - 1) * (N - count) / 2
+        result -= count * (count - 1) * (count - 2) / 6
     }
     
     print(result)
