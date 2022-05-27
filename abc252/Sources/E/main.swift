@@ -12,13 +12,12 @@ func main() {
     // =====================
     
     let (N, M) = readInts().tupled()
-    var graph = [[Road?]](repeating: [Road?](repeating: nil, count: N+1), count: N+1)
+    var graph = [[Road]](repeating: [], count: N+1)
     
     for i in 1...M {
         let (A, B, C) = readInts().tupled()
-        let road = Road(id: i, distance: C)
-        graph[A][B] = road
-        graph[B][A] = road
+        graph[A].append(Road(id: i, to: B, distance: C))
+        graph[B].append(Road(id: i, to: A, distance: C))
     }
     var travelledTo = [Bool](repeating: false, count: N+1)
     travelledTo[0] = true
@@ -26,9 +25,8 @@ func main() {
     
     var ans = [Int]()
     var pq = PriorityQueue<Path>([], smallerFirst: true)
-    for to in 1...N {
-        guard let road = graph[1][to] else { continue }
-        pq.push(Path(roadId: road.id, from: 1, to: to, distance: road.distance))
+    for road in graph[1] {
+        pq.push(Path(roadId: road.id, from: 1, to: road.to, distance: road.distance))
     }
     
     while let next = pq.pop() {
@@ -36,9 +34,8 @@ func main() {
         travelledTo[next.to] = true
         ans.append(next.roadId)
         
-        for to in 1...N {
-            guard let road = graph[next.to][to] else { continue }
-            pq.push(Path(roadId: road.id, from: next.to, to: to, distance: next.distance + road.distance))
+        for road in graph[next.to] where !travelledTo[road.to] {
+            pq.push(Path(roadId: road.id, from: next.to, to: road.to, distance: next.distance + road.distance))
         }
     }
     print(ans.joinedAsString(separator: " "))
@@ -50,6 +47,7 @@ func main() {
 
 struct Road {
     let id: Int
+    let to: Int
     let distance: Int
 }
 
