@@ -16,23 +16,29 @@ func main() {
     let Q = readInt()
     
     var binaryTree = BinaryTree<Int>()
+    var counter = [Int: Int]()
     for _ in 0..<Q {
         let query = readInts()
         switch Command(rawValue: query[0])!{
         case .insert:
             let x = query[1]
-            binaryTree.insert(x)
+            if !binaryTree.search(x) {
+                binaryTree.insert(x)
+                counter[x] = 1
+            } else {
+                counter[x, default: 0] += 1
+            }
         case .remove:
             let x = query[1]
             let c = query[2]
-            for _ in 0..<c {
-                guard binaryTree.delete(x) else { continue }
+            guard binaryTree.search(x) else { continue }
+            counter[x, default: 0] -= c
+            if counter[x]! <= 0 {
+                binaryTree.delete(x)
             }
         case .diff:
             print(binaryTree.max() - binaryTree.min())
         }
-        
-        
     }
     
     // ===============
@@ -116,6 +122,7 @@ struct BinaryTree<T: Comparable> {
         return root?.search(value: key) != nil
     }
     
+    @discardableResult
     mutating func delete(_ key: T) -> Bool {
         guard search(key) else { return false }
         root = root?.delete(value: key)
