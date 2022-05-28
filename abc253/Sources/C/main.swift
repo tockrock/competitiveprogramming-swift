@@ -59,7 +59,7 @@ struct BinaryTree<T: Comparable> {
         }
         
         func insert(value: T) -> Node {
-            if value <= key {
+            if value < key {
                 left = left?.insert(value: value) ?? Node(value, parent: self)
             } else {
                 right = right?.insert(value: value) ?? Node(value, parent: self)
@@ -85,7 +85,7 @@ struct BinaryTree<T: Comparable> {
         func delete(value: T, includeSelf: Bool = true) -> Node? {
             if value == key && includeSelf {
                 return _delete()
-            } else if value <= key {
+            } else if value < key {
                 left = left?.delete(value: value)
             } else {
                 right = right?.delete(value: value)
