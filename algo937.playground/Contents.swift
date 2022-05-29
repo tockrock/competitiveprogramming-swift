@@ -50,10 +50,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    let hw = readInts()
+    let h = hw[0], w = hw[1]
+    
+    var blackStart = 0
+    
+    var shouldStartWithBlack = true
+    for _ in 0..<h {
+        let line = Array(readLine()!)
+        var shouldBeBlack = shouldStartWithBlack
+        for square in line {
+            if (square == "#") != shouldBeBlack {
+                blackStart += 1
+            }
+            shouldBeBlack.toggle()
+        }
+        shouldStartWithBlack.toggle()
+    }
+    
+    print(min(blackStart, h * w - blackStart))
     
     // ===============
     // actual code end
