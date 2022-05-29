@@ -25,17 +25,52 @@ let examples: [(String, Example)] = [
         expected: """
             10
             """)),
+    ("3", Example(
+        input: """
+            6 6
+            5 1 4 1 5 5
+            """,
+        expected: """
+            6
+            """)),
 ]
 
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let nm = readInts()
+    let m = nm[1]
+    let As = readInts()
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var counter = [Int: Int]()
+    for a in As {
+        counter[a, default: 0] += 1
+    }
     
-    print("foo")
+    var result = 0
+    for a in Set(As) {
+        let pair = m - a
+        
+        guard let aCount = counter[a] else { continue }
+        
+        guard pair != a else {
+            result += aCount * (aCount - 1) / 2
+            continue
+        }
+        
+        guard let pairCount = counter[pair] else { continue }
+        
+        result += aCount * pairCount
+
+        counter[a] = nil
+        counter[pair] = nil
+    }
+    
+    print(result)
     
     // ===============
     // actual code end
