@@ -39,12 +39,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let nm = readInts()
+    let m = nm[1]
     
-    print("foo")
+    let As = readInts()
+
+    var counter = [Int](repeating: 0, count: m)
+    for a in As {
+        counter[a % m] += 1
+    }
+
+    var ans = 0
     
+    for i in 0...m {
+        ans += counter[i] * (counter[i] - 1) / 2
+    }
+
+    print(ans)
+
     // ===============
     // actual code end
     // ===============
