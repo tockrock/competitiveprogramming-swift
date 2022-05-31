@@ -41,25 +41,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     let N = Int(readLine()!)!
     
-    var remaining = [String: Bool]()
+    var loosers = Set<String>()
+    var winners = Set<String>()
     
     for _ in 0..<N-1 {
         let input = readLine()!.split(separator: " ").map { String($0) }
-        
         let s = input[0], a = Int(input[1])!, b = Int(input[3])!, t = input[4]
+        
         let sWon = a > b
-        let winner = sWon ? s : t
-        let looser = sWon ? t : s
-        
-        remaining[looser] = false
-        
-        if remaining[winner] == nil {
-            remaining[winner] = true
-        }
-        
+        winners.insert(sWon ? s : t)
+        loosers.insert(sWon ? t : s)
     }
     
-    print(remaining.first { (_, result) in result }!.key)
+    print(winners.subtracting(loosers).first!)
     
     // ===============
     // actual code end
