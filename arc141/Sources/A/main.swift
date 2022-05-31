@@ -16,33 +16,23 @@ func main() {
     for _ in 0..<T {
         let input = readString()
         let limit = Int(input)!
-        let asChars = Array(input)
+        let chars = Array(input)
         
-        var smaller = ""
-        for _ in 1..<asChars.count {
-            smaller += "9"
-        }
+        let fewerDigit = String(repeating: "9", count: chars.count - 1)
+        var ans = Int(fewerDigit)!
 
-        var ans = Int(smaller)!
-
-        inputCase: for i in 1..<asChars.count {
-            guard asChars.count % i == 0 else { continue }
-            let rep = asChars.count / i
-            var baseString = String(Array(asChars[0..<i]))
-            var baseNumber = Int(baseString)!
+        for i in 1...chars.count/2 where chars.count % i == 0 {
+            let rep = chars.count / i
+            var baseNumber = Int(String(chars[0..<i]))!
             
             while true {
-                var test = ""
-                for _ in 0..<rep {
-                    test += baseString
-                }
-                let temp = Int(test)!
-                guard temp <= limit else {
+                let checkString = String(repeating: String(baseNumber), count: rep)
+                let attempt = Int(checkString)!
+                guard attempt <= limit else {
                     baseNumber -= 1
-                    baseString = String(baseNumber)
                     continue
                 }
-                ans = max(temp, ans)
+                ans = max(attempt, ans)
                 break
             }
         }
