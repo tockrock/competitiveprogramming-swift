@@ -21,11 +21,9 @@ func main() {
     count -= (A + largestA) * (N / A) / 2
     count -= (B + largestB) * (N / B) / 2
     
-    let lcm = A / gcd(A, B) * B
-    
-    let largestLCM = (N / lcm) * lcm
-    
-    count += (lcm + largestLCM) * (N / lcm) / 2
+    let abLCM = lcm(A, B)
+    let largestLCM = (N / abLCM) * abLCM
+    count += (abLCM + largestLCM) * (N / abLCM) / 2
     
     print(count)
     
@@ -178,10 +176,8 @@ func pow(_ base: Int, _ index: Int) -> Int? {
     guard result <= Double(Int.max) && result >= Double(Int.min) else { return nil }
     return Int(result) }
 
-func gcd(_ a: Int, _ b: Int) -> Int {
-    if b == 0 { return a }
-    return gcd(b, a%b)
-}
+func gcd(_ a: Int, _ b: Int) -> Int { b == 0 ? a : gcd(b, a % b) }
+func lcm(_ a: Int, _ b: Int) -> Int { a / gcd(a, b) * b }
 func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
     var n = numb, i = 2, primeList = [(Int, Int)]()
     while i * i <= numb && i <= n {
@@ -191,8 +187,7 @@ func pf(_ numb: Int) -> [(prime: Int, count: Int)] {
         i += 1
     }
     if n != 1 { primeList.append((n, 1)) }
-    return primeList
-}
+    return primeList }
 // reference https://ioritsutsui.com/permutation-full-enumeration/
 func permutation<T>(_ args: [T]) -> [[T]] {
     guard args.count > 1 else { return [args] }
