@@ -18,7 +18,7 @@ func main() {
         let limit = Int(input)!
         let chars = Array(input)
         
-        let fewerDigit = String(repeating: "9", count: chars.count - 1)
+        let fewerDigit = "9" * (chars.count - 1)
         var ans = Int(fewerDigit)!
 
         for i in 1...chars.count/2 where chars.count % i == 0 {
@@ -26,7 +26,7 @@ func main() {
             var baseNumber = Int(String(chars[0..<i]))!
             
             while true {
-                let checkString = String(repeating: String(baseNumber), count: rep)
+                let checkString = String(baseNumber) * rep
                 let attempt = Int(checkString)!
                 guard attempt <= limit else {
                     baseNumber -= 1
@@ -64,6 +64,7 @@ infix operator /-: MultiplicationPrecedence // FloorDiv
 func /- (lhs: Int, rhs: Int) -> Int {
     if rhs < 0 { return -lhs /- -rhs }
     return lhs >= 0 ? lhs / rhs : (lhs - rhs + 1) / rhs }
+func * (lhs: String, rhs: Int) -> String { String(repeating: lhs, count: rhs) }
 
 // ==========
 // Extentions
