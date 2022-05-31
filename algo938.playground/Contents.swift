@@ -39,7 +39,27 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // let mod = 1000000007
     // let mod = 998244353
     
-    print("foo")
+    let N = Int(readLine()!)!
+    
+    var remaining = [String: Bool]()
+    
+    for _ in 0..<N-1 {
+        let input = readLine()!.split(separator: " ").map { String($0) }
+        
+        let s = input[0], a = Int(input[1])!, b = Int(input[3])!, t = input[4]
+        let sWon = a > b
+        let winner = sWon ? s : t
+        let looser = sWon ? t : s
+        
+        remaining[looser] = false
+        
+        if remaining[winner] == nil {
+            remaining[winner] = true
+        }
+        
+    }
+    
+    print(remaining.first { (_, result) in result }!.key)
     
     // ===============
     // actual code end
