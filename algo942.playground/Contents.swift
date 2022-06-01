@@ -49,10 +49,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    struct Position: Hashable {
+        let r: Int
+        let c: Int
+    }
     
-    print("foo")
+    let hwn = readInts()
+    let h = hwn[0], w = hwn[1], n = hwn[2]
+    
+    var positions = Set<Position>()
+    
+    var count = 0
+    for _ in 0..<n {
+        let xy = readInts()
+        let x = xy[0], y = xy[1]
+        
+        for (r, c) in [(x, y), (h-x-1,w-y-1)] {
+            let pos = Position(r: r, c: c)
+            if !positions.insert(pos).inserted {
+                count += 1
+            }
+        }
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
