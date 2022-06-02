@@ -61,11 +61,32 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let n = Int(readLine()!)!
     
-    print("foo")
+    var parent = [Int?](repeating: nil, count: n)
+    for _ in 0..<n-1 {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        parent[b] = a
+    }
+
+    var uniqueNodes = Set<Int>()
+    let uv = readInts()
+    for child in uv {
+        var next: Int? = child
+        while let current = next {
+            if !uniqueNodes.insert(current).inserted {
+                uniqueNodes.remove(current)
+            }
+            next = parent[current]
+        }
+    }
+    
+    print(uniqueNodes.count)
+    
     
     // ===============
     // actual code end
