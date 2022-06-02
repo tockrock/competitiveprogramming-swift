@@ -11,8 +11,109 @@ func main() {
     // actual code goes here
     // =====================
     
-    print("foo")
+    let N = readInt()
+    let S = readChars()
     
+    var aCounter = 0
+    var rCounter = 0
+    var cCounter = 0
+    var list = [Int]()
+    
+    func reset() {
+        let potential = min(aCounter, cCounter)
+        if potential > 0 && rCounter == 1 {
+            list.append(potential)
+        }
+        aCounter = 0
+        rCounter = 0
+        cCounter = 0
+    }
+    for i in 0..<N {
+        
+        switch S[i] {
+        case "A":
+            if cCounter > 0 {
+                reset()
+            }
+            if rCounter > 0 {
+                reset()
+            }
+            aCounter += 1
+        case "R":
+            if cCounter > 0 {
+                reset()
+            }
+
+            guard aCounter > 0 else {
+                reset()
+                continue
+            }
+            guard rCounter == 0 else {
+                reset()
+                continue
+            }
+            rCounter += 1
+        case "C":
+            guard aCounter > 0 else {
+                reset()
+                continue
+            }
+            guard rCounter == 1 else {
+                reset()
+                continue
+            }
+            cCounter += 1
+            
+        default: break
+        }
+    }
+    reset()
+    var countOfOne = 0
+    var multiple = [Int]()
+    for arcCount in list {
+        guard arcCount > 1 else {
+            countOfOne += 1
+            continue
+        }
+        multiple.append(arcCount)
+    }
+    multiple.sort(by: >)
+    var ans = 0
+    
+    var i = 0
+    while true {
+        i += 1
+        if i % 2 == 0 {
+            if countOfOne > 0 {
+                countOfOne -= 1
+                ans += 1
+                continue
+            }
+            var remaining = multiple.count
+            if remaining == 0 { break }
+            remaining -= 1
+            ans += 1
+            ans += remaining * 2
+            break
+        }
+        
+        if multiple.isEmpty {
+            ans += countOfOne
+            break
+        }
+        
+        let index = multiple.endIndex - 1
+        multiple[index] -= 1
+        ans += 1
+        
+        if multiple[index] == 1 {
+            multiple.removeLast()
+            countOfOne += 1
+        }
+    }
+    
+    print(ans)
+        
     // ===============
     // actual code end
     // ===============

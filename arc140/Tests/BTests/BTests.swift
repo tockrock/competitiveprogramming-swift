@@ -23,6 +23,13 @@ ARCARCARC
 """, """
 3
 """),
+(#filePath, #line,
+"""
+24
+AAAAAARCCCCCCAAARCCARCCC
+""", """
+6
+"""),
 ]
 
 final class BTests: XCTestCase, TimeLimit {
