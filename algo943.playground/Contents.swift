@@ -73,19 +73,19 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         parent[b] = a
     }
 
-    var uniqueNodes = Set<Int>()
+    var sets = [Set<Int>]()
     let uv = readInts()
     for child in uv {
         var next: Int? = child
+        var ancestors = Set<Int>()
         while let current = next {
-            if !uniqueNodes.insert(current).inserted {
-                uniqueNodes.remove(current)
-            }
+            ancestors.insert(current)
             next = parent[current]
         }
+        sets.append(ancestors)
     }
     
-    print(uniqueNodes.count)
+    print(sets[0].symmetricDifference(sets[1]).count)
     
     
     // ===============
