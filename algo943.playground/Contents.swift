@@ -73,20 +73,21 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         parent[b] = a
     }
 
-    var sets = [Set<Int>]()
+    var distances = [Int?](repeating: nil, count: n)
     let uv = readInts()
     for child in uv {
         var next: Int? = child
-        var ancestors = Set<Int>()
+        var distance = 0
         while let current = next {
-            ancestors.insert(current)
+            if let previous = distances[current] {
+                print(previous + distance)
+                break
+            }
+            distances[current] = distance
             next = parent[current]
+            distance += 1
         }
-        sets.append(ancestors)
     }
-    
-    print(sets[0].symmetricDifference(sets[1]).count)
-    
     
     // ===============
     // actual code end
