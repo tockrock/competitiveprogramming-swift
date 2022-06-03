@@ -73,20 +73,28 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         parent[b] = a
     }
 
-    var distances = [Int?](repeating: nil, count: n)
     let uv = readInts()
-    for child in uv {
-        var next: Int? = child
-        var distance = 0
-        while let current = next {
-            if let previous = distances[current] {
-                print(previous + distance)
-                break
-            }
-            distances[current] = distance
-            next = parent[current]
-            distance += 1
+    let u = uv[0], v = uv[1]
+    
+    var uDistances = [Int?](repeating: nil, count: n)
+    
+    var uNext: Int? = u
+    var distance = 0
+    while let current = uNext {
+        uDistances[current] = distance
+        uNext = parent[current]
+        distance += 1
+    }
+    
+    distance = 0
+    var vNext: Int? = v
+    while let current = vNext {
+        if let previous = uDistances[current] {
+            print(previous + distance)
+            break
         }
+        vNext = parent[current]
+        distance += 1
     }
     
     // ===============
