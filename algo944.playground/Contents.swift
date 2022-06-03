@@ -40,10 +40,20 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    print("foo")
+    let nk = readInts()
+    let k = nk[1]
+    let As = readInts()
+    
+    var pq = PriorityQueue(As, smallerFirst: false)
+    
+    for _ in 0..<k {
+        guard let largest = pq.pop() else { break }
+        pq.push(largest / 2)
+    }
+    
+    print(pq.reduce(0, +))
     
     // ===============
     // actual code end
@@ -55,7 +65,50 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Remember to paste these as well!!
 // =================================
 
-
+struct PriorityQueue<T> {
+    var heap = [T](); let order: (T, T) -> Bool
+    init(_ startingValues: ArraySlice<T> = [], order: @escaping (T, T) -> Bool) {
+        self.order = order; push(startingValues) }
+    init(_ startingValues: [T], order: @escaping (T, T) -> Bool) {
+        self.init(startingValues[...], order: order)}
+    var count: Int { heap.count }; var isEmpty: Bool { heap.isEmpty }
+    private mutating func sink(_ index: Int) {
+        var index = index
+        while 2 * index + 1 < count {
+            var j = 2 * index + 1
+            if j < (count - 1) && order(heap[j+1], heap[j]) { j += 1 }
+            guard order(heap[j], heap[index] ) else { break }
+            heap.swapAt(j, index); index = j } }
+    private mutating func swim(_ index: Int) {
+        var index = index
+        while index > 0 && order(heap[index], heap[(index - 1) / 2]) {
+            heap.swapAt(index, (index - 1) / 2)
+            index = (index - 1) / 2 } }
+    mutating func push(_ element: T) { heap.append(element); swim(count - 1) }
+    mutating func push(_ elements: ArraySlice<T>) { elements.forEach { push($0) } }
+    mutating func push(_ elements: [T]) { push(elements[...]) }
+    mutating func pop() -> T? {
+        guard !isEmpty else { return nil }
+        heap.swapAt(0, count - 1)
+        defer { sink(0) }
+        return heap.removeLast() } }
+extension PriorityQueue where T: Comparable {
+    init(_ startingValues: ArraySlice<T> = [], smallerFirst: Bool = true) {
+        self.init(startingValues, order: smallerFirst ? {$0 < $1} : {$0 > $1}) }
+    init(_ startingValues: [T], smallerFirst: Bool = true) {
+        self.init(startingValues[...], smallerFirst: smallerFirst)} }
+extension PriorityQueue: IteratorProtocol {
+    mutating func next() -> T? { return pop() }}
+extension PriorityQueue: Sequence {
+    func makeIterator() -> PriorityQueue<T> { return self }}
+extension PriorityQueue: Collection {
+    var startIndex: Int { return heap.startIndex }
+    var endIndex: Int { return heap.endIndex }
+    subscript(i: Int) -> T { return heap[i] }
+    func index(after i: Int) -> Int { return heap.index(after: i) }}
+extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
+    var description: String { return heap.description }
+    var debugDescription: String { return heap.debugDescription }}
 
 // ====================
 // Extensions Ends Here
