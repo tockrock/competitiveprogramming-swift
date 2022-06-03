@@ -46,7 +46,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let k = nk[1]
     let As = readInts()
     
-    var pq = PriorityQueue(As, smallerFirst: false)
+    var pq = PriorityQueue(As, order: >)
     
     for _ in 0..<k {
         guard let largest = pq.pop() else { break }
