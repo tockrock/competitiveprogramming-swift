@@ -61,13 +61,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var row = [Int](repeating: 0, count: h)
     var column = [Int](repeating: 0, count: w)
 
-    
-    for y in 0..<h {
+    for r in 0..<h {
         let line = Array(readLine()!)
-        for (x, char) in line.enumerated() where char == "#" {
-            graph[y][x] = true
-            row[y] += 1
-            column[x] += 1
+        for (c, char) in line.enumerated() where char == "#" {
+            graph[r][c] = true
+            row[r] += 1
+            column[c] += 1
         }
     }
     
@@ -85,16 +84,16 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         
         switch Command(rawValue: command)! {
         case .push:
-            for (dx, dy) in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)] {
-                let x = q + dx, y = p + dy
-                guard 0 <= x && x < w else { continue }
-                guard 0 <= y && y < h else { continue }
+            for (dr, dc) in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)] {
+                let r = p + dr, c = q + dc
+                guard 0 <= r && r < h else { continue }
+                guard 0 <= c && c < w else { continue }
                 
-                graph[y][x].toggle()
+                graph[r][c].toggle()
                 
-                let adjust = graph[y][x] ? 1 : -1
-                row[y] += adjust
-                column[x] += adjust
+                let adjust = graph[r][c] ? 1 : -1
+                row[r] += adjust
+                column[c] += adjust
             }
         case .getNum:
             let adjust = graph[p][q] ? -1 : 0
@@ -105,6 +104,12 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // ===============
     // actual code end
     // ===============
+    
+    func debugGraph() {
+        for row in graph {
+            debugPrint(row.map({$0 ? "#" : "."}).joined(separator: " "))
+        }
+    }
 }
 
 // =================================
