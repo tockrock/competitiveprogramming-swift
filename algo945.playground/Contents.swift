@@ -50,23 +50,41 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    readLine()
+    struct Data {
+        let value: Int
+        let pos: Int
+    }
+    
+    let n = Int(readLine()!)!
     let As = readInts()
-    let largestA = As.max()!
     
-    var counter = [Int](repeating: 0, count: largestA + 1)
-    var largest = Int.min
-    
-    for a in As {
-        for i in 0...largestA {
-            guard i <= a else {
-                counter[i] = 0
-                continue
-            }
-            
-            counter[i] += 1
-            largest = max(largest, i * counter[i])
+    var lowerLeft = [Int](repeating: 0, count: n)
+    var leftStack = [Data]()
+    for (pos, a) in As.enumerated() {
+        while a <= leftStack.last?.value ?? 0 {
+            leftStack.popLast()
         }
+        
+        lowerLeft[pos] = leftStack.last?.pos ?? -1
+        leftStack.append(Data(value: a, pos: pos))
+    }
+    
+    var lowerRight = [Int](repeating: 0, count: n)
+    var rightStack = [Data]()
+    for (pos, a) in As.enumerated().reversed() {
+        while a <= rightStack.last?.value ?? 0 {
+            rightStack.popLast()
+        }
+        
+        lowerRight[pos] = rightStack.last?.pos ?? n
+        rightStack.append(Data(value: a, pos: pos))
+    }
+    
+    var largest = Int.min
+    for (pos, a) in As.enumerated() {
+        let l = lowerLeft[pos], r = lowerRight[pos]
+        
+        largest = max(largest, a * (r - l - 1))
     }
     
     print(largest)
