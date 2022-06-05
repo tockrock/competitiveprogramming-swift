@@ -50,11 +50,57 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    // Create graph
+    let hw = readInts()
+    let h = hw[0], w = hw[1]
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var graph = [[Bool]](repeating: [Bool](repeating: false, count: w), count: h)
+    var row = [Int](repeating: 0, count: h)
+    var column = [Int](repeating: 0, count: w)
+
     
-    print("foo")
+    for y in 0..<h {
+        let line = Array(readLine()!)
+        for (x, char) in line.enumerated() where char == "#" {
+            graph[y][x] = true
+            row[y] += 1
+            column[x] += 1
+        }
+    }
+    
+    // Process query
+    
+    enum Command: Int {
+        case push, getNum
+    }
+    
+    let q = Int(readLine()!)!
+    
+    for _ in 0..<q {
+        let query = readInts()
+        let command = query[0], p = query[1], q = query[2]
+        
+        switch Command(rawValue: command)! {
+        case .push:
+            for (dx, dy) in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)] {
+                let x = q + dx, y = p + dy
+                guard 0 <= x && x < w else { continue }
+                guard 0 <= y && y < h else { continue }
+                
+                graph[y][x].toggle()
+                
+                let adjust = graph[y][x] ? 1 : -1
+                row[y] += adjust
+                column[x] += adjust
+            }
+        case .getNum:
+            let adjust = graph[p][q] ? -1 : 0
+            print(row[p] + column[q] + adjust)
+        }
+    }
     
     // ===============
     // actual code end
