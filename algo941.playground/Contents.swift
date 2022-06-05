@@ -71,7 +71,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     }
     
     // Process query
-    
     enum Command: Int {
         case push, getNum
     }
