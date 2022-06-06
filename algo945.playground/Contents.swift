@@ -63,10 +63,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     for (pos, a) in As.enumerated() {
         while a <= leftStack.last?.value ?? 0 {
             leftStack.popLast()
+        
+        // lower the stack until the high a is not met
         }
         
         lowerLeft[pos] = leftStack.last?.pos ?? -1
         leftStack.append(Data(value: a, pos: pos))
+        // get the left position where a is not met
     }
     
     var lowerRight = [Int](repeating: 0, count: n)
@@ -83,7 +86,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var largest = Int.min
     for (pos, a) in As.enumerated() {
         let l = lowerLeft[pos], r = lowerRight[pos]
-        
         largest = max(largest, a * (r - l - 1))
     }
     
