@@ -58,34 +58,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     let n = Int(readLine()!)!
     let As = readInts()
     
-    var lowerLeft = [Int](repeating: 0, count: n)
+    // store first position that does not meet the position's hight
+    var leftOBPosition = [Int](repeating: 0, count: n)
     var hightStack = [Data]()
     for (pos, a) in As.enumerated() {
         
-        // lower the stack until the high a is not met
+        // lower the stack until the hight a is not met
         while a <= hightStack.last?.value ?? 0 {
             hightStack.popLast()
         }
         
         // get the left position where a is not met
-        lowerLeft[pos] = hightStack.last?.pos ?? -1
+        leftOBPosition[pos] = hightStack.last?.pos ?? -1
         hightStack.append(Data(value: a, pos: pos))
     }
     
-    var lowerRight = [Int](repeating: 0, count: n)
+    var rightOBPosition = [Int](repeating: 0, count: n)
     hightStack = []
     for (pos, a) in As.enumerated().reversed() {
         while a <= hightStack.last?.value ?? 0 {
             hightStack.popLast()
         }
         
-        lowerRight[pos] = hightStack.last?.pos ?? n
+        rightOBPosition[pos] = hightStack.last?.pos ?? n
         hightStack.append(Data(value: a, pos: pos))
     }
     
     var largest = Int.min
     for (pos, a) in As.enumerated() {
-        let l = lowerLeft[pos], r = lowerRight[pos]
+        let l = leftOBPosition[pos], r = rightOBPosition[pos]
         largest = max(largest, a * (r - l - 1))
     }
     
