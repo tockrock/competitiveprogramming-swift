@@ -50,11 +50,31 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    enum Command: Int {
+        case push, pop
+    }
     
-    print("foo")
+    readLine()
+    let As = readInts()
+    var stack = totalStack()
+    stack.push(As)
+    
+    let Q = Int(readLine()!)!
+    
+    for _ in 0..<Q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .push:
+            let v = query[1], k = query[2]
+            stack.push(v: v, k: k)
+        case .pop:
+            let k = query[1]
+            print(stack.pop(k: k) ?? "Error")
+        }
+    }
     
     // ===============
     // actual code end
@@ -66,7 +86,38 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Remember to paste these as well!!
 // =================================
 
+struct totalStack {
+    private var stack = [(v: Int, k: Int)]()
+    private var stackTotal = 0
 
+    mutating func push(_ vs: [Int]) {
+        for v in vs {
+            push(v: v, k: 1)
+        }
+    }
+    
+    mutating func push(v: Int, k: Int) {
+        stack.append((v, k))
+        stackTotal += k
+    }
+    
+    mutating func pop(k: Int) -> Int? {
+        guard k <= stackTotal else { return nil }
+        var remaining = k
+        var sum = 0
+        while remaining > 0, var last = stack.popLast() {
+            let remove = min(last.k, remaining)
+            sum += remove * last.v
+            remaining -= remove
+            if last.k > remove {
+                last.k -= remove
+                stack.append(last)
+            }
+        }
+        stackTotal -= k
+        return sum
+    }
+}
 
 // ====================
 // Extensions Ends Here
