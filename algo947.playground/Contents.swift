@@ -59,11 +59,26 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    enum Command: Int { case push, sum }
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    readLine() // n
+    let As = readInts()
     
-    print("foo")
+    var stack = spanQuery(As)
+    
+    let q = Int(readLine()!)!
+    for _ in 0..<q {
+        let query = readInts()
+        switch Command(rawValue: query[0])! {
+        case .push:
+            stack.push(v: query[1])
+        case .sum:
+            print(stack.sum)
+        }
+    }
     
     // ===============
     // actual code end
@@ -75,7 +90,35 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 // Remember to paste these as well!!
 // =================================
 
+struct spanQuery {
+    struct ValueCount {
+        let v: Int
+        let k: Int
+    }
+    
+    var data = [ValueCount]()
+    var sum = 0
+    
+    init(_ arr: [Int]) {
+        arr.forEach {
+            data.append(ValueCount(v: $0, k: 1))
+            sum += $0
+        }
+    }
+    
+    mutating func push(v: Int) {
+        var k = 1
 
+        while let last = data.last, last.v > v {
+            data.removeLast()
+            k += last.k
+            sum -= last.v * last.k
+        }
+        
+        data.append(ValueCount(v: v, k: k))
+        sum += v * k
+    }
+}
 
 // ====================
 // Extensions Ends Here
