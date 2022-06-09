@@ -33,11 +33,29 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    let As = readInts().sorted()
+    let Bs = readInts().sorted()
     
-    print("foo")
+    var i = 0
+    var j = 0
+    var ans = 0
+    
+    while i < n && j < m {
+        if As[i] > Bs[j] {
+            ans += n - i
+            j += 1
+        } else {
+            i += 1
+        }
+    }
+    
+    print(ans)
     
     // ===============
     // actual code end
