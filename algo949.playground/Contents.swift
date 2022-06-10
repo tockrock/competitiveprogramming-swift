@@ -26,6 +26,8 @@ let examples: [(String, Example)] = [
             6 7
             """,
         expected: """
+            Looped
+            0 1 2 3
             """)),
 ]
 
@@ -33,11 +35,44 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    var graph = [[Int]](repeating: [], count: n)
     
-    print("foo")
+    for _ in 0..<m {
+        let line = readInts()
+        graph[line[0]].append(line[1])
+    }
+    for i in 0..<n {
+        graph[i].sort()
+    }
+
+    var arrived = [Bool](repeating: false, count: n)
+    
+    var looped = false
+
+    func rec(_ v: Int) {
+        guard !looped else { return }
+        guard !arrived[v] else {
+            looped = true
+            return
+        }
+        arrived[v] = true
+        for v2 in graph[v] {
+            rec(v2)
+        }
+    }
+    
+    rec(0)
+    
+    print(looped ? "Looped" : "Not Looped")
+    print(arrived.enumerated().filter({ (key, value) in
+        value
+    }).map({$0.offset.description}).joined(separator: " "))
     
     // ===============
     // actual code end
