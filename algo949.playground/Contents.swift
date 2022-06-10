@@ -51,17 +51,18 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         graph[i].sort()
     }
 
-    var arrived = [Bool](repeating: false, count: n)
+    var arrivedCount = [Int](repeating: 0, count: n)
     
     var looped = false
 
     func rec(_ v: Int) {
         guard !looped else { return }
-        guard !arrived[v] else {
+        guard arrivedCount[v] < 2 else {
             looped = true
             return
         }
-        arrived[v] = true
+        
+        arrivedCount[v] += 1
         for v2 in graph[v] {
             rec(v2)
         }
@@ -70,8 +71,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     rec(0)
     
     print(looped ? "Looped" : "Not Looped")
-    print(arrived.enumerated().filter({ (key, value) in
-        value
+    print(arrivedCount.enumerated().filter({ (key, value) in
+        value > 0
     }).map({$0.offset.description}).joined(separator: " "))
     
     // ===============
