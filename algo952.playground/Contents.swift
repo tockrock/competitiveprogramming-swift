@@ -64,11 +64,38 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
     
-    print("foo")
+    var graph = [[Int]](repeating: [], count: n)
+    for _ in 0..<m {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        graph[a].append(b)
+    }
     
+    for i in 0..<n {
+        graph[i].sort()
+    }
+    
+    var arrived = [Bool](repeating: false, count: n)
+    
+    var ans = [Int]()
+    func rec(_ v: Int) {
+        arrived[v] = true
+        ans.append(v)
+        for v2 in graph[v] {
+            guard !arrived[v2] else { continue }
+            rec(v2)
+        }
+    }
+    
+    rec(0)
+    
+    print(ans.map(\.description).joined(separator: " "))
+
     // ===============
     // actual code end
     // ===============
