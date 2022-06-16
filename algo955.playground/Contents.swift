@@ -53,10 +53,42 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let hw = readInts()
+    let h = hw[0], w = hw[1]
     
-    print("foo")
+    var graph = [[Bool]]()
+    for _ in 0..<h {
+        var line = [Bool]()
+        for char in readLine()! {
+            line.append(char == "#")
+        }
+        graph.append(line)
+    }
+    
+    func clear(_ i: Int, _ j: Int) {
+        graph[i][j] = false
+        
+        for (di, dj) in [(0, 1), (0, -1), (1, 0), (-1, 0)] {
+            let nextI = i + di
+            let nextJ = j + dj
+            guard 0 <= nextI && nextI < h else { continue }
+            guard 0 <= nextJ && nextJ < w else { continue }
+            guard graph[nextI][nextJ] else { continue }
+            clear(nextI, nextJ)
+        }
+    }
+    
+    var count = 0
+    for i in 0..<h {
+        for j in 0..<w where graph[i][j] {
+            count += 1
+            clear(i, j)
+        }
+    }
+    
+    print(count)
     
     // ===============
     // actual code end
