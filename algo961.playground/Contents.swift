@@ -54,11 +54,51 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    print("foo")
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
+
+    var graph = [[Int]](repeating: [], count: n)
     
+    for _ in 0..<m {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        graph[a].append(b)
+        graph[b].append(a)
+    }
+    
+    var color = [Bool?](repeating: nil, count: n)
+
+    func colorCheck(_ i: Int, expected: Bool) -> Bool {
+        if let existingColor = color[i] {
+            if existingColor == expected {
+                return true
+            } else {
+                return false
+            }
+        }
+                
+        color[i] = expected
+        for next in graph[i] {
+            guard colorCheck(next, expected: !expected) else {
+                return false
+            }
+        }
+        return true
+    }
+    
+    var answer = true
+    
+    for i in 0..<n where color[i] == nil {
+        guard colorCheck(i, expected: true) else {
+            answer = false
+            break
+        }
+    }
+    
+    print(answer ? "Yes" : "No")
+        
     // ===============
     // actual code end
     // ===============
