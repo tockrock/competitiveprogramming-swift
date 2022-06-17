@@ -68,18 +68,14 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         graph[b].append(a)
     }
     
-    var color = [Bool?](repeating: nil, count: n)
+    var colorMap = [Bool?](repeating: nil, count: n)
 
     func colorCheck(_ i: Int, expected: Bool) -> Bool {
-        if let existingColor = color[i] {
-            if existingColor == expected {
-                return true
-            } else {
-                return false
-            }
+        if let existingColor = colorMap[i] {
+            return existingColor == expected
         }
                 
-        color[i] = expected
+        colorMap[i] = expected
         for next in graph[i] {
             guard colorCheck(next, expected: !expected) else {
                 return false
@@ -90,7 +86,7 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     
     var answer = true
     
-    for i in 0..<n where color[i] == nil {
+    for i in 0..<n where colorMap[i] == nil {
         guard colorCheck(i, expected: true) else {
             answer = false
             break
