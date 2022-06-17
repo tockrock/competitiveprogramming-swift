@@ -79,7 +79,8 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var ans = false
     var travelled = [Bool](repeating: false, count: n)
     var queue = ArraySlice(graph[s])
-    while let next = queue.popFirst(), !travelled[next] {
+    while let next = queue.popFirst() {
+        guard !travelled[next] else { continue }
         guard next != t else {
             ans = true
             break
