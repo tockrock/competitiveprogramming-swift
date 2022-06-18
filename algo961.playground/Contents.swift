@@ -71,10 +71,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     var colorMap = [Bool?](repeating: nil, count: n)
 
     func colorCheck(_ i: Int, expected: Bool) -> Bool {
-        if let existingColor = colorMap[i] {
+        switch colorMap[i] {
+        case .some(let existingColor):
             return existingColor == expected
+        case .none:
+            break
         }
-                
+        
         colorMap[i] = expected
         for next in graph[i] {
             guard colorCheck(next, expected: !expected) else {
