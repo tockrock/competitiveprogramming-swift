@@ -72,8 +72,10 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
 
     func colorCheck(_ i: Int, expected: Bool) -> Bool {
         switch colorMap[i] {
-        case .some(let existingColor):
-            return existingColor == expected
+        case .some(true):
+            return expected == true
+        case .some(false):
+            return expected == false
         case .none:
             break
         }
