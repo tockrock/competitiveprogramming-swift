@@ -72,7 +72,6 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
         g[a].append(b)
     }
     
-    
     var cycled = [Bool?](repeating: nil, count: n)
     var answer = false
     
