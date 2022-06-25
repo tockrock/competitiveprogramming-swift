@@ -51,7 +51,7 @@ let examples: [(String, Example)] = [
             0 1
             """,
         expected: """
-            Yes
+            No
             """)),
 ]
 
@@ -60,10 +60,42 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    print("foo")
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
+    
+    var g = [[Int]](repeating: [], count: n)
+    for _ in 0..<m {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        g[a].append(b)
+    }
+    
+    
+    var cycled = [Bool?](repeating: nil, count: n)
+    var answer = false
+    
+    func rec(_ v: Int) {
+        cycled[v] = false
+        for v2 in g[v] {
+            guard let finished = cycled[v2] else {
+                rec(v2)
+                continue
+            }
+            if !finished {
+                answer = true
+                return
+            }
+        }
+        cycled[v] = true
+    }
+    
+    for v in 0..<n where cycled[v] == nil {
+        rec(v)
+    }
+    
+    print(answer ? "Yes" : "No")
     
     // ===============
     // actual code end
