@@ -49,11 +49,30 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    print("foo")
+    let n = Int(readLine()!)!
     
+    var graph = [[Int]](repeating: [], count: n)
+    for _ in 0..<n-1 {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        graph[a].append(b)
+        graph[b].append(a)
+    }
+    
+    var travelled = [Bool](repeating: false, count: n)
+    func getDepth(from: Int, depth: Int) -> Int {
+        travelled[from] = true
+        var deepest = depth
+        for next in graph[from] where !travelled[next] {
+            deepest = max(deepest, getDepth(from: next, depth: depth + 1))
+        }
+        return deepest
+    }
+    
+    print(getDepth(from: 0, depth: 0))
+
     // ===============
     // actual code end
     // ===============
