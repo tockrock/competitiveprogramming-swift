@@ -16,6 +16,20 @@ let examples: [(String, Example)] = [
         expected: """
             2
             """)),
+    ("1", Example(
+        input: """
+            2 4
+            """,
+        expected: """
+            3
+            """)),
+    ("1", Example(
+        input: """
+            3 4
+            """,
+        expected: """
+            6
+            """)),
     ("2", Example(
         input: """
             5 7
@@ -30,11 +44,13 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
 
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
 
-    print("foo")
+    let hw = readInts()
+    let h = hw[0], w = hw[1]
     
+    print((h-1) * (w-1))
+        
     // ===============
     // actual code end
     // ===============
