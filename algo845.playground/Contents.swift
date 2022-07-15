@@ -31,47 +31,77 @@ let examples: [(String, Example)] = [
 // Remember to paste these as well!!
 // =================================
 
+myDebugPrint("foo")
+
 func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
     
-    func readStrings() -> [String] { readLine()!.split(separator: " ").map({String($0)}) }
-    
+    myDebugPrint("bar")
+
+    func readStrings() -> [String] { readLine()!.split(separator: " ").map(String.init) }
+
     enum Command: String {
         case pushHead = "0"
         case popHead = "1"
     }
 
-    class Node {
-        let name: String
-        var next: Node?
+    enum List<Element>: ExpressibleByNilLiteral {
+        case none
+        indirect case some(Element, next: List<Element>)
         
-        init(name: String, next: Node? = nil) {
-            self.name = name
-            self.next = next
+        mutating func prepend(_ element: Element) {
+            Swift.print(element, type(of: element), type(of: self), self)
+            self = .some(element, next: self)
         }
+        
+//        mutating func pushHead(_ element: Element) {
+//            Swift.print("hello")
+//            self = .some(element, next: self)
+//            Swift.print("Goodbye")
+//        }
+//
+//        func popHead() -> Element? {
+//            guard case .some(let element, next: _) = self else { return nil }
+//            return element
+//        }
+        
+//        func makeIterator() -> List<Element> { self }
+//        mutating func next() -> Element? {
+//            guard case .some(let element, next: let next) = self else { return nil }
+//            self = next
+//            return element
+//        }
+//
+        init(nilLiteral: ()) { self = .none }
     }
-    
-    let head = Node(name: "head")
-    
+//
+    var stack: List<String> = .none
+//
     let Q = Int(readLine()!)!
-    
+
+    myDebugPrint(Q)
+
     for _ in 0..<Q {
         let query = readStrings()
+        myDebugPrint(query)
         switch Command(rawValue: query[0])! {
         case .pushHead:
-            let newNode = Node(name: query[1], next: head.next)
-            head.next = newNode
+            stack.prepend(query[1])
+            print("pushHead")
         case .popHead:
-            guard let pop = head.next else {
+            guard case .some(let element, next: let next) = stack else {
                 print("Error")
                 continue
             }
-            print(pop.name)
-            head.next = pop.next
+            print(element)
+            stack = next
         }
+        myDebugPrint(stack)
     }
+    
+    print("foo")
     
     // ===============
     // actual code end

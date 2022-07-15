@@ -38,45 +38,36 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    func readStrings() -> [String] { readLine()!.split(separator: " ").map({String($0)}) }
-
-    enum Command: String {
-        case insert = "0"
-        case output = "1"
+    enum List<Element>: Sequence, IteratorProtocol, ExpressibleByNilLiteral {
+        case none
+         indirect case some(_ element: Element, next: List)
+        
+        mutating func prepend(_ element: Element) {
+            self = .some(element, next: self)
+        }
+        
+        func makeIterator() -> List<Element> { self }
+        mutating func next() -> Element? {
+            guard case .some(let element, let next) = self else { return nil }
+            self = next
+            return element
+        }
+        
+        init(nilLiteral: ()) { self = .none }
     }
     
-    class Node {
-        let name: String
-        var next: Node?
-        
-        init(name: String, next: Node?) {
-            self.name = name
-            self.next = next
+    let n: Int = .init(readLine()!)!
+    
+    var list: List<String> = nil
+    for _ in 0 ..< n {
+        let q = readLine()!.split(separator: " ").map(String.init)
+        if q[0] == "0" {
+            list.prepend(q[1])
+        } else {
+            print(list.prefix(Int(q[1])!).joined(separator: " "))
         }
     }
     
-    var head: Node? = nil
-        
-    let Q = Int(readLine()!)!
-    
-    for _ in 0..<Q {
-        let query = readStrings()
-        
-        switch Command(rawValue: query[0])! {
-        case .insert:
-            head = Node(name: query[1], next: head)
-        case .output:
-            var names = [String]()
-            defer { print(names.joined(separator: " ")) }
-            var nextNode = head
-            for _ in 0..<Int(query[1])! {
-                guard let current = nextNode else { break }
-                names.append(current.name)
-                nextNode = current.next
-            }
-        }
-    }
-        
     // ===============
     // actual code end
     // ===============
