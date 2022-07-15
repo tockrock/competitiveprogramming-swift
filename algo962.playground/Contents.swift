@@ -54,10 +54,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // actual code goes here
     // =====================
     
-    // let mod = 1000000007
-    // let mod = 998244353
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    let nm = readInts()
+    let n = nm[0], m = nm[1]
     
-    print("foo")
+    var graph = [[Int]](repeating: [], count: n)
+    for _ in 0..<m {
+        let ab = readInts()
+        let a = ab[0], b = ab[1]
+        graph[a].append(b)
+        graph[b].append(a)
+    }
+    
+    var travelled = [Bool?](repeating: nil, count: n)
+    var correct = true
+    for start in 0..<n where travelled[start] == nil {
+        travelled[start] = true
+        var queue = ArraySlice(graph[start].map {(i: $0, expected: false)})
+        
+        while let (i, expected) = queue.popFirst() {
+            if let past = travelled[i] {
+                if past == expected  { continue }
+                correct = false
+                break
+            }
+            
+            travelled[i] = expected
+            queue.append(contentsOf: graph[i].map({($0, !expected)}))
+        }
+        guard correct else { break }
+    }
+    
+    print(correct ? "Yes" : "No")
+    
     
     // ===============
     // actual code end

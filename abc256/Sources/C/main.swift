@@ -13,21 +13,25 @@ func main() {
     
     let input = readInts()
     
-    var grid = [1, 1, 1, 0]
+    var grid = [1, 1, 1, 1]
     var ans = 0
     
-    overall: while true {
-        var i = 3
-        while i >= 0 {
-            if grid[i] < 28 {
-                grid[i] += 1
-                break
+    var stop = false
+    
+    while !stop {
+        defer {
+            var i = 3
+            while i >= 0 {
+                if grid[i] < 28 {
+                    grid[i] += 1
+                    break
+                }
+                grid[i] = 1
+                i -= 1
             }
-            grid[i] = 1
-            i -= 1
-        }
-        guard i >= 0 else {
-            break
+            if i < 0  {
+                stop = true
+            }
         }
         
         let topRight = input[0] - grid[0] - grid[1]
@@ -43,7 +47,7 @@ func main() {
             continue
         }
         
-        let bottomCenter = input[4] - grid[1] - grid[2]
+        let bottomCenter = input[4] - grid[1] - grid[3]
         guard bottomCenter > 0 else {
             continue
         }
@@ -54,7 +58,6 @@ func main() {
         guard bottomRight1 == bottomRight2 && bottomRight1 > 0 else {
             continue
         }
-        print(grid)
         ans += 1
     }
     
