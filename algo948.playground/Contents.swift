@@ -51,11 +51,40 @@ func run(readLine: () -> String?, print: (Any...) -> Void) {
     // =====================
     // actual code goes here
     // =====================
+
+    func readInts() -> [Int] { readLine()!.split(separator: " ").map { Int(String($0))! } }
+
+    func solve() -> Int {
+        let n = Int(readLine()!)!
+        guard n % 2 == 0 else { return -1 }
+        let S = Array(readLine()!)
+        let Cs = readInts()
+        
+        var dp = [[Int]](repeating: [Int](repeating: Int.max / 2, count: n + 2), count: n + 1)
+        
+        dp[0][0] = 0
+        
+        for i in 0..<n {
+            for j in 0..<n {
+                if S[i] == "(" {
+                    dp[i+1][j+1] = min(dp[i+1][j+1], dp[i][j])
+                    if j > 0 {
+                        dp[i+1][j-1] = min(dp[i+1][j-1], dp[i][j] + Cs[i])
+                    }
+                } else {
+                    if j > 0 {
+                        dp[i+1][j-1] = min(dp[i+1][j-1], dp[i][j])
+                    }
+                    dp[i+1][j+1] = min(dp[i+1][j+1], dp[i][j] + Cs[i])
+                }
+            }
+            debugPrint(dp[i])
+        }
+        
+        return dp[n][0]
+    }
     
-    // let mod = 1000000007
-    // let mod = 998244353
-    
-    print("foo")
+    print(solve())
     
     // ===============
     // actual code end
