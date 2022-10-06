@@ -11,19 +11,24 @@ func main() {
     // actual code goes here
     // =====================
 
-    var sellable = readInt()
+    let n = readInt()
+    var bookCount = n
     let As = Set(readInts())
     var read = 0
-    for i in 1...Int(1e9) {
-        if As.contains(i) {
-            sellable -= 1
-            continue
-        }
-        guard sellable >= 2 else {
+    for i in 1...n+1 {
+        guard bookCount > 0 else {
             read = i - 1
             break
         }
-        sellable -= 2
+        if As.contains(i) {
+            bookCount -= 1
+            continue
+        }
+        guard bookCount >= 2 else {
+            read = i - 1
+            break
+        }
+        bookCount -= 2
     }
     
     print(read)
