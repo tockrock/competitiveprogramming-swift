@@ -12,44 +12,29 @@ func main() {
     // =====================
 
     let (n, s) = readInts().tupled()
-    var ab = [(a:Int, b:Int)]()
+    var cards = [(Int, Int)]()
     for _ in 1...n {
-        ab.append(readInts().tupled())
+        cards.append(readInts().tupled())
+    }
+    var dp = [[String?]](repeating: [String?](repeating: nil, count: s + 1), count: n + 1)
+    dp[0][0] = ""
+    
+    for i in cards.indices {
+        for j in dp[i].indices {
+            guard let current = dp[i][j] else { continue }
+            let (a, b) = cards[i]
+            if j + a <= s { dp[i + 1][j + a] = current + "H" }
+            if j + b <= s { dp[i + 1][j + b] = current + "T" }
+        }
     }
     
-    func dfs(i: Int, remain: Int) -> String? {
-        guard remain > 0 else {
-            return nil
-        }
-        guard i < n - 1 else {
-            switch remain {
-            case ab[i].a:
-                return "H"
-            case ab[i].b:
-                return "T"
-            default:
-                return nil
-            }
-        }
-        
-        let resultA = dfs(i: i+1, remain: remain - ab[i].a)
-        if let resultA = resultA {
-            return resultA + "H"
-        }
-        let resultB = dfs(i: i+1, remain: remain - ab[i].b)
-        if let resultB = resultB {
-            return resultB + "T"
-        }
-        return nil
-    }
-    
-    let result = dfs(i: 0, remain: s)
-    if let result = result {
-        print(true.yN)
-        print(String(result.reversed()))
-    } else {
+    guard let result = dp[n][s] else {
         print(false.yN)
+        return
     }
+    
+    print(true.yN)
+    print(result)
     
     // ===============
     // actual code end
