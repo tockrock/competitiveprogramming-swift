@@ -12,17 +12,13 @@ func main() {
     // =====================
 
     let (n, s) = readInts().tupled()
-    var cards = [(Int, Int)]()
-    for _ in 1...n {
-        cards.append(readInts().tupled())
-    }
     var dp = [[String?]](repeating: [String?](repeating: nil, count: s + 1), count: n + 1)
     dp[0][0] = ""
     
-    for i in cards.indices {
+    for i in 0..<n {
+        let (a, b) = readInts().tupled()
         for j in dp[i].indices {
             guard let current = dp[i][j] else { continue }
-            let (a, b) = cards[i]
             if j + a <= s { dp[i + 1][j + a] = current + "H" }
             if j + b <= s { dp[i + 1][j + b] = current + "T" }
         }
